@@ -1,0 +1,3 @@
+[alias]
+  lfs-reset = !git lfs uninstall && git reset --hard && git lfs install && git lfs pull
+  lfs-reset-hard = !git rm --cached -r . && git reset --hard && git rm .gitattributes && git reset . && git checkout .
