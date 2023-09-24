@@ -1,6 +1,8 @@
 name: Actions
 
-on: [push, pull_request]
+on:
+  pull_request: {}
+  push: { branches: [stable, develop] }
 
 jobs:
     build:
@@ -34,7 +36,7 @@ jobs:
             path: Library
             key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
             restore-keys: |
-            Library-
+              Library-
 
       # Test
       - name: Run tests
