@@ -1,14 +1,12 @@
 {
-    "name": "Bonkers.Controls",
-    "rootNamespace": "Bonkers.Controls",
+    "name": "KCC.Editor",
+    "rootNamespace": "",
     "references": [
-        "Unity.InputSystem",
-        "Unity.Cinemachine",
-        "KCC",
-        "KCC.Examples",
-        "KCC.ExampleCharacter"
+        "KCC"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
