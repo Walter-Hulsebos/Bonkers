@@ -1,5 +1,28 @@
 {
   "dependencies": {
+    "com.common-games.utils.extensions": {
+      "version": "file:CGTK.Utils.Extensions",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.burst": "1.4.11",
+        "com.unity.test-framework": "1.1.29",
+        "com.unity.test-framework.performance": "2.8.0-preview"
+      }
+    },
+    "com.common-games.utils.preload": {
+      "version": "file:CGTK.Utils.Preload",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.common-games.utils.settings": {
+      "version": "file:CGTK.Utils.Settings",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.mibdev.fullscreen-editor": {
       "version": "file:Fullscreen",
       "depth": 0,
@@ -287,7 +310,7 @@
     },
     "com.unity.settings-manager": {
       "version": "2.0.1",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
