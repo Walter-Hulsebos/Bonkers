@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using KinematicCharacterController;
-using KinematicCharacterController.Examples;
+﻿using UnityEngine;
 
 namespace KinematicCharacterController.Examples
 {
@@ -14,13 +10,25 @@ namespace KinematicCharacterController.Examples
     {
         public ExampleCharacterController Character;
         public ExampleCharacterCamera CharacterCamera;
-
-        private const string MouseXInput = "Mouse X";
-        private const string MouseYInput = "Mouse Y";
-        private const string MouseScrollInput = "Mouse ScrollWheel";
-        private const string HorizontalInput = "Horizontal";
-        private const string VerticalInput = "Vertical";
-
+        
+        private Vector2 lookInput;
+        public void SetLookInput(InputAction.CallbackContext context)
+        {
+            lookInput = context.ReadValue<Vector2>();
+        }
+            
+        private Vector2 moveInput;
+        public void SetMoveInput(InputAction.CallbackContext context)
+        {
+            moveInput = context.ReadValue<Vector2>();
+        }
+        
+        private Boolean jumpInput;
+        public void SetJumpInput(InputAction.CallbackContext context)
+        {
+            jumpInput = context.ReadValueAsButton();
+        }
+        
         private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -58,9 +66,10 @@ namespace KinematicCharacterController.Examples
         private void HandleCameraInput()
         {
             // Create the look input vector for the camera
-            float mouseLookAxisUp = Input.GetAxisRaw(MouseYInput);
-            float mouseLookAxisRight = Input.GetAxisRaw(MouseXInput);
-            Vector3 lookInputVector = new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f);
+            // float mouseLookAxisUp = Input.GetAxisRaw(MouseYInput);
+            // float mouseLookAxisRight = Input.GetAxisRaw(MouseXInput);
+            //Vector3 lookInputVector = new Vector3(mouseLookAxisRight, mouseLookAxisUp, 0f);
+            Vector3 lookInputVector = new(lookInput.x, lookInput.y, 0f);
 
             // Prevent moving the camera while the cursor isn't locked
             if (Cursor.lockState != CursorLockMode.Locked)
@@ -69,45 +78,29 @@ namespace KinematicCharacterController.Examples
             }
 
             // Input for zooming the camera (disabled in WebGL because it can cause problems)
-            float scrollInput = -Input.GetAxis(MouseScrollInput);
-#if UNITY_WEBGL
-        scrollInput = 0f;
-#endif
+            //float scrollInput = -Input.GetAxis(MouseScrollInput);
+            // #if UNITY_WEBGL
+            //         scrollInput = 0f;
+            // #endif
 
             // Apply inputs to the camera
-            CharacterCamera.UpdateWithInput(Time.deltaTime, scrollInput, lookInputVector);
+            CharacterCamera.UpdateWithInput(Time.deltaTime, zoomInput: 0, lookInputVector);
 
             // Handle toggling zoom level
-            if (Input.GetMouseButtonDown(1))
-            {
-                CharacterCamera.TargetDistance = (CharacterCamera.TargetDistance == 0f) ? CharacterCamera.DefaultDistance : 0f;
-            }
-        }
-
-        private Vector2 moveInput;
-        public void SetMoveInput(InputAction.CallbackContext context)
-        {
-            moveInput = context.ReadValue<Vector2>();
-        }
-        
-        private Boolean jumpInput;
-        public void SetJumpInput(InputAction.CallbackContext context)
-        {
-            jumpInput = context.ReadValueAsButton();
+            // if (Input.GetMouseButtonDown(1))
+            // {
+            //     CharacterCamera.TargetDistance = (CharacterCamera.TargetDistance == 0f) ? CharacterCamera.DefaultDistance : 0f;
+            // }
         }
 
         private void HandleCharacterInput()
         {
             PlayerCharacterInputs characterInputs = new PlayerCharacterInputs
             {
-                // characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
-                // characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
                 MoveAxisForward = moveInput.y, 
                 MoveAxisRight   = moveInput.x,
                 CameraRotation  = CharacterCamera.Transform.rotation,
                 JumpDown        = jumpInput,
-                CrouchDown      = Input.GetKeyDown(KeyCode.C),
-                CrouchUp        = Input.GetKeyUp(KeyCode.C),
             };
 
             // Apply inputs to character
