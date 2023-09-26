@@ -6,6 +6,8 @@ using KinematicCharacterController.Examples;
 
 namespace KinematicCharacterController.Examples
 {
+    using System;
+
     using UnityEngine.InputSystem;
 
     public class ExamplePlayer : MonoBehaviour
@@ -87,6 +89,12 @@ namespace KinematicCharacterController.Examples
         {
             moveInput = context.ReadValue<Vector2>();
         }
+        
+        private Boolean jumpInput;
+        public void SetJumpInput(InputAction.CallbackContext context)
+        {
+            jumpInput = context.ReadValueAsButton();
+        }
 
         private void HandleCharacterInput()
         {
@@ -97,7 +105,7 @@ namespace KinematicCharacterController.Examples
                 MoveAxisForward = moveInput.y, 
                 MoveAxisRight   = moveInput.x,
                 CameraRotation  = CharacterCamera.Transform.rotation,
-                JumpDown        = Input.GetKeyDown(KeyCode.Space),
+                JumpDown        = jumpInput,
                 CrouchDown      = Input.GetKeyDown(KeyCode.C),
                 CrouchUp        = Input.GetKeyUp(KeyCode.C),
             };

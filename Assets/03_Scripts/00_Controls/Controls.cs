@@ -118,7 +118,7 @@ namespace Bonkers.Controls
                 {
                     ""name"": """",
                     ""id"": ""9bfc422a-75ae-4309-807c-ce6f6ac962fe"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
