@@ -6,6 +6,8 @@ using KinematicCharacterController.Examples;
 
 namespace KinematicCharacterController.Examples
 {
+    using UnityEngine.InputSystem;
+
     public class ExamplePlayer : MonoBehaviour
     {
         public ExampleCharacterController Character;
@@ -80,17 +82,25 @@ namespace KinematicCharacterController.Examples
             }
         }
 
+        private Vector2 moveInput;
+        public void SetMoveInput(InputAction.CallbackContext context)
+        {
+            moveInput = context.ReadValue<Vector2>();
+        }
+
         private void HandleCharacterInput()
         {
-            PlayerCharacterInputs characterInputs = new PlayerCharacterInputs();
-
-            // Build the CharacterInputs struct
-            characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
-            characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
-            characterInputs.CameraRotation = CharacterCamera.Transform.rotation;
-            characterInputs.JumpDown = Input.GetKeyDown(KeyCode.Space);
-            characterInputs.CrouchDown = Input.GetKeyDown(KeyCode.C);
-            characterInputs.CrouchUp = Input.GetKeyUp(KeyCode.C);
+            PlayerCharacterInputs characterInputs = new PlayerCharacterInputs
+            {
+                // characterInputs.MoveAxisForward = Input.GetAxisRaw(VerticalInput);
+                // characterInputs.MoveAxisRight = Input.GetAxisRaw(HorizontalInput);
+                MoveAxisForward = moveInput.y, 
+                MoveAxisRight   = moveInput.x,
+                CameraRotation  = CharacterCamera.Transform.rotation,
+                JumpDown        = Input.GetKeyDown(KeyCode.Space),
+                CrouchDown      = Input.GetKeyDown(KeyCode.C),
+                CrouchUp        = Input.GetKeyUp(KeyCode.C),
+            };
 
             // Apply inputs to character
             Character.SetInputs(ref characterInputs);
