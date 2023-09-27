@@ -107,7 +107,7 @@ namespace Bonkers.Controls
                     ""id"": ""5be7e866-c82d-460d-af1e-c2de260a813d"",
                     ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""DeltaTimeScale,ScaleVector2(x=0.1,y=0.1)"",
+                    ""processors"": ""DeltaTimeScale,ScaleVector2(x=0.1,y=-0.1)"",
                     ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
