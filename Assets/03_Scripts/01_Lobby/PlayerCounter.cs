@@ -5,15 +5,22 @@ namespace Bonkers.Lobby
     using JetBrains.Annotations;
 
     using UnityEngine;
+    using UnityEngine.InputSystem;
 
-    public class PlayerCounter : MonoBehaviour
+    public sealed class PlayerCounter : MonoBehaviour
     {
         public static I32 playerCount;
 
         [PublicAPI]
-        public void PlayerJoined() => playerCount++;
+        public void PlayerJoined(PlayerInput playerInput)
+        {
+            playerCount++;
+        }
 
         [PublicAPI]
-        public void PlayerLeft() => playerCount--;  
+        public void PlayerLeft(PlayerInput playerInput)
+        {
+            playerCount--;
+        }  
     }
 }
