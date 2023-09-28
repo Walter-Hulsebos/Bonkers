@@ -1,14 +1,34 @@
-using UnityEngine;
-
 namespace Bonkers.Lobby
 {
-    using System.Collections.Generic;
+    using JetBrains.Annotations;
 
-    using Unity.Cinemachine;
+    using UnityEngine.InputSystem;
+    using UnityEngine;
+    
+    using F32   = System.Single;
+    using F32x2 = UnityEngine.Vector2;
 
     public sealed class CharacterSelectCursor : MonoBehaviour//,
                                                  //IInputAxisOwner
     {
+        [SerializeField] private F32x2 sensitivity = F32x2.one;
+        
+        [PublicAPI]
+        public void OnPoint(InputAction.CallbackContext context)
+        {
+            transform.position = (context.ReadValue<Vector2>() * sensitivity);
+        }
+        
+        [PublicAPI]
+        public void OnClick(InputAction.CallbackContext context)
+        {
+            if (context.ReadValueAsButton())
+            {
+                Debug.Log("Clicked!");
+            }
+        }
+        
+        
         //[SerializeField] private 
         
         // [Header(header: "Input Axes")]

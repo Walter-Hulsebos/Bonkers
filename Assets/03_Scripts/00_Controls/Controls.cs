@@ -700,12 +700,6 @@ namespace Bonkers.Controls
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""UI1"",
-            ""id"": ""ba9751f9-d8fd-4118-8afb-8f5089e3b6a4"",
-            ""actions"": [],
-            ""bindings"": []
         }
     ],
     ""controlSchemes"": [
@@ -753,8 +747,6 @@ namespace Bonkers.Controls
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
-            // UI1
-            m_UI1 = asset.FindActionMap("UI1", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -976,44 +968,6 @@ namespace Bonkers.Controls
             }
         }
         public UIActions @UI => new UIActions(this);
-
-        // UI1
-        private readonly InputActionMap m_UI1;
-        private List<IUI1Actions> m_UI1ActionsCallbackInterfaces = new List<IUI1Actions>();
-        public struct UI1Actions
-        {
-            private @Controls m_Wrapper;
-            public UI1Actions(@Controls wrapper) { m_Wrapper = wrapper; }
-            public InputActionMap Get() { return m_Wrapper.m_UI1; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(UI1Actions set) { return set.Get(); }
-            public void AddCallbacks(IUI1Actions instance)
-            {
-                if (instance == null || m_Wrapper.m_UI1ActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_UI1ActionsCallbackInterfaces.Add(instance);
-            }
-
-            private void UnregisterCallbacks(IUI1Actions instance)
-            {
-            }
-
-            public void RemoveCallbacks(IUI1Actions instance)
-            {
-                if (m_Wrapper.m_UI1ActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            public void SetCallbacks(IUI1Actions instance)
-            {
-                foreach (var item in m_Wrapper.m_UI1ActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_UI1ActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        public UI1Actions @UI1 => new UI1Actions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1048,9 +1002,6 @@ namespace Bonkers.Controls
             void OnNavigate(InputAction.CallbackContext context);
             void OnRightClick(InputAction.CallbackContext context);
             void OnMiddleClick(InputAction.CallbackContext context);
-        }
-        public interface IUI1Actions
-        {
         }
     }
 }
