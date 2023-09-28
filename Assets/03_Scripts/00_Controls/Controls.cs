@@ -228,6 +228,15 @@ namespace Bonkers.Controls
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""PointDelta"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""689b7b8e-745c-4eb2-873f-c511971e2202"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Click"",
                     ""type"": ""PassThrough"",
                     ""id"": ""3fdfc11d-3f2b-4df4-9ebe-dd3723cea94e"",
@@ -698,6 +707,105 @@ namespace Bonkers.Controls
                     ""action"": ""MiddleClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""0ec786dc-c7a6-4ae9-980e-46970ac1d8da"",
+                    ""path"": ""2DVector(mode=1)"",
+                    ""interactions"": """",
+                    ""processors"": ""ScaleVector2(x=50,y=50)"",
+                    ""groups"": """",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""6d6cb651-7081-48f6-8898-d6515fb9867c"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""0ede885f-9d93-4f01-ba4a-5ca4da689073"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""5f1a0d7b-7032-47c8-b5ac-f984e32eb9fc"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""6cd46a4d-fb93-4787-a107-11d1d8563198"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""6fd62037-19b0-4e44-96e9-b81bd999f700"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""04543583-bfaa-4d66-9fcf-d088b2933b6a"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""d7a77889-d98b-43d1-8829-26436fa5d157"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""b2700149-0761-48d9-b069-506b083c55c9"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -740,6 +848,7 @@ namespace Bonkers.Controls
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
+            m_UI_PointDelta = m_UI.FindAction("PointDelta", throwIfNotFound: true);
             m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
             m_UI_Scroll = m_UI.FindAction("Scroll", throwIfNotFound: true);
             m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
@@ -871,6 +980,7 @@ namespace Bonkers.Controls
         private readonly InputActionMap m_UI;
         private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
         private readonly InputAction m_UI_Point;
+        private readonly InputAction m_UI_PointDelta;
         private readonly InputAction m_UI_Click;
         private readonly InputAction m_UI_Scroll;
         private readonly InputAction m_UI_Submit;
@@ -883,6 +993,7 @@ namespace Bonkers.Controls
             private @Controls m_Wrapper;
             public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Point => m_Wrapper.m_UI_Point;
+            public InputAction @PointDelta => m_Wrapper.m_UI_PointDelta;
             public InputAction @Click => m_Wrapper.m_UI_Click;
             public InputAction @Scroll => m_Wrapper.m_UI_Scroll;
             public InputAction @Submit => m_Wrapper.m_UI_Submit;
@@ -902,6 +1013,9 @@ namespace Bonkers.Controls
                 @Point.started += instance.OnPoint;
                 @Point.performed += instance.OnPoint;
                 @Point.canceled += instance.OnPoint;
+                @PointDelta.started += instance.OnPointDelta;
+                @PointDelta.performed += instance.OnPointDelta;
+                @PointDelta.canceled += instance.OnPointDelta;
                 @Click.started += instance.OnClick;
                 @Click.performed += instance.OnClick;
                 @Click.canceled += instance.OnClick;
@@ -930,6 +1044,9 @@ namespace Bonkers.Controls
                 @Point.started -= instance.OnPoint;
                 @Point.performed -= instance.OnPoint;
                 @Point.canceled -= instance.OnPoint;
+                @PointDelta.started -= instance.OnPointDelta;
+                @PointDelta.performed -= instance.OnPointDelta;
+                @PointDelta.canceled -= instance.OnPointDelta;
                 @Click.started -= instance.OnClick;
                 @Click.performed -= instance.OnClick;
                 @Click.canceled -= instance.OnClick;
@@ -995,6 +1112,7 @@ namespace Bonkers.Controls
         public interface IUIActions
         {
             void OnPoint(InputAction.CallbackContext context);
+            void OnPointDelta(InputAction.CallbackContext context);
             void OnClick(InputAction.CallbackContext context);
             void OnScroll(InputAction.CallbackContext context);
             void OnSubmit(InputAction.CallbackContext context);
