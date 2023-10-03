@@ -24,9 +24,68 @@ namespace Bonkers.Controls
         {
             asset = InputActionAsset.FromJson(@"{
     ""name"": ""Controls"",
-    ""maps"": [],
-    ""controlSchemes"": []
+    ""maps"": [
+        {
+            ""name"": ""Test"",
+            ""id"": ""516abbf6-106f-4f8c-a7da-660afe395b80"",
+            ""actions"": [
+                {
+                    ""name"": ""Timed Events"",
+                    ""type"": ""Button"",
+                    ""id"": ""57136f13-258f-4756-9b53-caa1e81b5d33"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interaction"",
+                    ""type"": ""Button"",
+                    ""id"": ""960e45de-f262-4563-8903-7e133cb6a438"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3f557dd5-5f6f-4348-9345-393dbdca308b"",
+                    ""path"": ""<Keyboard>/#(F)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Campaign"",
+                    ""action"": ""Timed Events"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""210083f4-c476-49ee-af96-e1c564056665"",
+                    ""path"": ""<Keyboard>/#(E)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Campaign"",
+                    ""action"": ""Interaction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        }
+    ],
+    ""controlSchemes"": [
+        {
+            ""name"": ""Campaign"",
+            ""bindingGroup"": ""Campaign"",
+            ""devices"": []
+        }
+    ]
 }");
+            // Test
+            m_Test = asset.FindActionMap("Test", throwIfNotFound: true);
+            m_Test_TimedEvents = m_Test.FindAction("Timed Events", throwIfNotFound: true);
+            m_Test_Interaction = m_Test.FindAction("Interaction", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -83,6 +142,74 @@ namespace Bonkers.Controls
         public int FindBinding(InputBinding bindingMask, out InputAction action)
         {
             return asset.FindBinding(bindingMask, out action);
+        }
+
+        // Test
+        private readonly InputActionMap m_Test;
+        private List<ITestActions> m_TestActionsCallbackInterfaces = new List<ITestActions>();
+        private readonly InputAction m_Test_TimedEvents;
+        private readonly InputAction m_Test_Interaction;
+        public struct TestActions
+        {
+            private @Controls m_Wrapper;
+            public TestActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @TimedEvents => m_Wrapper.m_Test_TimedEvents;
+            public InputAction @Interaction => m_Wrapper.m_Test_Interaction;
+            public InputActionMap Get() { return m_Wrapper.m_Test; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(TestActions set) { return set.Get(); }
+            public void AddCallbacks(ITestActions instance)
+            {
+                if (instance == null || m_Wrapper.m_TestActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_TestActionsCallbackInterfaces.Add(instance);
+                @TimedEvents.started += instance.OnTimedEvents;
+                @TimedEvents.performed += instance.OnTimedEvents;
+                @TimedEvents.canceled += instance.OnTimedEvents;
+                @Interaction.started += instance.OnInteraction;
+                @Interaction.performed += instance.OnInteraction;
+                @Interaction.canceled += instance.OnInteraction;
+            }
+
+            private void UnregisterCallbacks(ITestActions instance)
+            {
+                @TimedEvents.started -= instance.OnTimedEvents;
+                @TimedEvents.performed -= instance.OnTimedEvents;
+                @TimedEvents.canceled -= instance.OnTimedEvents;
+                @Interaction.started -= instance.OnInteraction;
+                @Interaction.performed -= instance.OnInteraction;
+                @Interaction.canceled -= instance.OnInteraction;
+            }
+
+            public void RemoveCallbacks(ITestActions instance)
+            {
+                if (m_Wrapper.m_TestActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(ITestActions instance)
+            {
+                foreach (var item in m_Wrapper.m_TestActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_TestActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public TestActions @Test => new TestActions(this);
+        private int m_CampaignSchemeIndex = -1;
+        public InputControlScheme CampaignScheme
+        {
+            get
+            {
+                if (m_CampaignSchemeIndex == -1) m_CampaignSchemeIndex = asset.FindControlSchemeIndex("Campaign");
+                return asset.controlSchemes[m_CampaignSchemeIndex];
+            }
+        }
+        public interface ITestActions
+        {
+            void OnTimedEvents(InputAction.CallbackContext context);
+            void OnInteraction(InputAction.CallbackContext context);
         }
     }
 }

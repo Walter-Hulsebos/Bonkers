@@ -1,1 +1,60 @@
-{}
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Test",
+            "id": "516abbf6-106f-4f8c-a7da-660afe395b80",
+            "actions": [
+                {
+                    "name": "Timed Events",
+                    "type": "Button",
+                    "id": "57136f13-258f-4756-9b53-caa1e81b5d33",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "960e45de-f262-4563-8903-7e133cb6a438",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3f557dd5-5f6f-4348-9345-393dbdca308b",
+                    "path": "<Keyboard>/#(F)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Campaign",
+                    "action": "Timed Events",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "210083f4-c476-49ee-af96-e1c564056665",
+                    "path": "<Keyboard>/#(E)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Campaign",
+                    "action": "Interaction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Campaign",
+            "bindingGroup": "Campaign",
+            "devices": []
+        }
+    ]
+}
