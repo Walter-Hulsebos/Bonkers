@@ -8,7 +8,7 @@ namespace Bonkers.Controls
     
     using KinematicCharacterController.Examples;
 
-    public sealed class CharacterInputs : MonoBehaviour, IInputAxisOwner
+    public class CharacterInputs : MonoBehaviour, IInputAxisOwner
     {
         [SerializeField] private ExampleCharacterController characterController;
 
@@ -45,7 +45,7 @@ namespace Bonkers.Controls
         
         private void Update()
         {
-            HandleCharacterInput();
+            HandleCharacterInput();         
         }
         
         private void HandleCharacterInput()
