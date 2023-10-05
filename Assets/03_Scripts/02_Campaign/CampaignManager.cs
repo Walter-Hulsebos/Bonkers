@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 namespace Bonkers
 {
@@ -16,6 +17,7 @@ namespace Bonkers
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private EventSystem eventSystem;
         [SerializeField] private Button continueButton;
+        [SerializeField] private Image characterIcon;
 
         public static CampaignManager instance { get; private set; }
         private static CampaignSubManager[] subManagers;
@@ -50,6 +52,7 @@ namespace Bonkers
             {
                 subManagers[i].Start();
             }
+            Cursor.visible = false;
         }
 
         // Update is called once per frame
@@ -61,14 +64,18 @@ namespace Bonkers
             }
         }
         #region Dialogue
-        public void ForwardNextSentence() 
+        public void ForwardNextSentence(InputAction.CallbackContext context)
         {
-            GetCampaignManager<DialogueManager>().DisplayLine();
+            if (context.performed)
+            {
+                GetCampaignManager<DialogueManager>().DisplayLine();
+            }
         }
+
         #endregion
 
 
-        public TextMeshProUGUI GetDialogueText() 
+        public TextMeshProUGUI GetDialogueText()
         {
             return dialogueText;
         }
@@ -78,7 +85,7 @@ namespace Bonkers
             return dialogueName;
         }
 
-        public GameObject GetDialoguePanel() 
+        public GameObject GetDialoguePanel()
         {
             return dialoguePanel;
         }
@@ -91,5 +98,10 @@ namespace Bonkers
         {
             return continueButton;
         }
+        public Image GetIcon()
+        {
+            return characterIcon;
+        }
+
     }
 }

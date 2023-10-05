@@ -19,6 +19,7 @@ namespace Bonkers
             if (other.tag.Contains("Player"))
             {
                 CampaignManager.GetCampaignManager<DialogueManager>().ExecuteDialogue(dialogue);
+
             }
         }
 

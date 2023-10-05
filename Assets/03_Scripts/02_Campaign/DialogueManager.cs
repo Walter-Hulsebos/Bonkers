@@ -21,7 +21,7 @@ namespace Bonkers
         {
             CampaignManager.instance.GetEventSystem().SetSelectedGameObject(CampaignManager.instance.GetContinueButton().gameObject);
             uiHandler.TogglePanel(CampaignManager.instance.GetDialoguePanel(), true);
-
+            uiHandler.SetIcon(CampaignManager.instance.GetIcon(), dialogue.icon);
             CampaignManager.instance.GetDialogueName().text = dialogue.name;
             lines.Clear();
 

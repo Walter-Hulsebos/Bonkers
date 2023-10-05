@@ -29,6 +29,11 @@ namespace Bonkers
         {
             panel.SetActive(value);
         }
+
+        public void SetIcon(Image image, Sprite sprite)
+        {
+            image.sprite = sprite;
+        }
     }
 
 
