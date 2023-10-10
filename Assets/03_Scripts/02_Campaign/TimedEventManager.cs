@@ -6,20 +6,19 @@ using TMPro;
 
 namespace Bonkers
 {
-    public class TimedEventManager : MonoBehaviour
+    public class TimedEventManager : CampaignSubManager
     {
         private Timer timedEventTimer;
-        [SerializeField] TextMeshProUGUI timedEvent;
-     
-        private void Start()
+
+
+        public override void Start()
         {
             timedEventTimer = new Timer();
             timedEventTimer.SetTimer(5);
         }
 
-        
 
-        public void Update()
+        public override void Update()
         {
             if (timedEventTimer.isActive && timedEventTimer.TimerDone())
             {
@@ -28,23 +27,17 @@ namespace Bonkers
 
             if (timedEventTimer.isActive)
             {
-                timedEvent.text = Mathf.RoundToInt(timedEventTimer.TimeLeft()).ToString();
+                CampaignManager.instance.GetTimedEventText().text = Mathf.RoundToInt(timedEventTimer.TimeLeft()).ToString();
             }
         }
 
-        public void ReactToTimedEvent(InputAction.CallbackContext context)
+        public void ReactToTimedEvent()
         {
-            if (context.performed)
+            if (timedEventTimer.isActive && !timedEventTimer.TimerDone())
             {
-                if (timedEventTimer.isActive && !timedEventTimer.TimerDone())
-                {
-                    Debug.Log("You reacted on time!");
-                }
-                Debug.Log("Test");
+                Debug.Log("You reacted on time!");
             }
+            Debug.Log("Test");
         }
-
-
-
     }
 }

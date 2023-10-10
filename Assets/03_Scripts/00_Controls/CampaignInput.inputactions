@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ToNextScene",
+                    "type": "Button",
+                    "id": "f6e9f815-a080-4c7a-8655-bfe3cc55a8ea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "CampaignDefault",
                     "action": "Action F",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6469a1d-a59c-427a-910d-fe6eff86f71a",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "CampaignDefault",
+                    "action": "ToNextScene",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
