@@ -27,7 +27,7 @@ namespace Bonkers
         public static CampaignManager instance { get; private set; }
         private static CampaignSubManager[] subManagers;
 
-        
+
         [SerializeField] private GameObject player;
 
         CampaignManager()
@@ -40,7 +40,8 @@ namespace Bonkers
                 new DialogueManager(),
                 new TimedEventManager(),
                 new ObjectiveManager(),
-            };
+
+        };
         }
 
         public static T GetCampaignManager<T>() where T : CampaignSubManager

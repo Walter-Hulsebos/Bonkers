@@ -10,13 +10,14 @@ namespace Bonkers
         [TextArea(3, 5)]
         public string description;
         // Start is called before the first frame update
-        public virtual void Start()
+        public Objective()
         {
             CampaignManager.GetCampaignManager<ObjectiveManager>().objective.Add(this);
         }
-        public virtual void CheckifHappening() 
+
+        public virtual void CheckifHappening()
         {
-        
+
         }
     }
 }

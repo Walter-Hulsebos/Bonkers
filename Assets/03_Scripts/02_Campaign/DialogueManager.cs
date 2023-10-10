@@ -34,11 +34,9 @@ namespace Bonkers
 
         public void DisplayLine()
         {
-            Debug.Log("Gets in here");
             for (int i = 0; i < lines.Count; i++)
             {
                 string[] newLines = lines.ToArray();
-                Debug.Log(newLines[i]);
             }
             if (lines.Count == 0)
             {
