@@ -55,6 +55,60 @@ namespace Bonkers.Controls
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Special3"",
+                    ""type"": ""Button"",
+                    ""id"": ""aed3666c-5c2d-4224-8862-f9f6410fa55b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialsGamepad"",
+                    ""type"": ""Button"",
+                    ""id"": ""cb7c30d7-5beb-447e-bb9e-f38c01553704"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Special1"",
+                    ""type"": ""Button"",
+                    ""id"": ""bdc7ddcc-95af-4c51-a6b1-cc32ae2bb74d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Special2"",
+                    ""type"": ""Button"",
+                    ""id"": ""ae5dc3b1-64f0-42a8-ad7e-d5f76f2cbce6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleSpecialKB"",
+                    ""type"": ""Button"",
+                    ""id"": ""8ff84eaf-fc7c-4e41-a028-242e17cb93ef"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""faf28082-373e-42b4-8eb0-04d786f129a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -211,6 +265,105 @@ namespace Bonkers.Controls
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9b2ebc1-c6c1-40b6-933f-2500deb7daff"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Special3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26da89ce-7181-400b-86cb-87eb41ca0db7"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Special3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4bbc7b62-ec31-4c9b-977e-4014784c726c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialsGamepad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a6268d4-bd0c-4c86-8409-0a0d99f1a06a"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7095f880-b9b7-4249-ae11-ecd2c513b0a4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""667d1782-79a2-4ad5-b645-81f7bfcba2ea"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bc9cefc-f582-4f0c-a47d-7252269d4958"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8260d588-56d0-4b7f-bd72-d9a8aefdda80"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleSpecialKB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2aa1be96-36c4-4be0-9b99-3d6cea0970e7"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -250,6 +403,12 @@ namespace Bonkers.Controls
             m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
             m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
             m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
+            m_Gameplay_Special3 = m_Gameplay.FindAction("Special3", throwIfNotFound: true);
+            m_Gameplay_SpecialsGamepad = m_Gameplay.FindAction("SpecialsGamepad", throwIfNotFound: true);
+            m_Gameplay_Special1 = m_Gameplay.FindAction("Special1", throwIfNotFound: true);
+            m_Gameplay_Special2 = m_Gameplay.FindAction("Special2", throwIfNotFound: true);
+            m_Gameplay_ToggleSpecialKB = m_Gameplay.FindAction("ToggleSpecialKB", throwIfNotFound: true);
+            m_Gameplay_SpecialMouse = m_Gameplay.FindAction("SpecialMouse", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -314,6 +473,12 @@ namespace Bonkers.Controls
         private readonly InputAction m_Gameplay_Move;
         private readonly InputAction m_Gameplay_Jump;
         private readonly InputAction m_Gameplay_Look;
+        private readonly InputAction m_Gameplay_Special3;
+        private readonly InputAction m_Gameplay_SpecialsGamepad;
+        private readonly InputAction m_Gameplay_Special1;
+        private readonly InputAction m_Gameplay_Special2;
+        private readonly InputAction m_Gameplay_ToggleSpecialKB;
+        private readonly InputAction m_Gameplay_SpecialMouse;
         public struct GameplayActions
         {
             private @Controls m_Wrapper;
@@ -321,6 +486,12 @@ namespace Bonkers.Controls
             public InputAction @Move => m_Wrapper.m_Gameplay_Move;
             public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
             public InputAction @Look => m_Wrapper.m_Gameplay_Look;
+            public InputAction @Special3 => m_Wrapper.m_Gameplay_Special3;
+            public InputAction @SpecialsGamepad => m_Wrapper.m_Gameplay_SpecialsGamepad;
+            public InputAction @Special1 => m_Wrapper.m_Gameplay_Special1;
+            public InputAction @Special2 => m_Wrapper.m_Gameplay_Special2;
+            public InputAction @ToggleSpecialKB => m_Wrapper.m_Gameplay_ToggleSpecialKB;
+            public InputAction @SpecialMouse => m_Wrapper.m_Gameplay_SpecialMouse;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -339,6 +510,24 @@ namespace Bonkers.Controls
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @Special3.started += instance.OnSpecial3;
+                @Special3.performed += instance.OnSpecial3;
+                @Special3.canceled += instance.OnSpecial3;
+                @SpecialsGamepad.started += instance.OnSpecialsGamepad;
+                @SpecialsGamepad.performed += instance.OnSpecialsGamepad;
+                @SpecialsGamepad.canceled += instance.OnSpecialsGamepad;
+                @Special1.started += instance.OnSpecial1;
+                @Special1.performed += instance.OnSpecial1;
+                @Special1.canceled += instance.OnSpecial1;
+                @Special2.started += instance.OnSpecial2;
+                @Special2.performed += instance.OnSpecial2;
+                @Special2.canceled += instance.OnSpecial2;
+                @ToggleSpecialKB.started += instance.OnToggleSpecialKB;
+                @ToggleSpecialKB.performed += instance.OnToggleSpecialKB;
+                @ToggleSpecialKB.canceled += instance.OnToggleSpecialKB;
+                @SpecialMouse.started += instance.OnSpecialMouse;
+                @SpecialMouse.performed += instance.OnSpecialMouse;
+                @SpecialMouse.canceled += instance.OnSpecialMouse;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -352,6 +541,24 @@ namespace Bonkers.Controls
                 @Look.started -= instance.OnLook;
                 @Look.performed -= instance.OnLook;
                 @Look.canceled -= instance.OnLook;
+                @Special3.started -= instance.OnSpecial3;
+                @Special3.performed -= instance.OnSpecial3;
+                @Special3.canceled -= instance.OnSpecial3;
+                @SpecialsGamepad.started -= instance.OnSpecialsGamepad;
+                @SpecialsGamepad.performed -= instance.OnSpecialsGamepad;
+                @SpecialsGamepad.canceled -= instance.OnSpecialsGamepad;
+                @Special1.started -= instance.OnSpecial1;
+                @Special1.performed -= instance.OnSpecial1;
+                @Special1.canceled -= instance.OnSpecial1;
+                @Special2.started -= instance.OnSpecial2;
+                @Special2.performed -= instance.OnSpecial2;
+                @Special2.canceled -= instance.OnSpecial2;
+                @ToggleSpecialKB.started -= instance.OnToggleSpecialKB;
+                @ToggleSpecialKB.performed -= instance.OnToggleSpecialKB;
+                @ToggleSpecialKB.canceled -= instance.OnToggleSpecialKB;
+                @SpecialMouse.started -= instance.OnSpecialMouse;
+                @SpecialMouse.performed -= instance.OnSpecialMouse;
+                @SpecialMouse.canceled -= instance.OnSpecialMouse;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -392,6 +599,12 @@ namespace Bonkers.Controls
             void OnMove(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
+            void OnSpecial3(InputAction.CallbackContext context);
+            void OnSpecialsGamepad(InputAction.CallbackContext context);
+            void OnSpecial1(InputAction.CallbackContext context);
+            void OnSpecial2(InputAction.CallbackContext context);
+            void OnToggleSpecialKB(InputAction.CallbackContext context);
+            void OnSpecialMouse(InputAction.CallbackContext context);
         }
     }
 }

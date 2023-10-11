@@ -110,6 +110,20 @@ namespace Bonkers
             }
         }
 
+        public void handleSpecial1()
+        {
+            animator.Play("Base Layer.Special3", 0, 0.25f);
+        }
+        public void handleSpecial2()
+        {
+            animator.Play("Base Layer.Special3", 0, 0.25f);
+        }
+
+        public void handleSpecial3()
+        {
+            animator.Play("Base Layer.Special3", 0, 0.25f);
+        }
+
         void OnEnable()
         {
             input.Gameplay.Enable();
