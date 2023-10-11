@@ -20,7 +20,7 @@ namespace Bonkers.Lobby
 
         [SerializeField] private GameObject characterInfoPanel;
 
-        [SerializeField] private TextMesh characterNameText;
+        [SerializeField] private Text characterNameText;
 
 
         private NetworkList<CharacterSelectState> players;
@@ -46,6 +46,7 @@ namespace Bonkers.Lobby
 
             if (IsServer)
             {
+                
                 //Make sure everyone who is connected after that poit to be added
                 NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
                 NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;

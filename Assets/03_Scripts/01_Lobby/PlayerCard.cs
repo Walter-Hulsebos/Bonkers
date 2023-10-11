@@ -13,9 +13,9 @@ namespace Bonkers.Lobby
 
         [SerializeField] private Image characterIconImage;
 
-        [SerializeField] private TextMesh playerNameText;
+        [SerializeField] private Text playerNameText;
 
-        [SerializeField] private TextMesh characterNameText;
+        [SerializeField] private Text characterNameText;
 
         public void UpdateDisplay(CharacterSelectState state)
         {
