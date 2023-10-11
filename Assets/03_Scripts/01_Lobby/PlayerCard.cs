@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using TMPro;
 
 namespace Bonkers.Lobby
 {
@@ -13,9 +15,9 @@ namespace Bonkers.Lobby
 
         [SerializeField] private Image characterIconImage;
 
-        [SerializeField] private Text playerNameText;
+        [SerializeField] private TMP_Text playerNameText;
 
-        [SerializeField] private Text characterNameText;
+        [SerializeField] private TMP_Text characterNameText;
 
         public void UpdateDisplay(CharacterSelectState state)
         {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
+using System;
+using TMPro;
 
 
 
@@ -20,7 +22,7 @@ namespace Bonkers.Lobby
 
         [SerializeField] private GameObject characterInfoPanel;
 
-        [SerializeField] private Text characterNameText;
+        [SerializeField] private TMP_Text characterNameText;
 
 
         private NetworkList<CharacterSelectState> players;
