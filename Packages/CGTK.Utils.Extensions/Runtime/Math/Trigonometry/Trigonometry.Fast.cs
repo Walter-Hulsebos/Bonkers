@@ -32,13 +32,13 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 				for (__index = 0; __index < _CACHE_SIZE; __index++)
 				{
 					F32 __value = ((__index + 0.5f) / _CACHE_SIZE * Constants.Constants.TAU);
-					SinCache[__index]  = Mathf.Sin(__value);
-					CosCache[__index]  = Mathf.Cos(__value);
-					TanCache[__index]  = Mathf.Tan(__value);
+					SinCache[__index] = Mathf.Sin(f: __value);
+					CosCache[__index] = Mathf.Cos(f: __value);
+					TanCache[__index] = Mathf.Tan(f: __value);
 
-					AsinCache[__index] = Mathf.Asin(__value);
-					AcosCache[__index] = Mathf.Acos(__value);
-					AtanCache[__index] = Mathf.Atan(__value);
+					AsinCache[__index] = Mathf.Asin(f: __value);
+					AcosCache[__index] = Mathf.Acos(f: __value);
+					AtanCache[__index] = Mathf.Atan(f: __value);
 				}
 
 				const F32 __FACTOR = (_CACHE_SIZE / 360f);
@@ -48,51 +48,51 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 
 					F32 __angleRadian = (__index * Constants.Constants.DEG_TO_RAD);
 
-					SinCache[__element] = Mathf.Sin(__angleRadian);
-					CosCache[__element] = Mathf.Cos(__angleRadian);
-					TanCache[__index]   = Mathf.Tan(__angleRadian);
+					SinCache[__element] = Mathf.Sin(f: __angleRadian);
+					CosCache[__element] = Mathf.Cos(f: __angleRadian);
+					TanCache[__index]   = Mathf.Tan(f: __angleRadian);
 
 					//needed??
-					AsinCache[__element] = Mathf.Asin(__angleRadian);
-					AcosCache[__element] = Mathf.Acos(__angleRadian);
-					AtanCache[__element] = Mathf.Atan(__angleRadian);
+					AsinCache[__element] = Mathf.Asin(f: __angleRadian);
+					AcosCache[__element] = Mathf.Acos(f: __angleRadian);
+					AtanCache[__element] = Mathf.Atan(f: __angleRadian);
 				}
 			}
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 SinFast(in this F32 value)
 				=> SinCache[(I32) (value * _INDEX_FACTOR) & _INDEX_MASK];
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 CosFast(in this F32 value)
 				=> CosCache[(I32) (value * _INDEX_FACTOR) & _INDEX_MASK];
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 TanFast(in this F32 value)
 				=> TanCache[(I32) (value * _INDEX_FACTOR) & _INDEX_MASK];
 
 			//TODO: Maybe add clamps to Asin/Acos, so it doesn't excede -1 and 1
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 AsinFast(in this F32 value)
 				=> AsinCache[(I32) (value * _INDEX_FACTOR) & _INDEX_MASK];
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 AcosFast(in this F32 value)
 				=> AcosCache[(I32) (value * _INDEX_FACTOR) & _INDEX_MASK];
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 AtanFast(in this F32 value)
 				=> AtanCache[(I32) (value * _INDEX_FACTOR) & _INDEX_MASK];
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 SqrtFast(in this I32 value)
 			{
 				if (value == 0) return 0; // Avoid zero divide

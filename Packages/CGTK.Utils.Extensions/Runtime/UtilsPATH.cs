@@ -9,23 +9,23 @@ namespace CGTK.Utils.Extensions
     public static class UtilsPATH
     {
         [PublicAPI]
-        public static Boolean ExistsInPATH(in String fileName) => GetFromPATH(fileName).NotNullOrWhiteSpace();
+        public static Boolean ExistsInPATH(in String fileName) => GetFromPATH(fileName: fileName).NotNullOrWhiteSpace();
 
         [PublicAPI]
         public static String GetFromPATH(in String fileName)
         {
-            if (File.Exists(fileName)) return Path.GetFullPath(fileName);
+            if (File.Exists(path: fileName)) return Path.GetFullPath(path: fileName);
 
             String __values = Environment.GetEnvironmentVariable(variable: "PATH");
 
             if (__values.IsNullOrWhiteSpace()) return null;
 
-            String[] __paths = __values.Split(Path.PathSeparator);
+            String[] __paths = __values.Split(separator: Path.PathSeparator);
             foreach (String __path in __paths)
             {
-                String __fullPath = Path.Combine(__path, fileName);
+                String __fullPath = Path.Combine(path1: __path, path2: fileName);
                 
-                if (File.Exists(__fullPath)) return __fullPath;
+                if (File.Exists(path: __fullPath)) return __fullPath;
             }
             
             return null;
