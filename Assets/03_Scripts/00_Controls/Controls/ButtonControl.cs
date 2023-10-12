@@ -2,7 +2,9 @@ namespace Bonkers.Controls
 {
     using JetBrains.Annotations;
 
+    #if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
+    #endif
 
     using UnityEngine;
     using UnityEngine.InputSystem;
@@ -13,17 +15,25 @@ namespace Bonkers.Controls
     public sealed class ButtonControl : MonoBehaviour, 
                                         ISettableControl<Bool>
     {
+        #if ODIN_INSPECTOR
         [field:ReadOnly]
+        #endif
         [field:SerializeField] public Bool Value { get; internal set; }
         
+        #if ODIN_INSPECTOR
         [field:LabelText("Action")]
+        #endif
         [field:SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
         
+        #if ODIN_INSPECTOR
         [ShowIf(nameof(showPlayerInput))]
+        #endif
         [SerializeField] private PlayerInput playerInput = null;
         
+        #if ODIN_INSPECTOR
         [HideInInspector]
+        #endif
         [SerializeField] private Bool showPlayerInput = true;
 
         #if UNITY_EDITOR
@@ -45,6 +55,14 @@ namespace Bonkers.Controls
             this.GetPlayerInput(out playerInput);
         }
         #endif
+        
+        private void Awake()
+        {
+            if(playerInput == null)
+            {
+                this.GetPlayerInput(out playerInput);
+            }
+        }
 
         private void OnEnable()
         {

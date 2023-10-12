@@ -429,7 +429,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1895812578040743413}
+  - {fileID: 8553841744418200668}
+  - {fileID: 8591525256349934343}
   m_Father: {fileID: 7344288065466484325}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6240644171936335887
@@ -542,7 +543,7 @@ MonoBehaviour:
       Height: 2.25
     Bottom:
       Radius: 2.5
-      Height: 0.1
+      Height: 1
     SplineCurvature: 0.5
   RecenteringTarget: 2
   HorizontalAxis:
@@ -814,7 +815,7 @@ GameObject:
   - component: {fileID: 8650082884657696546}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
