@@ -13,17 +13,25 @@ namespace Bonkers.Controls
     public sealed class ButtonControl : MonoBehaviour, 
                                         ISettableControl<Bool>
     {
+        #if ODIN_INSPECTOR
         [field:ReadOnly]
+        #endif
         [field:SerializeField] public Bool Value { get; internal set; }
         
+        #if ODIN_INSPECTOR
         [field:LabelText("Action")]
+        #endif
         [field:SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
         
+        #if ODIN_INSPECTOR
         [ShowIf(nameof(showPlayerInput))]
+        #endif
         [SerializeField] private PlayerInput playerInput = null;
         
+        #if ODIN_INSPECTOR
         [HideInInspector]
+        #endif
         [SerializeField] private Bool showPlayerInput = true;
 
         #if UNITY_EDITOR

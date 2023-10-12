@@ -15,17 +15,25 @@ namespace Bonkers.Controls
     public sealed class AxisControl : MonoBehaviour, 
                                       ISettableControl<F32>
     {
+        #if ODIN_INSPECTOR
         [field:ReadOnly]
+        #endif
         [field:SerializeField] public F32 Value { get; internal set; }
         
+        #if ODIN_INSPECTOR
         [field:LabelText("Action")]
+        #endif
         [field:SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
         
+        #if ODIN_INSPECTOR
         [ShowIf(nameof(showPlayerInput))]
+        #endif
         [SerializeField] private PlayerInput playerInput = null;
         
-        [HideInInspector]
+        #if ODIN_INSPECTOR
+        [InlineEditor]
+        #endif
         [SerializeField] private Boolean showPlayerInput = true;
 
         #if UNITY_EDITOR
