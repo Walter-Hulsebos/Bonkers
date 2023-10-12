@@ -33,9 +33,7 @@ namespace Bonkers.Controls
         #endif
         [SerializeField] private PlayerInput playerInput = null;
         
-        #if ODIN_INSPECTOR
-        [InlineEditor]
-        #endif
+        [HideInInspector]
         [SerializeField] private Boolean showPlayerInput = true;
 
         #if UNITY_EDITOR
@@ -57,6 +55,14 @@ namespace Bonkers.Controls
             this.GetPlayerInput(out playerInput);
         }
         #endif
+
+        private void Awake()
+        {
+            if(playerInput == null)
+            {
+                this.GetPlayerInput(out playerInput);
+            }
+        }
 
         private void OnEnable()
         {

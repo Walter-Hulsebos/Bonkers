@@ -55,6 +55,14 @@ namespace Bonkers.Controls
             this.GetPlayerInput(out playerInput);
         }
         #endif
+        
+        private void Awake()
+        {
+            if(playerInput == null)
+            {
+                this.GetPlayerInput(out playerInput);
+            }
+        }
 
         private void OnEnable()
         {

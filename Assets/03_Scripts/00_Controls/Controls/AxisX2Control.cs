@@ -15,7 +15,7 @@ namespace Bonkers.Controls
         #if ODIN_INSPECTOR
         [BoxGroup("Value", showLabel: false)]
         [ReadOnly]
-        [ShowInInspector] 
+        [ShowInInspector]
         #endif
         public F32x2 Value
         {
