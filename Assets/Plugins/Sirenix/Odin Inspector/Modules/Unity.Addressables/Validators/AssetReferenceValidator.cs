@@ -159,6 +159,12 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                     result.AddError($"The previously assigned sub asset with name <b>'{assetReference.SubObjectName}'</b> is missing.").EnableRichText();
                 }
             }
+
+            // Check AssetReference.Validate
+            if (mainAsset != null && assetReference.ValidateAsset(mainAsset) == false)
+            {
+                result.AddError($"{assetReference.GetType().GetNiceFullName()}.ValidateAsset failed to validate assigned asset.");
+            }
         }
 
         private static void SetLabels(UnityEngine.Object obj, List<AssetLabel> assetLabels)
