@@ -15,31 +15,31 @@ namespace CGTK.Utils.Extensions.Math
 		{
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static Vector3 Position(in this Matrix4x4 m)
-				=> new Vector3(x: m[0, 3], y: m[1, 3], z: m[2, 3]);
+				=> new Vector3(x: m[row: 0, column: 3], y: m[row: 1, column: 3], z: m[row: 2, column: 3]);
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static Vector3 Scale(this Matrix4x4 m)
-				=> new Vector3(x: m.GetColumn(0).magnitude, y: m.GetColumn(1).magnitude, z: m.GetColumn(2).magnitude);
+				=> new Vector3(x: m.GetColumn(index: 0).magnitude, y: m.GetColumn(index: 1).magnitude, z: m.GetColumn(index: 2).magnitude);
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static Quaternion Rotation(in this Matrix4x4 m)
 			{
-				Vector3 __scale = Scale(m);
+				Vector3 __scale = Scale(m: m);
 
 				// Normalize Scale from Matrix4x4
-				F32 m00 = m[0, 0] / __scale.x;
-				F32 m01 = m[0, 1] / __scale.y;
-				F32 m02 = m[0, 2] / __scale.z;
-				F32 m10 = m[1, 0] / __scale.x;
-				F32 m11 = m[1, 1] / __scale.y;
-				F32 m12 = m[1, 2] / __scale.z;
-				F32 m20 = m[2, 0] / __scale.x;
-				F32 m21 = m[2, 1] / __scale.y;
-				F32 m22 = m[2, 2] / __scale.z;
+				F32 m00 = m[row: 0, column: 0] / __scale.x;
+				F32 m01 = m[row: 0, column: 1] / __scale.y;
+				F32 m02 = m[row: 0, column: 2] / __scale.z;
+				F32 m10 = m[row: 1, column: 0] / __scale.x;
+				F32 m11 = m[row: 1, column: 1] / __scale.y;
+				F32 m12 = m[row: 1, column: 2] / __scale.z;
+				F32 m20 = m[row: 2, column: 0] / __scale.x;
+				F32 m21 = m[row: 2, column: 1] / __scale.y;
+				F32 m22 = m[row: 2, column: 2] / __scale.z;
 
 				Quaternion q = new Quaternion
 				{

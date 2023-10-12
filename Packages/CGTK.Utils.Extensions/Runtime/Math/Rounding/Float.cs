@@ -27,10 +27,10 @@ namespace CGTK.Utils.Extensions.Math.Rounding
 			{
 				return roundingMode switch
 				{
-					Mode.Nearest => Mathf.Round(value),
-					Mode.Down    => Mathf.Floor(value),
-					Mode.Up      => Mathf.Ceil(value),
-					_ => throw new ArgumentOutOfRangeException(paramName: nameof(roundingMode), actualValue: roundingMode, message: null)
+					Mode.Nearest => Mathf.Round(f: value),
+					Mode.Down    => Mathf.Floor(f: value),
+					Mode.Up      => Mathf.Ceil(f: value),
+					_            => throw new ArgumentOutOfRangeException(paramName: nameof(roundingMode), actualValue: roundingMode, message: null)
 				};
 			}
 			
@@ -40,17 +40,17 @@ namespace CGTK.Utils.Extensions.Math.Rounding
 			{
 				return roundingMode switch
 				{
-					Mode.Nearest => Mathf.RoundToInt(value),
-					Mode.Down    => Mathf.FloorToInt(value),
-					Mode.Up      => Mathf.CeilToInt(value),
-					_ => throw new ArgumentOutOfRangeException(paramName: nameof(roundingMode), actualValue: roundingMode, message: null)
+					Mode.Nearest => Mathf.RoundToInt(f: value),
+					Mode.Down    => Mathf.FloorToInt(f: value),
+					Mode.Up      => Mathf.CeilToInt(f: value),
+					_            => throw new ArgumentOutOfRangeException(paramName: nameof(roundingMode), actualValue: roundingMode, message: null)
 				};
 			}
 			
 			[PublicAPI]
 				[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 				public static F32 Round(this F32 value)
-				=> Mathf.Round(value);
+				=> Mathf.Round(f: value);
 			
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
@@ -60,44 +60,44 @@ namespace CGTK.Utils.Extensions.Math.Rounding
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 RoundToInt(this F32 value)
-				=> Mathf.RoundToInt(value);
+				=> Mathf.RoundToInt(f: value);
 
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 Floor(this F32 value)
-				=> Mathf.Floor(value);
+				=> Mathf.Floor(f: value);
 			
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 FloorToInt(this F32 value)
-				=> Mathf.FloorToInt(value);
+				=> Mathf.FloorToInt(f: value);
 
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 Ceil(this F32 value)
-				=> Mathf.Ceil(value);
+				=> Mathf.Ceil(f: value);
 			
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 CeilToInt(this F32 value)
-				=> Mathf.CeilToInt(value);
+				=> Mathf.CeilToInt(f: value);
 
 			
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 ClosestPowerOfTwo(this F32 value)
-				=> Mathf.ClosestPowerOfTwo(value: Mathf.RoundToInt(value));
+				=> Mathf.ClosestPowerOfTwo(value: Mathf.RoundToInt(f: value));
 			
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 NextPowerOfTwo(this F32 value)
-				=> Mathf.NextPowerOfTwo(value: Mathf.RoundToInt(value));
+				=> Mathf.NextPowerOfTwo(value: Mathf.RoundToInt(f: value));
 
 			[PublicAPI]
 			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 PreviousPowerOfTwo(this F32 value)
 			{
-				I32 __valueRoundedToInt = Mathf.RoundToInt(value);
+				I32 __valueRoundedToInt = Mathf.RoundToInt(f: value);
 				
 				if (__valueRoundedToInt == 0) 
 				{
@@ -118,10 +118,10 @@ namespace CGTK.Utils.Extensions.Math.Rounding
 			{
 				return mode switch
 				{
-					Mode.Nearest => ClosestPowerOfTwo(value),
-					Mode.Down    => PreviousPowerOfTwo(value),
-					Mode.Up      => NextPowerOfTwo(value),
-					_ => throw new ArgumentOutOfRangeException(paramName: nameof(mode), actualValue: mode, message: null)
+					Mode.Nearest => ClosestPowerOfTwo(value: value),
+					Mode.Down    => PreviousPowerOfTwo(value: value),
+					Mode.Up      => NextPowerOfTwo(value: value),
+					_            => throw new ArgumentOutOfRangeException(paramName: nameof(mode), actualValue: mode, message: null)
 				};
 			}
 

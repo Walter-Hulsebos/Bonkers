@@ -1,35 +1,43 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
-using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
-using Unity.Services.Relay;
-using Unity.Services.Relay.Models;
-
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-using Cysharp.Threading.Tasks;
-
-using JetBrains.Annotations;
-
-using QFSW.QC;
-
-using F32 = System.Single;
-using I32 = System.Int32;
-using U16 = System.UInt16;
-
 namespace Bonkers.Lobby
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    using Unity.Netcode;
+    using Unity.Netcode.Transports.UTP;
+    using Unity.Services.Authentication;
+    using Unity.Services.Core;
+    using Unity.Services.Lobbies;
+    using Unity.Services.Lobbies.Models;
+    using Unity.Services.Relay;
+    using Unity.Services.Relay.Models;
+
+    using UnityEngine;
+
+    using Cysharp.Threading.Tasks;
+
+    #if UNITY_EDITOR
+    using ParrelSync;
+    #endif
+
+    using QFSW.QC;
+    
     using CGTK.Utils.Extensions.NetCode;
+
+    using JetBrains.Annotations;
+
+    using static Unity.Services.Lobbies.Models.DataObject.VisibilityOptions;
 
     using Lobby = Unity.Services.Lobbies.Models.Lobby;
 
+    using F32 = System.Single;
+    using I32 = System.Int32;
+    using U16 = System.UInt16;
+    
+    using Bool = System.Boolean;
+
+    [PublicAPI]
     public static class GameLobby
     {
         /// <summary> Resets the GameLobby's static variables when the Domain is reloaded. (for Configurable Enter Play Mode) </summary>
@@ -46,18 +54,8 @@ namespace Bonkers.Lobby
         }
         
         private const  String KEY_RELAY_JOIN_CODE = "Rughaar";
-        private static F32    _heartbeatTimer;
-        
+        private static F32   _heartbeatTimer;
         private static Lobby _joinedLobby;
-        //private static F32   _listLobbiesTimer;
-
-        // public static event EventHandler OnCreateLobbyStarted;
-        // public static event EventHandler OnCreateLobbyFailed;
-        //
-        // public static event EventHandler OnJoinStarted;
-        // public static event EventHandler OnQuickJoinFailed;
-        // public static event EventHandler OnJoinFailed;
-
         public static event Action<List<Lobby>> OnLobbyListChanged;
 
         public static Boolean        HasManager   => Manager != null;
@@ -68,8 +66,7 @@ namespace Bonkers.Lobby
         private static UnityTransport _cachedTransport;
         public static  Boolean        HasTransport   => _cachedTransport != null;
         public static  Boolean        HasNoTransport => !HasTransport;
-
-        public static UnityTransport Transport
+        public static UnityTransport  Transport
         {
             get
             {
@@ -81,47 +78,42 @@ namespace Bonkers.Lobby
 
                     if (_cachedTransport == null) { Debug.LogError(message: "No UnityTransport on the NetworkManager!"); }
                 }
-                else { Debug.LogError(message: "No NetworkManager in the scene!"); }
+                else
+                {
+                    Debug.LogError(message: "No NetworkManager in the scene!");
+                }
 
                 return _cachedTransport;
             }
         }
-
-        static GameLobby()
+        
+        [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static async void AfterSceneLoad()
         {
-            SceneManager.activeSceneChanged += ActiveSceneChanged;
-
-            //Check if in play mode
-            if (Application.isPlaying) { InitializeUnityAuthentication().Forget(); }
+            await Authenticate();
         }
 
-        private static async void ActiveSceneChanged(Scene oldScene, Scene newScene)
+        public static async UniTask Authenticate()
         {
-            Debug.Log(message: $"Active scene changed from {oldScene.name} to {newScene.name}");
+            if (UnityServices.State == ServicesInitializationState.Initialized) return;
+            
+            InitializationOptions __initializationOptions = new();
 
-            //Wait for 1 frame to ensure that the NetworkManager has been initialized
-            await UniTask.NextFrame();
+            #if UNITY_EDITOR
+            Bool __isClone = ClonesManager.IsClone();
+            
+            __initializationOptions.SetProfile(__isClone ? ClonesManager.GetArgument() : "Primary");
+            #endif
+            
+            Debug.Log(message: "Initializing Unity Services...");
+            await UnityServices.InitializeAsync(options: __initializationOptions);
 
-            await InitializeUnityAuthentication();
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+            Debug.Log(message: $"Signed in as {AuthenticationService.Instance.PlayerId}");
         }
 
-        public static async UniTask InitializeUnityAuthentication()
-        {
-            if (UnityServices.State != ServicesInitializationState.Initialized)
-            {
-                InitializationOptions __initializationOptions = new();
-
-                Debug.Log(message: "Initializing Unity Services...");
-
-                await UnityServices.InitializeAsync(options: __initializationOptions);
-
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-                Debug.Log(message: $"Signed in as {AuthenticationService.Instance.PlayerId}");
-            }
-        }
-
-        [Command]
+        [Command(aliasOverride: "host")]
         public static async void Host(String name, I32 teamSizes = 3)
         {
             try
@@ -129,9 +121,23 @@ namespace Bonkers.Lobby
                 I32 __maxConnections = teamSizes * 2;
                 
                 Allocation __hostAlloc = await RelayService.Instance.CreateAllocationAsync(maxConnections: __maxConnections);
-
                 JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocationId: __hostAlloc.AllocationId);
-
+                
+                CreateLobbyOptions __options = new()
+                {
+                    Data = new Dictionary<String, DataObject>
+                    {
+                        { 
+                            KEY_RELAY_JOIN_CODE, 
+                            new DataObject(visibility: Public, value: _joinCode) 
+                        },
+                    },
+                };
+                
+                Lobby __lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName: name, maxPlayers: __maxConnections, options: __options);
+                
+                // Start a heartbeat timer to keep the lobby alive. 
+                
                 Transport.SetHostRelayDataFromAlloc(alloc: __hostAlloc);
 
                 if (NetworkManager.Singleton.StartHost())
@@ -149,7 +155,7 @@ namespace Bonkers.Lobby
             }
         }
 
-        [Command]
+        [Command(aliasOverride: "join")]
         public static async void Join(String joinCode)
         {
             JoinAllocation __joinAlloc = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);
@@ -157,6 +163,47 @@ namespace Bonkers.Lobby
             Transport.SetClientRelayDataFromAlloc(alloc: __joinAlloc);
 
             NetworkManager.Singleton.StartClient();
+        }
+
+        [Command(aliasOverride: "quick-join")]
+        public static async UniTask<Lobby> QuickJoin()
+        {
+            try
+            {
+                // Attempt to join a lobby in progress
+                QuickJoinLobbyOptions __quickJoinOptions = new() 
+                { 
+                    Filter = new List<QueryFilter>
+                    {
+                        new (field: QueryFilter.FieldOptions.AvailableSlots, value: "0",     op: QueryFilter.OpOptions.GT),
+                        new (field: QueryFilter.FieldOptions.IsLocked,       value: "false", op: QueryFilter.OpOptions.EQ),
+                    }, 
+                };
+
+                Lobby __lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options: __quickJoinOptions);
+
+                if (__lobby == null)
+                {
+                    Debug.Log($"No lobbies found.");    
+                    return null;
+                }
+                
+                // If we found one grab the relay allocation details.
+                JoinAllocation __joinAlloc = await RelayService.Instance.JoinAllocationAsync(__lobby.Data[KEY_RELAY_JOIN_CODE].Value);
+                
+                //Set Transform As Client (a)
+                
+                Transport.SetClientRelayDataFromAlloc(alloc: __joinAlloc);
+                
+                NetworkManager.Singleton.StartClient();
+
+                return __lobby;
+            }
+            catch (Exception __exception)
+            {
+                Debug.Log($"<color=red>[Warning] no lobbies found. ({__exception.Message})</color>");
+                return null;
+            }
         }
 
         // [Command]
@@ -187,15 +234,16 @@ namespace Bonkers.Lobby
         //     }
         // }
 
-        [Command]
-        public static String JoinCode { [UsedImplicitly] get; private set; }
+        [Command(aliasOverride: "join-code")]
+        public static String JoinCode { get => _joinCode; set => _joinCode = value.ToUpper(); }
+        private static String _joinCode;
 
-        [Command]
+        [Command(aliasOverride: "leave")]
         public static void Leave() { }
 
         //TODO: Close server when everyone leaves.
 
-        [Command]
+        [Command(aliasOverride: "lobbies")]
         public static async void ListLobbies()
         {
             try
@@ -230,20 +278,20 @@ namespace Bonkers.Lobby
             catch (LobbyServiceException __e) { Debug.Log(message: __e); }
         }
 
-        [Command]
+        [Command(aliasOverride: "my-lobby")]
         public static Lobby MyLobby() => _joinedLobby;
 
         private static void HandleHeartbeat()
         {
             if (!IsLobbyHost) return;
-
+        
             _heartbeatTimer -= Time.deltaTime;
-
+        
             if (_heartbeatTimer > 0f) return;
-
+        
             const F32 HEARTBEAT_TIMER_MAX = 15f;
             _heartbeatTimer = HEARTBEAT_TIMER_MAX;
-
+        
             LobbyService.Instance.SendHeartbeatPingAsync(lobbyId: _joinedLobby.Id);
         }
 

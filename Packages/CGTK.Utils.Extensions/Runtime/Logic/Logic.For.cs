@@ -14,7 +14,7 @@ namespace CGTK.Utils.Extensions.Logic
 		public static partial class Logic
 		{
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static void For<T>(this IEnumerable<T> list, in Action action)
 			{
 				foreach (T __ in list)
@@ -24,7 +24,7 @@ namespace CGTK.Utils.Extensions.Logic
 			}
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static void ReverseFor<T>(this IList<T> list, in Action action)
 			{
 				for (Int32 __index = list.Count - 1; __index >= 0; __index--)
@@ -34,7 +34,7 @@ namespace CGTK.Utils.Extensions.Logic
 			}
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static void For1<T>(this IEnumerable<T> list, in Action action)
 			{
 				using IEnumerator<T> __enumerator = list.GetEnumerator();
@@ -47,22 +47,22 @@ namespace CGTK.Utils.Extensions.Logic
 
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static void For<T>(this IEnumerable<T> list, in Action<T> action)
 			{
 				foreach (T __element in list)
 				{
-					action(__element);
+					action(obj: __element);
 				}
 			}
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static void ReverseFor<T>(this IList<T> list, in Action<T> action)
 			{
 				for (Int32 __index = list.Count - 1; __index >= 0; __index--)
 				{
-					action(list[index: __index]);
+					action(obj: list[index: __index]);
 				}
 			}
 		}

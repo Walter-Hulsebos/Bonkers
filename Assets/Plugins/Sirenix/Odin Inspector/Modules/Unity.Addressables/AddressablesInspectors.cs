@@ -80,12 +80,13 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
     using UnityEditor.AddressableAssets.GUI;
     using UnityEngine;
     using UnityEngine.AddressableAssets;
+	using System.Runtime.Serialization;
 
-    /// <summary>
-    /// Draws an AssetReference property.
-    /// </summary>
-    /// <typeparam name="T">The concrete type of AssetReference to be drawn. For example, <c>AssetReferenceTexture</c>.</typeparam>
-    [DrawerPriority(0, 1, 0)]
+	/// <summary>
+	/// Draws an AssetReference property.
+	/// </summary>
+	/// <typeparam name="T">The concrete type of AssetReference to be drawn. For example, <c>AssetReferenceTexture</c>.</typeparam>
+	[DrawerPriority(0, 1, 0)]
     public class AssetReferenceDrawer<T> : OdinValueDrawer<T>, IDefinesGenericMenuItems
         where T: AssetReference
     {
@@ -206,7 +207,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                 }
 
                 // Ping
-                if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && mainRect.Contains(Event.current.mousePosition) && value.editorAsset != null)
+                if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && mainRect.Contains(Event.current.mousePosition) && value != null && value.editorAsset != null)
                 {
                     EditorGUIUtility.PingObject(value.editorAsset);
                 }
@@ -264,7 +265,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
 
         private void OpenMainAssetSelector(Rect rect)
         {
-            var selector = new AddressableSelector("Select", this.targetType, this.restrictions);
+            var selector = new AddressableSelector("Select", this.targetType, this.restrictions, typeof(T));
 
             selector.SelectionChanged += OnMainAssetSelect;
             selector.SelectionConfirmed += OnMainAssetSelect;
@@ -431,6 +432,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
         private readonly string title;
         private readonly Type filterType;
         private readonly List<AssetReferenceUIRestriction> restrictions;
+        private readonly AssetReference assetReferenceForValidating;
 
         public override string Title => this.title;
 
@@ -441,11 +443,25 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
         /// <param name="filterType">The type of UnityEngine.Object to be selectable. For example, UnityEngine.Texture. For no restriction, set to UnityEngine.Object.</param>
         /// <param name="labelRestrictions">The Addressable labels to restrict the selector to. Set to null for no label restrictions.</param>
         /// <exception cref="ArgumentNullException">Throws if the filter type is null.</exception>
-        public AddressableSelector(string title, Type filterType, List<AssetReferenceUIRestriction> restrictions)
+        public AddressableSelector(string title, Type filterType, List<AssetReferenceUIRestriction> restrictions, Type assetReferenceType)
         {
             this.title = title;
             this.filterType = filterType ?? throw new ArgumentNullException(nameof(filterType));
             this.restrictions = restrictions;
+
+            if (assetReferenceType != null)
+            {
+                if (assetReferenceType.InheritsFrom<AssetReference>() == false)
+                {
+                    throw new ArgumentException("Must inherit AssetReference", nameof(assetReferenceType));
+                }
+                else if (assetReferenceType.IsAbstract)
+                {
+                    throw new ArgumentException("Cannot be abstract type.", nameof(assetReferenceType));
+                }
+
+                this.assetReferenceForValidating = (AssetReference)FormatterServices.GetUninitializedObject(assetReferenceType);
+            }
         }
 
         protected override void DrawToolbar()
@@ -872,21 +888,18 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                 }
                 else if (from.InheritsFrom<UnityEngine.Object>())
                 {
-                    if (comparer.Equals(to, typeof(AssetReference)))
+                    if (to.InheritsFrom(typeof(AssetReferenceT<>)))
+                    {
+						var baseType = to.GetGenericBaseType(typeof(AssetReferenceT<>));
+
+						var targetType = baseType.GetGenericArguments()[0];
+
+						return from.InheritsFrom(targetType);
+					}
+                    else
                     {
                         return true;
                     }
-
-                    var baseType = to.GetGenericBaseType(typeof(AssetReferenceT<>));
-
-                    if (baseType == null) // This should only happen if someone inherits from AssetReference instead of AssetReferenceT like a dummy.
-                    {
-                        return false;
-                    }
-
-                    var targetType = baseType.GetGenericArguments()[0];
-
-                    return from.InheritsFrom(targetType);
                 }
                 else if (from.InheritsFrom(typeof(AssetReference)))
                 {
@@ -927,19 +940,14 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
             if (to.InheritsFrom(typeof(AssetReference)))
             {
                 Type assetType;
-                if (comparer.Equals(to, typeof(AssetReference)))
+				if (to.InheritsFrom(typeof(AssetReferenceT<>)))
+				{
+					var baseType = to.GetGenericBaseType(typeof(AssetReferenceT<>));
+					assetType = baseType.GetGenericArguments()[0];
+				}
+				else
                 {
                     assetType = typeof(UnityEngine.Object);
-                }
-                else if (to.InheritsFrom(typeof(AssetReferenceT<>)))
-                {
-                    var baseType = to.GetGenericBaseType(typeof(AssetReferenceT<>));
-                    assetType = baseType.GetGenericArguments()[0];
-                }
-                else
-                {
-                    result = null;
-                    return false;
                 }
 
                 if (obj is UnityEngine.Object uObj)
@@ -1170,23 +1178,15 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
         {
             if (assetReferenceType == null) throw new ArgumentNullException(nameof(assetReferenceType));
 
-            if (assetReferenceType == typeof(AssetReference))
+			if (assetReferenceType.InheritsFrom(typeof(AssetReferenceT<>)))
             {
-                return typeof(UnityEngine.Object);
-            }
+			    var genericBase = assetReferenceType.GetGenericBaseType(typeof(AssetReferenceT<>));
+				return genericBase.GetGenericArguments()[0];
+			}
             else
-            {
-                var genericBase = assetReferenceType.GetGenericBaseType(typeof(AssetReferenceT<>));
-
-                if (genericBase == null)
-                {
-                    throw new ArgumentException("Type must inherit from AssetReference", nameof(assetReferenceType));
-                }
-                else
-                {
-                    return genericBase.GetGenericArguments()[0];
-                }
-            }
+			{
+				return typeof(UnityEngine.Object);
+			}
         }
 
         /// <summary>

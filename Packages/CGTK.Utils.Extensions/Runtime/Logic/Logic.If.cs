@@ -13,7 +13,7 @@ namespace CGTK.Utils.Extensions.Logic
 		public static partial class Logic
 		{
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static void If(this Boolean statement, in Action action)
 			{
 				if (statement)

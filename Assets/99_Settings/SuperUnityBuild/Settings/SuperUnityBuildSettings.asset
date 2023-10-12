@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6380410002086609193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2786f6b2301a94f4288672ff5305244c, type: 3}
+  m_Name: PC
+  m_EditorClassIdentifier: 
+  enabled: 1
+  distributionList:
+    distributions: []
+  architectures:
+  - target: 5
+    name: Windows x86
+    enabled: 1
+    binaryNameFormat: '{0}.exe'
+  - target: 19
+    name: Windows x64
+    enabled: 0
+    binaryNameFormat: '{0}.exe'
+  variants:
+  - variantName: Build Output
+    selectedIndex: 0
+    values:
+    - App
+    - Visual Studio Solution
+    isFlag: 0
+  scriptingBackends:
+  - scriptingImplementation: 0
+    name: Mono
+    enabled: 1
+  - scriptingImplementation: 1
+    name: IL2CPP
+    enabled: 0
+  platformName: PC
+  targetGroup: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5886119a5c7b34d8872ab527ca3e1b, type: 3}
+  m_Name: SuperUnityBuildSettings
+  m_EditorClassIdentifier: 
+  _basicSettings:
+    baseBuildFolder: Builds
+    buildPath: $VERSION/$RELEASE_TYPE/$PLATFORM/$ARCHITECTURE/$SCRIPTING_BACKEND
+    openFolderPostBuild: 1
+    constantsFileLocation: Assets\99_Settings\SuperUnityBuild
+  _productParameters:
+    buildCounter: 2
+    buildVersion: 0.0.0.2
+    versionTemplate: 0.0.0.$BUILD
+    autoGenerate: 1
+    syncWithPlayerSettings: 0
+  _releaseTypeList:
+    releaseTypes:
+    - typeName: Indev
+      bundleIdentifier: com.common-games.bonkers
+      companyName: Common-Games
+      productName: Bonkers
+      syncAppNameWithProduct: 1
+      appBuildName: Bonkers
+      buildOptions: 536870912
+      customDefines: 
+      sceneList:
+        releaseScenes:
+        - fileGUID: 92df5b71179442d4392a8a7532385994
+          sceneActive: 0
+        - fileGUID: 49c21577d8fcba049bf2f94ab33e2dc2
+          sceneActive: 1
+  _platformList:
+    platforms:
+    - {fileID: -6380410002086609193}
+  _projectConfigurations:
+    configSet:
+      _Buckets: 00000000010000000200000003000000ffffffffffffffffffffffff
+      _HashCodes: 24a2a676ea0cba7538cc3d7244181057000000000000000000000000
+      _Next: ffffffffffffffffffffffffffffffff000000000000000000000000
+      _Count: 4
+      _Version: 4
+      _FreeList: -1
+      _FreeCount: 0
+      _Keys:
+      - Indev/PC/Windows x86 (App)/Mono
+      - Indev/PC/Windows x86 (App)
+      - Indev/PC
+      - Indev
+      - 
+      - 
+      - 
+      _Values:
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - Indev/PC/Windows x86 (App)/Mono
+      - enabled: 1
+        childKeys:
+        - Indev/PC/Windows x86 (App)
+      - enabled: 1
+        childKeys:
+        - Indev/PC
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+    showViewOptions: 0
+    showConfigs: 0
+    showBuildInfo: 0
+    hideDisabled: 0
+    treeView: 0
+    selectedKeyChain: 
+  _preBuildActions:
+    buildActions: []
+  _postBuildActions:
+    buildActions: []

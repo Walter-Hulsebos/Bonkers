@@ -13,12 +13,12 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 		public static partial class Trigonometry
 		{
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 SqrDistance(in this Vector3 from, in Vector3 to)
 				=> (to - from).sqrMagnitude;
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 SqrDistance(this Transform from, in Transform to)
 				=> (to.position - from.position).sqrMagnitude;
 			
@@ -26,32 +26,32 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 			/// Faster than Vector3.Distance, exact same result.
 			/// </summary>
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 Distance(in this Vector3 from, in Vector3 to)
 				=> (to - from).magnitude;
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 Distance(this Transform from, in Transform to)
 				=> (to.position - from.position).magnitude;
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 AsDegrees(in this F32 angle)
 				=> (angle * Constants.Constants.RAD_TO_DEG);
 
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 AsRadians(in this F32 angle)
 				=> (angle * Constants.Constants.DEG_TO_RAD);
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 ToDegrees(ref this F32 angle)
 				=> (angle *= Constants.Constants.RAD_TO_DEG);
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 ToRadians(ref this F32 angle)
 				=> (angle *= Constants.Constants.DEG_TO_RAD);
 			
@@ -59,7 +59,7 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 			//TODO: Try to get these to work with Tuples and then as extesnion method.
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 GetAngle(in F32? opposite = null, in F32? adjacent = null, in F32? hypotenuse = null)
 			{
 				Boolean __hasOpposite   = (opposite != null);
@@ -68,17 +68,17 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 
 				if (__hasOpposite && __hasHypotenuse)
 				{
-					return Asin(opposite / hypotenuse).ClampNeg1To1();
+					return Asin(value: opposite / hypotenuse).ClampNeg1To1();
 				}
 
 				if (__hasAdjacent && __hasHypotenuse)
 				{
-					return Acos(adjacent / hypotenuse).ClampNeg1To1();
+					return Acos(value: adjacent / hypotenuse).ClampNeg1To1();
 				}
 
 				if (__hasOpposite && __hasAdjacent)
 				{
-					return Atan(opposite / adjacent);
+					return Atan(value: opposite / adjacent);
 				}
 				
 				//TODO: Error
@@ -87,7 +87,7 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 
 			//done
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 GetHypotenuse(in F32? opposite = null, in F32? adjacent = null, in F32? angle = null)
 			{
 				Boolean __hasOpposite = (opposite != null);
@@ -96,17 +96,17 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 
 				if (__hasOpposite && __hasAdjacent)
 				{
-					return Sqrt(adjacent.Squared() + opposite.Squared());
+					return Sqrt(value: adjacent.Squared() + opposite.Squared());
 				}
 				
 				if (__hasAngle && __hasAdjacent)
 				{
-					return (F32)(adjacent / Cos(angle));
+					return (F32)(adjacent / Cos(value: angle));
 				}
 
 				if (__hasAngle && __hasOpposite)
 				{
-					return (F32)(opposite / Sin(angle));
+					return (F32)(opposite / Sin(value: angle));
 				}
 
 
@@ -116,7 +116,7 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 			
 			//done
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 GetAdjacent(in F32? opposite = null, in F32? hypotenuse = null, in F32? angle = null)
 			{
 				Boolean __hasOpposite   = (opposite != null);
@@ -134,12 +134,12 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 				
 				if (__hasAngle && __hasOpposite)
 				{
-					return (F32)(opposite / Tan(angle));
+					return (F32)(opposite / Tan(value: angle));
 				}
 
 				if (__hasAngle && __hasHypotenuse)
 				{
-					return (F32)(Cos(angle) * hypotenuse);
+					return (F32)(Cos(value: angle) * hypotenuse);
 				}
 
 				//TODO: Error
@@ -147,7 +147,7 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 			}
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32 GetOpposite(in F32? adjacent = null, in F32? hypotenuse = null, in F32? angle = null)
 			{
 				Boolean __hasAdjacent   = (adjacent != null);
@@ -156,17 +156,17 @@ namespace CGTK.Utils.Extensions.Math.Trigonometry
 
 				if (__hasAngle && __hasAdjacent)
 				{
-					return (F32)(Tan(angle) * adjacent);
+					return (F32)(Tan(value: angle) * adjacent);
 				}
 
 				if (__hasAngle && __hasHypotenuse)
 				{
-					return (F32)(Sin(angle) * hypotenuse);
+					return (F32)(Sin(value: angle) * hypotenuse);
 				}
 
 				if (__hasAdjacent && __hasHypotenuse)
 				{
-					return Sqrt(hypotenuse.Squared() - adjacent.Squared());
+					return Sqrt(value: hypotenuse.Squared() - adjacent.Squared());
 				}
 
 				//TODO: Error

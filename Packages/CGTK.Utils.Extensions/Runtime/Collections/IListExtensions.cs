@@ -20,73 +20,73 @@ namespace CGTK.Utils.Extensions.Collections
     {
         private static readonly Random DefaultRNG = new Random();
         
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static T RandomElement<T>(this IList<T> list, in Random RNG = null)
             => (list.Count == 0) ? default : list.ElementAt(index: (RNG ?? DefaultRNG).Next(maxValue: list.Count));
         
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static float2 ToFloat2(this IList<Single> value)
         {
             return new float2
             {
-                x = value[0],
-                y = value[1],
+                x = value[index: 0],
+                y = value[index: 1],
             };
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static float3 ToFloat3(this IList<Single> value)
         {
             return new float3
             {
-                x = value[0],
-                y = value[1],
-                z = value[2],
+                x = value[index: 0],
+                y = value[index: 1],
+                z = value[index: 2],
             };
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static float4 ToFloat4(this IList<Single> value)
         {
             return new float4
             {
-                x = value[0],
-                y = value[1],
-                z = value[2],
-                w = value[3],
+                x = value[index: 0],
+                y = value[index: 1],
+                z = value[index: 2],
+                w = value[index: 3],
             };
         }
         
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static int2 ToInt2(this IList<Int32> value)
         {
             return new int2
             {
-                x = value[0],
-                y = value[1],
+                x = value[index: 0],
+                y = value[index: 1],
             };
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static int3 ToInt3(this IList<Int32> value)
         {
             return new int3
             {
-                x = value[0],
-                y = value[1],
-                z = value[2],
+                x = value[index: 0],
+                y = value[index: 1],
+                z = value[index: 2],
             };
         }
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static int4 ToInt4(this IList<Int32> value)
         {
             return new int4
             {
-                x = value[0],
-                y = value[1],
-                z = value[2],
-                w = value[3],
+                x = value[index: 0],
+                y = value[index: 1],
+                z = value[index: 2],
+                w = value[index: 3],
             };
         }
         
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static quaternion ToQuaternion(this IList<Single> value)
         {
             return new quaternion
@@ -95,14 +95,14 @@ namespace CGTK.Utils.Extensions.Collections
             };
         }
         
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static IList<T> AddRangeUnique<T>(this IList<T> list, IEnumerable<T> collection)
         {
             foreach (T item in collection)
             {
-                if (!list.Contains(item))
+                if (!list.Contains(item: item))
                 {
-                    list.Add(item);
+                    list.Add(item: item);
                 }
             }
             

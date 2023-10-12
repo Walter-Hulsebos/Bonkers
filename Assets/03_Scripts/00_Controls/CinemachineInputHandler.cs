@@ -12,7 +12,7 @@
     // This class receives input from a PlayerInput component and dispatches it
     // to the appropriate Cinemachine InputAxis.
     // The playerInput component should be on the same GameObject, or specified in the PlayerInput field.
-    internal class CinemachineInputHandler : InputAxisControllerBase<CinemachineInputHandler.Reader>
+    public class CinemachineInputHandler : InputAxisControllerBase<CinemachineInputHandler.Reader>
     {
         [Header(header: "Input Source Override")]
         public PlayerInput playerInput;

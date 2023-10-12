@@ -16,7 +16,7 @@ namespace CGTK.Utils.Extensions.NetCode
     public static class UnityTransportExtensions
     {
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static void SetHostRelayDataFromAlloc(this UnityTransport transport, in Allocation alloc)
         {
             transport.SetHostRelayData
@@ -29,7 +29,7 @@ namespace CGTK.Utils.Extensions.NetCode
             );
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [MethodImpl(methodImplOptions: AggressiveInlining)]
         public static void SetClientRelayDataFromAlloc(this UnityTransport transport, in JoinAllocation alloc)
         {
             transport.SetClientRelayData

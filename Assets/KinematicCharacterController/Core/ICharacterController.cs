@@ -1,35 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace KinematicCharacterController
+﻿namespace KinematicCharacterController
 {
+
+    using UnityEngine;
+
+    using F32   = System.Single;
+    using F32x2 = Unity.Mathematics.float2;
+    using F32x3 = Unity.Mathematics.float3;
+    
+    using I32   = System.Int32;
+    using I32x2 = Unity.Mathematics.int2;
+    using I32x3 = Unity.Mathematics.int3;
+    
+    using Bln   = System.Boolean;
+    
+    using Rotor = Unity.Mathematics.quaternion;
+
+    
     public interface ICharacterController
     {
         /// <summary>
         /// This is called when the motor wants to know what its rotation should be right now
         /// </summary>
-        void UpdateRotation(ref Quaternion currentRotation, float deltaTime);
+        void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime);
         /// <summary>
         /// This is called when the motor wants to know what its velocity should be right now
         /// </summary>
-        void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime);
+        void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime);
         /// <summary>
         /// This is called before the motor does anything
         /// </summary>
-        void BeforeCharacterUpdate(float deltaTime);
+        void BeforeCharacterUpdate(F32 deltaTime);
         /// <summary>
         /// This is called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling
         /// </summary>
-        void PostGroundingUpdate(float deltaTime);
+        void PostGroundingUpdate(F32 deltaTime);
         /// <summary>
         /// This is called after the motor has finished everything in its update
         /// </summary>
-        void AfterCharacterUpdate(float deltaTime);
+        void AfterCharacterUpdate(F32 deltaTime);
         /// <summary>
         /// This is called after when the motor wants to know if the collider can be collided with (or if we just go through it)
         /// </summary>
-        bool IsColliderValidForCollisions(Collider coll);
+        Bln IsColliderValidForCollisions(Collider coll);
         /// <summary>
         /// This is called when the motor's ground probing detects a ground hit
         /// </summary>
