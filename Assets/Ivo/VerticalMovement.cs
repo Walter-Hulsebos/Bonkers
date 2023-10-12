@@ -21,6 +21,7 @@ public class VerticalMovement : MonoBehaviour
         // Check if the object has reached the target Y coordinate.
         if ((isMovingUp && transform.position.y >= targetY) || (!isMovingUp && transform.position.y <= targetY))
         {
+            this.enabled =false;
             // Stop moving when the target Y is reached.
             transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
 
