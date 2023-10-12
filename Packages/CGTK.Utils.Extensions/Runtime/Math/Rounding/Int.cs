@@ -12,17 +12,17 @@ namespace CGTK.Utils.Extensions.Math.Rounding
 		public static partial class Rounding
 		{
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 ClosestPowerOfTwo(this I32 value)
 				=> Mathf.ClosestPowerOfTwo(value: value);
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 NextPowerOfTwo(this I32 value)
 				=> Mathf.NextPowerOfTwo(value: value);
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 PreviousPowerOfTwo(this I32 value)
 			{
 				if (value == 0) return 0;
@@ -36,15 +36,15 @@ namespace CGTK.Utils.Extensions.Math.Rounding
 			}
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 ToPowerOfTwo(this I32 value, Mode roundingMode)
 			{
 				return roundingMode switch
 				{
-					Mode.Nearest => ClosestPowerOfTwo(value),
-					Mode.Down    => PreviousPowerOfTwo(value),
-					Mode.Up      => NextPowerOfTwo(value),
-					_ => throw new ArgumentOutOfRangeException(nameof(roundingMode), roundingMode, null)
+					Mode.Nearest => ClosestPowerOfTwo(value: value),
+					Mode.Down    => PreviousPowerOfTwo(value: value),
+					Mode.Up      => NextPowerOfTwo(value: value),
+					_            => throw new ArgumentOutOfRangeException(paramName: nameof(roundingMode), actualValue: roundingMode, message: null)
 				};
 			}
 

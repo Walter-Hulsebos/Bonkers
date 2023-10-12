@@ -14,12 +14,12 @@ namespace CGTK.Utils.Extensions.Math.Interpolation
 		public static partial class Interpolation
 		{
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 Lerp(this I32 from, in I32 to, in F32 t)
 				=> Mathf.Lerp(a: from, b: to, t: t).RoundToInt();
 	
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 LerpUnclamped(this I32 from, in I32 to, in F32 t)
 				=> Mathf.LerpUnclamped(a: from, b: to, t: t).RoundToInt();
 	
@@ -29,7 +29,7 @@ namespace CGTK.Utils.Extensions.Math.Interpolation
 				//=> Mathf.InverseLerp(a: from, b: to, value: value);
 			
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32 LerpAngle(this I32 from, in I32 to, in F32 t)
 				=> Mathf.LerpAngle(a: from, b: to, t: t).RoundToInt();
 		}

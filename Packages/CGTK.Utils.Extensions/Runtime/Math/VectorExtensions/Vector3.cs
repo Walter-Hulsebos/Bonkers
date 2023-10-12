@@ -15,11 +15,11 @@ namespace CGTK.Utils.Extensions.Math.VectorExtensions
 			/// <param name="compareTo"></param>
 			/// <returns></returns>
 			[PublicAPI]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static Boolean Approx(in this Vector3 self, in Vector3 compareTo) 
-				=> (self.x.Approx(compareTo.x) && 
-					self.y.Approx(compareTo.y) && 
-					self.z.Approx(compareTo.z));
+				=> (self.x.Approx(compareTo: compareTo.x) && 
+					self.y.Approx(compareTo: compareTo.y) && 
+					self.z.Approx(compareTo: compareTo.z));
             
 		}
 	}

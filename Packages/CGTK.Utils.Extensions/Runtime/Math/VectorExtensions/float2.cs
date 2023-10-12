@@ -10,7 +10,7 @@ namespace CGTK.Utils.Extensions.Math.VectorExtensions
 	{
 		public static partial class VectorExtensions
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static F32[] ToArray(in this float2 self)
 				=> new F32[2]
 				{

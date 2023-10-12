@@ -11,10 +11,10 @@ namespace CGTK.Utils.Extensions.Math.VectorExtensions
         public static partial class VectorExtensions
         {
             [PublicAPI]
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
             public static Boolean Approx(in this Vector2 self, in Vector2 compareTo) 
-                => (self.x.Approx(compareTo.x) && 
-                    self.y.Approx(compareTo.y));
+                => (self.x.Approx(compareTo: compareTo.x) && 
+                    self.y.Approx(compareTo: compareTo.y));
 
         }
     }

@@ -11,7 +11,7 @@ namespace CGTK.Utils.Extensions.Math.VectorExtensions
 		
 		public static partial class VectorExtensions
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(methodImplOptions: MethodImplOptions.AggressiveInlining)]
 			public static I32[] ToArray(in this int3 self)
 				=> new I32[3]
 				{
