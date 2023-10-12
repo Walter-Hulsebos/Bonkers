@@ -1,6 +1,8 @@
 namespace Bonkers.Controls
 {
+    #if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
+    #endif
 
     using UnityEngine;
 

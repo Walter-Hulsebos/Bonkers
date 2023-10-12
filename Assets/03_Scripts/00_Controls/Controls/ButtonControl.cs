@@ -2,7 +2,9 @@ namespace Bonkers.Controls
 {
     using JetBrains.Annotations;
 
+    #if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
+    #endif
 
     using UnityEngine;
     using UnityEngine.InputSystem;
