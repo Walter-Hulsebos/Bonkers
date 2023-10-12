@@ -1,5 +1,45 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5610759192572712543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2786f6b2301a94f4288672ff5305244c, type: 3}
+  m_Name: PC
+  m_EditorClassIdentifier: 
+  enabled: 1
+  distributionList:
+    distributions: []
+  architectures:
+  - target: 5
+    name: Windows x86
+    enabled: 1
+    binaryNameFormat: '{0}.exe'
+  - target: 19
+    name: Windows x64
+    enabled: 0
+    binaryNameFormat: '{0}.exe'
+  variants:
+  - variantName: Build Output
+    selectedIndex: 0
+    values:
+    - App
+    - Visual Studio Solution
+    isFlag: 0
+  scriptingBackends:
+  - scriptingImplementation: 0
+    name: Mono
+    enabled: 1
+  - scriptingImplementation: 1
+    name: IL2CPP
+    enabled: 0
+  platformName: PC
+  targetGroup: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18,29 +58,55 @@ MonoBehaviour:
     openFolderPostBuild: 1
     constantsFileLocation: Assets\SuperUnityBuild
   _productParameters:
-    buildCounter: 0
-    buildVersion: 
+    buildCounter: 1
+    buildVersion: 1.0.0.1
     versionTemplate: 1.0.0.$BUILD
     autoGenerate: 1
     syncWithPlayerSettings: 0
   _releaseTypeList:
-    releaseTypes: []
+    releaseTypes:
+    - typeName: PC
+      bundleIdentifier: com.common-games.bonkers
+      companyName: Common-Games
+      productName: Bonkers
+      syncAppNameWithProduct: 1
+      appBuildName: Bonkers
+      buildOptions: 0
+      customDefines: 
+      sceneList:
+        releaseScenes: []
   _platformList:
-    platforms: []
+    platforms:
+    - {fileID: -5610759192572712543}
   _projectConfigurations:
     configSet:
-      _Buckets: ffffffffffffffffffffffff
-      _HashCodes: 000000000000000000000000
-      _Next: 000000000000000000000000
-      _Count: 0
-      _Version: 0
+      _Buckets: 0000000001000000ffffffffffffffff02000000ffffffff03000000
+      _HashCodes: 9996a24e153eb034c7f8cd22b35be80e000000000000000000000000
+      _Next: ffffffffffffffffffffffffffffffff000000000000000000000000
+      _Count: 4
+      _Version: 4
       _FreeList: -1
       _FreeCount: 0
       _Keys:
+      - PC/PC/Windows x86 (App)/Mono
+      - PC/PC/Windows x86 (App)
+      - PC/PC
+      - PC
       - 
       - 
       - 
       _Values:
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - PC/PC/Windows x86 (App)/Mono
+      - enabled: 1
+        childKeys:
+        - PC/PC/Windows x86 (App)
+      - enabled: 1
+        childKeys:
+        - PC/PC
       - enabled: 1
         childKeys: []
       - enabled: 1
