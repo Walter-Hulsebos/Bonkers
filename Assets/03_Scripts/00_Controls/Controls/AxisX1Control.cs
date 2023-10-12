@@ -4,7 +4,9 @@ namespace Bonkers.Controls
 
     using JetBrains.Annotations;
 
+    #if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
+    #endif
 
     using UnityEngine;
     using UnityEngine.InputSystem;
@@ -15,14 +17,20 @@ namespace Bonkers.Controls
     public sealed class AxisControl : MonoBehaviour, 
                                       ISettableControl<F32>
     {
+        #if ODIN_INSPECTOR
         [field:ReadOnly]
+        #endif
         [field:SerializeField] public F32 Value { get; internal set; }
         
+        #if ODIN_INSPECTOR
         [field:LabelText("Action")]
+        #endif
         [field:SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
         
+        #if ODIN_INSPECTOR
         [ShowIf(nameof(showPlayerInput))]
+        #endif
         [SerializeField] private PlayerInput playerInput = null;
         
         [HideInInspector]
@@ -47,6 +55,14 @@ namespace Bonkers.Controls
             this.GetPlayerInput(out playerInput);
         }
         #endif
+
+        private void Awake()
+        {
+            if(playerInput == null)
+            {
+                this.GetPlayerInput(out playerInput);
+            }
+        }
 
         private void OnEnable()
         {

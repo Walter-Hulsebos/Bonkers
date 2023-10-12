@@ -1,6 +1,8 @@
 namespace Bonkers.Controls
 {
+    #if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
+    #endif
 
     using UnityEngine;
 
@@ -10,9 +12,11 @@ namespace Bonkers.Controls
     public sealed class AxisX2Control : MonoBehaviour,
                                         IControl<F32x2>
     {
+        #if ODIN_INSPECTOR
         [BoxGroup("Value", showLabel: false)]
         [ReadOnly]
         [ShowInInspector]
+        #endif
         public F32x2 Value
         {
             get
@@ -26,12 +30,16 @@ namespace Bonkers.Controls
             }
         }
         
+        #if ODIN_INSPECTOR
         [LabelText("Axis (x)")]
         [InlineEditor]
+        #endif
         [SerializeField] private AxisControl axisX;
         
+        #if ODIN_INSPECTOR
         [LabelText("Axis (y)")]
         [InlineEditor]
+        #endif
         [SerializeField] private AxisControl axisY;
     }
 }
