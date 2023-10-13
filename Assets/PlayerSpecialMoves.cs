@@ -10,6 +10,7 @@ namespace Bonkers
 
         public GameObject mine;
         public GameObject pigeons;
+        public GameObject rats;
 
         public AnimatorController animatorController;
 
@@ -86,7 +87,8 @@ namespace Bonkers
             if (inputSpecial1 && inputRightshoulder && done == true || inputSpecial1 && inputToggleKB && done == true)
             {
                 Debug.Log("Special1 - both input1 and input2 pressed");
-
+                StartCoroutine(SpawnRats());
+                done = false;
             }
         }
 
@@ -119,6 +121,20 @@ namespace Bonkers
                 animatorController.handleSpecial3();
                 done = false;
             }
+        }
+
+        IEnumerator SpawnRats()
+        {
+            Instantiate(rats, transform.position + (transform.forward * 2), Quaternion.identity);
+            yield return new WaitForEndOfFrame();
+            Instantiate(rats, transform.position + (transform.forward * 2) + (transform.right * 1), Quaternion.identity);
+            yield return new WaitForEndOfFrame();
+            Instantiate(rats, transform.position + (transform.forward * 2) + (transform.right * -2), Quaternion.identity);
+            yield return new WaitForEndOfFrame();
+            Instantiate(rats, transform.position + (transform.forward * 1) + (transform.right * 0.5f), Quaternion.identity);
+            yield return new WaitForEndOfFrame();
+            Instantiate(rats, transform.position + (transform.forward * 1) + (transform.right * -0.5f), Quaternion.identity);
+            
         }
 
         void OnEnable()
