@@ -1,0 +1,2 @@
+# Dots Plus
+This package contains essentials needed to develop DOTS projects. It is built to be used as an extension for existing Unity builtin packages (etc. SIMD mathematics, Collections, Jobs and Burst compiler).
