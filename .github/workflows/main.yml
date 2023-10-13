@@ -70,14 +70,18 @@ jobs:
           args: zip -qq -r build/build-${{ matrix.targetPlatform }}.zip build/${{ matrix.targetPlatform }}
 
       - name: Upload Zip to GitHub Release
-        uses: svenstaro/upload-release-action@v2
+        uses: Shopify/upload-to-release@v1
+        #uses: svenstaro/upload-release-action@v2
         #if: github.event.action == 'published' && matrix.targetPlatform == 'StandaloneWindows64'
         with:
-          asset_name: build-${{ matrix.targetPlatform }}.zip
-          file: build/build-${{ matrix.targetPlatform }}.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: ${{ github.event.release.body }}
+          name: build-${{ matrix.targetPlatform }}.zip
+          path: build/build-${{ matrix.targetPlatform }}.zip
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        #   asset_name: build-${{ matrix.targetPlatform }}.zip
+        #   file: build/build-${{ matrix.targetPlatform }}.zip
+        #   tag: ${{ github.ref }}
+        #   overwrite: true
+        #   body: ${{ github.event.release.body }}
 
 #  tests:
 #    name: Unit Tests
