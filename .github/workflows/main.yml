@@ -70,7 +70,7 @@ jobs:
           args: zip -qq -r build/build-${{ matrix.targetPlatform }}.zip build/${{ matrix.targetPlatform }}
 
       - name: Upload Zip to GitHub Release
-        uses: Shopify/upload-to-release@v1
+        uses: Shopify/upload-to-release@v1.0.1
         #uses: svenstaro/upload-release-action@v2
         #if: github.event.action == 'published' && matrix.targetPlatform == 'StandaloneWindows64'
         with:
