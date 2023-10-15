@@ -10,6 +10,10 @@ namespace Bonkers
 
         GameObject player;
         Rigidbody rb;
+
+        public bool enemy;
+
+        public GameObject savedEnemy;
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -19,13 +23,27 @@ namespace Bonkers
         }
         void Update()
         {
-            rb.velocity = transform.forward * 3.5f; 
+            if (enemy == false)
+                rb.velocity = transform.forward * 4f;
+            else
+            if (enemy == true)
+                ChaseEnemy(savedEnemy);
         }
 
         IEnumerator Lifetime()
         {
             yield return new WaitForSeconds(4);
-            Destroy(gameObject);
+            Destroy(this.gameObject);
+        }
+
+        public void SavedEnemy(GameObject gameObject)
+        {
+            savedEnemy = gameObject;
+        }
+
+        public void ChaseEnemy(GameObject gameObject)
+        {
+            this.gameObject.transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, 0.02f);
         }
     }
 }

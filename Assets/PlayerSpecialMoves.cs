@@ -1,11 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Bonkers
 {
     public class PlayerSpecialMoves : MonoBehaviour
     {
+
+        private enum InSpecial
+        {
+            None,
+            Special
+        }
+        private InSpecial inSpecial;
+
         Controls.Controls input;
 
         public GameObject mine;
@@ -14,7 +23,9 @@ namespace Bonkers
 
         public AnimatorController animatorController;
 
-        bool done = true;
+        public bool doable = true;
+
+        bool recharging = true;
 
         bool inputSpecial1;
         bool inputSpecial2;
@@ -28,6 +39,8 @@ namespace Bonkers
         // Start is called before the first frame update
         void Awake()
         {
+            inSpecial = InSpecial.None;
+
             input = new Controls.Controls();
 
             input.Gameplay.Special1.performed += ctx => inputSpecial1 = ctx.ReadValueAsButton();
@@ -75,6 +88,30 @@ namespace Bonkers
             {
                 Debug.Log("input2 - RMB or R1 or right shoulder button pressed");
             }
+
+            switch (inSpecial)
+            {
+            case InSpecial.None:               
+                    break;
+            case InSpecial.Special:
+                    Debug.Log("DOABLE SHOULD BE FALSE");
+                    if (recharging)
+                    {
+                        StartCoroutine(ChangetoNone());
+                        recharging = false;
+                    }
+                    break;
+            }
+
+            if(inSpecial == InSpecial.Special)
+            {
+                doable = false;
+            }
+            else
+                if(inSpecial == InSpecial.None)
+            {
+                doable = true;
+            }
         }
 
         void handleSpecial1()
@@ -84,11 +121,11 @@ namespace Bonkers
                 Debug.Log("input1 - LMB (for special 1) or square or X button pressed");
             }
 
-            if (inputSpecial1 && inputRightshoulder && done == true || inputSpecial1 && inputToggleKB && done == true)
+            if (inputSpecial1 && inputRightshoulder && doable == true || inputSpecial1 && inputToggleKB && doable == true)
             {
+                inSpecial = InSpecial.Special;
                 Debug.Log("Special1 - both input1 and input2 pressed");
                 StartCoroutine(SpawnRats());
-                done = false;
             }
         }
 
@@ -99,11 +136,11 @@ namespace Bonkers
                 Debug.Log("input1 - RMB (for special2) or triangle or Y button pressed");
             }
 
-            if(inputSpecial2 && inputRightshoulder && done == true || inputSpecial2 && inputToggleKB && done == true)
+            if(inputSpecial2 && inputRightshoulder && doable == true || inputSpecial2 && inputToggleKB && doable == true)
             {
+                inSpecial = InSpecial.Special;
                 Debug.Log("Special2 - both input1 and input2 pressed");
                 Instantiate(pigeons, transform.position+(transform.up * 2), Quaternion.identity);
-                done = false;
             }
         }
 
@@ -114,12 +151,12 @@ namespace Bonkers
                 Debug.Log("input1 - LMB (for spceial3)  or cirlce or B button pressed");
             }                      
 
-            if (inputSpecial3 && inputRightshoulder && done == true || inputSpecial3 && inputSpecialMouse && inputToggleKB && done == true)
+            if (inputSpecial3 && inputRightshoulder && doable == true || inputSpecial3 && inputSpecialMouse && inputToggleKB && doable == true)
             {
+                inSpecial = InSpecial.Special;
                 Debug.Log("Special3 - both input1 and input2 pressed");
                 Instantiate(mine, transform.position+(transform.forward*4), Quaternion.identity);
                 animatorController.handleSpecial3();
-                done = false;
             }
         }
 
@@ -136,6 +173,14 @@ namespace Bonkers
             Instantiate(rats, transform.position + (transform.forward * 1) + (transform.right * -0.5f), Quaternion.identity);
             
         }
+
+        IEnumerator ChangetoNone()
+        {
+            yield return new WaitForSeconds(2);
+            recharging = true;
+            inSpecial = InSpecial.None;
+        }
+
 
         void OnEnable()
         {
