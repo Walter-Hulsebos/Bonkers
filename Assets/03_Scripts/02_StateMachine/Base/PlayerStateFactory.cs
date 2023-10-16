@@ -1,6 +1,6 @@
 public class PlayerStateFactory
 {
-    PlayerStateMachine context;
+    private PlayerStateMachine context;
 
     public PlayerStateFactory(PlayerStateMachine currentContext)
     {
@@ -15,10 +15,10 @@ public class PlayerStateFactory
     {
         return new PlayerWalkState(context, this);
     }
-    public PlayerBaseState Run() 
-    {
-        return new PlayerRunState(context, this);
-    }
+    // public PlayerBaseState Run() 
+    // {
+    //     return new PlayerRunState(context, this);
+    // }
     public PlayerBaseState Jump() 
     {
         return new PlayerJumpState(context, this);

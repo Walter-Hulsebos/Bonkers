@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public abstract class PlayerBaseState
 {
     private bool isRootState = false;
@@ -28,6 +30,11 @@ public abstract class PlayerBaseState
         {
             currentSubState.UpdateStates();
         }
+    }
+
+    public virtual void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
+    {
+        
     }
 
     protected void SwitchState(PlayerBaseState newState)

@@ -22,18 +22,18 @@ public class PlayerGroundedState : PlayerBaseState
     public override void ExitState() { }
     public override void InitialSubState() 
     {
-        if (!Ctx.IsMovementPressed && !Ctx.IsRunPressed)
+        if (!Ctx.IsMovementPressed) //&& !Ctx.IsRunPressed)
         {
             SetSubState(Factory.Idle());
         }
-        else if (Ctx.IsMovementPressed && !Ctx.IsRunPressed)
+        else //if (Ctx.IsMovementPressed && !Ctx.IsRunPressed)
         {
             SetSubState(Factory.Walk());
         }
-        else
-        {
-            SetSubState(Factory.Run());
-        }
+        // else
+        // {
+        //     SetSubState(Factory.Run());
+        // }
     }
     public override void CheckSwitchStates() 
     {
