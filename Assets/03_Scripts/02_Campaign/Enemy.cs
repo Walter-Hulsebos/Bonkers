@@ -7,12 +7,13 @@ namespace Bonkers
 {
     public class Enemy : MonoBehaviour
     {
-        private float currentHealth;
+        [SerializeField] private float currentHealth;
         [Header("Variables")]
         [SerializeField] private float maxHealth;
         public GameObject[] locations;
         public NavMeshAgent enemyAgent;
         public states state;
+        private Timer attackCooldown;
 
         public float distance = 10;
         public float angle = 30;
@@ -38,6 +39,7 @@ namespace Bonkers
         // Start is called before the first frame update
         public virtual void Start()
         {
+            attackCooldown = new Timer();
             currentHealth = maxHealth;
 
 
@@ -141,7 +143,7 @@ namespace Bonkers
             if (mesh)
             {
                 Gizmos.color = meshColor;
-                Gizmos.DrawMesh(mesh,  transform.position, transform.rotation);
+                Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
             }
 
             Gizmos.DrawWireSphere(transform.position, distance);
@@ -187,7 +189,6 @@ namespace Bonkers
                 {
                     objects.Add(obj);
                     state = states.Attacking;
-                    print("Target in sight.");
                 }
             }
 
@@ -204,8 +205,19 @@ namespace Bonkers
                     state = states.Wandering;
                 }
             }
+
             Scan();
             MoveAI();
+
+            if (!attackCooldown.isActive)
+            {
+                attackCooldown.SetTimer(1);
+            }
+
+            if (attackCooldown.isActive && attackCooldown.TimerDone())
+            {
+                attackCooldown.RestartTimer();
+            }
         }
 
         public void MoveAI()
@@ -238,6 +250,14 @@ namespace Bonkers
                             if (CheckIfValidVision(transform.position, objects[i].transform.position))
                             {
                                 enemyAgent.SetDestination(objects[i].transform.position);
+
+                                if (Vector3.Distance(objects[i].transform.position, gameObject.transform.position) <= 5)
+                                {
+                                    if (attackCooldown.isActive && attackCooldown.TimerDone())
+                                    {
+                                        objects[i].transform.GetComponent<CampaignPlayer>().SetCurrentHealth(1, Operator.SUBSTRACT);
+                                    }
+                                }
                             }
                         }
                     }
@@ -264,6 +284,16 @@ namespace Bonkers
         public void TakeDamage(float value)
         {
             SetCurrentHealth(currentHealth -= value);
+            if (GetCurrentHealth() <= 0)
+            {
+                Die();
+            }
+            print("Enemy took damage");
+        }
+
+        public void Die() 
+        {
+            Destroy(gameObject);
         }
 
         public void SetCurrentHealth(float value)

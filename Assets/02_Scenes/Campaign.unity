@@ -704,6 +704,7 @@ GameObject:
   - component: {fileID: 6615662580611611649}
   - component: {fileID: 6615662580611611648}
   - component: {fileID: 6615662580611611647}
+  - component: {fileID: 6615662580611611653}
   m_Layer: 7
   m_Name: ExampleCharacter
   m_TagString: Player
@@ -727,7 +728,7 @@ GameObject:
   - component: {fileID: 177886342}
   m_Layer: 0
   m_Name: EnemyGoon
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -832,7 +833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0f9e8ea8823684f8c8fbbe95aaa666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  currentHealth: 0
+  maxHealth: 1
   locations:
   - {fileID: 1307211983}
   - {fileID: 1187095134}
@@ -2184,9 +2186,10 @@ GameObject:
   - component: {fileID: 352167136}
   - component: {fileID: 352167135}
   - component: {fileID: 352167134}
+  - component: {fileID: 352167138}
   m_Layer: 0
   m_Name: PlaceHolderCrate
-  m_TagString: Untagged
+  m_TagString: Crate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2277,6 +2280,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 461343962}
   m_LocalEulerAnglesHint: {x: 0, y: 30, z: 0}
+--- !u!114 &352167138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352167133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 819ac1599df0fd24b8c88afbe1491a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &357833904
 GameObject:
   m_ObjectHideFlags: 0
@@ -2605,9 +2620,10 @@ GameObject:
   - component: {fileID: 426660807}
   - component: {fileID: 426660806}
   - component: {fileID: 426660805}
+  - component: {fileID: 426660809}
   m_Layer: 0
   m_Name: PlaceHolderCrate.01
-  m_TagString: Untagged
+  m_TagString: Crate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2698,6 +2714,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 461343962}
   m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
+--- !u!114 &426660809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426660804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 819ac1599df0fd24b8c88afbe1491a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &461343961
 GameObject:
   m_ObjectHideFlags: 0
@@ -3342,7 +3370,7 @@ GameObject:
   - component: {fileID: 632883724}
   m_Layer: 0
   m_Name: EnemyGoon.02
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3447,7 +3475,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0f9e8ea8823684f8c8fbbe95aaa666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  currentHealth: 0
+  maxHealth: 1
   locations:
   - {fileID: 324110630}
   - {fileID: 2071890665}
@@ -3732,6 +3761,124 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &711522588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711522589}
+  - component: {fileID: 711522592}
+  - component: {fileID: 711522591}
+  - component: {fileID: 711522590}
+  - component: {fileID: 711522593}
+  m_Layer: 7
+  m_Name: Player_Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &711522589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711522588}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.195, z: 1.351}
+  m_LocalScale: {x: 1.7927, y: 1.5820335, z: 0.39154428}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6615662580611611652}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &711522590
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711522588}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &711522591
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711522588}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &711522592
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711522588}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &711522593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711522588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f17d0527f2b9c940be14c2f17d141c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &746415885
 GameObject:
   m_ObjectHideFlags: 0
@@ -4143,9 +4290,10 @@ GameObject:
   - component: {fileID: 843262383}
   - component: {fileID: 843262382}
   - component: {fileID: 843262381}
+  - component: {fileID: 843262384}
   m_Layer: 0
   m_Name: PlaceHolderCrate.02
-  m_TagString: Untagged
+  m_TagString: Crate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4236,6 +4384,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 843262379}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &843262384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843262379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 819ac1599df0fd24b8c88afbe1491a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &908863581
 GameObject:
   m_ObjectHideFlags: 0
@@ -4810,6 +4970,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f6e9f815-a080-4c7a-8655-bfe3cc55a8ea
     m_ActionName: Campaign/ToNextScene[/Keyboard/p]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 711522593}
+        m_TargetAssemblyTypeName: Bonkers.PlayerHitBox, Assembly-CSharp
+        m_MethodName: OnReceiveInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: bd903dbc-c860-4d05-ab4b-0a3c1f6c057d
+    m_ActionName: Campaign/Attack[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: CampaignDefault
   m_DefaultActionMap: Campaign
@@ -7841,7 +8017,7 @@ GameObject:
   - component: {fileID: 1725432641}
   m_Layer: 0
   m_Name: EnemyGoon.03
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7946,7 +8122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0f9e8ea8823684f8c8fbbe95aaa666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  currentHealth: 0
+  maxHealth: 1
   locations:
   - {fileID: 2116470590}
   - {fileID: 357833904}
@@ -8207,7 +8384,7 @@ GameObject:
   - component: {fileID: 1750948111}
   m_Layer: 0
   m_Name: EnemyGoon.01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8312,7 +8489,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0f9e8ea8823684f8c8fbbe95aaa666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  currentHealth: 0
+  maxHealth: 1
   locations:
   - {fileID: 1801172815}
   - {fileID: 2054857433}
@@ -8959,7 +9137,7 @@ GameObject:
   - component: {fileID: 1878456523}
   m_Layer: 0
   m_Name: EnemyBoss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9779,9 +9957,10 @@ GameObject:
   - component: {fileID: 2069635474}
   - component: {fileID: 2069635473}
   - component: {fileID: 2069635472}
+  - component: {fileID: 2069635475}
   m_Layer: 0
   m_Name: PlaceHolderCrate.03
-  m_TagString: Untagged
+  m_TagString: Crate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9872,6 +10051,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2069635470}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2069635475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069635470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 819ac1599df0fd24b8c88afbe1491a62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2071890665
 GameObject:
   m_ObjectHideFlags: 0
@@ -10438,7 +10629,7 @@ MonoBehaviour:
   LedgeAndDenivelationHandling: 1
   MaxStableDistanceFromLedge: 0.5
   MaxVelocityForLedgeSnap: 0
-  MaxStableDenivelationAngle: 180
+  MaxStableDenivelationAngle: 31.9
   InteractiveRigidbodyHandling: 1
   RigidbodyInteractionType: 1
   SimulatedCharacterMass: 1
@@ -10521,8 +10712,23 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 600232757}
+  - {fileID: 711522589}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &6615662580611611653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167094340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaeb27f069b360e4baedbf59fd7691b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
