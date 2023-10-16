@@ -3,25 +3,20 @@ using UnityEngine;
 
 using static UnityEngine.Mathf;
 
-public class PlayerWalkState : PlayerBaseState
+public sealed class PlayerWalkState : PlayerBaseState
 {
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base (currentContext, playerStateFactory) { }
     public override void EnterState() 
     {
         Ctx.Animator.SetBool(Ctx.IsWalkingHash, true);
-        //Ctx.Animator.SetBool(Ctx.IsRunningHash, false);
-    }
-    public override void ExitState() { }
-    
-    public override void UpdateState() 
-    {
-        CheckSwitchStates();
-        
-        // Ctx.AppliedMovementX = Ctx.CurrentMovementInput.x * Ctx.moveGroundMaxSpeed;
-        // Ctx.AppliedMovementZ = Ctx.CurrentMovementInput.y * Ctx.moveGroundMaxSpeed;
     }
 
-    public override void UpdateVelocity(ref Vector3 currentVelocity, Single deltaTime)
+    public override void ExitState()
+    {
+        Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
+    }
+    
+    public override void UpdateState(ref Vector3 currentVelocity, Single deltaTime)
     {
         // Reorient source velocity on current ground slope (this is because we don't want our smoothing to cause any velocity losses in slope changes)
         currentVelocity = Ctx.Motor.GetDirectionTangentToSurface(direction: currentVelocity, surfaceNormal: Ctx.Motor.GroundingStatus.GroundNormal) * currentVelocity.magnitude;
@@ -35,17 +30,12 @@ public class PlayerWalkState : PlayerBaseState
         currentVelocity = Vector3.Lerp(a: currentVelocity, b: __targetMovementVelocity, t: 1f - Exp(power: -Ctx.moveGroundSharpness * deltaTime));
     }
 
-
     public override void InitialSubState() { }
     public override void CheckSwitchStates() 
     {
-        if (!Ctx.IsMovementPressed)
-        {
-            SwitchState(Factory.Idle());
-        }
-        // else if (Ctx.IsMovementPressed && Ctx.IsRunPressed)
+        // if (!Ctx.IsMovementPressed)
         // {
-        //     SwitchState(Factory.Run());
+        //     SwitchState(Factory.Idle());
         // }
     }
 }

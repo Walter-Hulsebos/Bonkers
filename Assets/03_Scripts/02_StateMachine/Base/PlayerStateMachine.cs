@@ -85,10 +85,12 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
     public Animator Animator { get { return Anims; } }
     //public CharacterController Motor { get { return motor; } }
     public I32 IsJumpingHash { get { return isJumpingHash; } }
+    public I32 IsIdleHash    { get { return isWalkingHash; } }
     public I32 IsWalkingHash { get { return isWalkingHash; } }
-    //public I32 IsRunningHash { get { return isRunningHash; } }
+    
     public Bool RequireNewJumpPress {get { return requireNewJumpPress; } set {requireNewJumpPress = value; } }
     public Bool IsJumping { set {isJumping = value; } }
+    public Bool IsFalling => (Motor.BaseVelocity.y < 0.0f) && !Motor.GroundingStatus.IsStableOnGround;
     public Bool IsJumpPressed {  get { return isJumpPressed; } }
     public Bool IsMovementPressed { get { return isMovementPressed; } }
     //public Bool IsRunPressed { get { return isRunPressed; } }
@@ -161,7 +163,7 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
     {
         UpdateInputs();
         //HandleRotation();
-        currentState.UpdateStates();
+        //currentState.UpdateStates();
         
         //Motor.MoveCharacter(toPosition: appliedMovement * Time.deltaTime);
         //motor.Move(appliedMovement * Time.deltaTime);
@@ -198,12 +200,10 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
         //currentMovementInput = context.ReadValue<Vector2>();
         currentMovementInput = getMoveInput.Invoke();
         
-        currentMovement.x    = currentMovementInput.x * MoveGroundMaxSpeed;
-        currentMovement.z    = currentMovementInput.y * MoveGroundMaxSpeed;
+        // currentMovement.x    = currentMovementInput.x * MoveGroundMaxSpeed;
+        // currentMovement.z    = currentMovementInput.y * MoveGroundMaxSpeed;
         //currentRunMovement.x = currentMovementInput.x * RunMultiplier;
         //currentRunMovement.z = currentMovementInput.y * RunMultiplier;
-        
-        isMovementPressed = !currentMovementInput.x.IsZero() || !currentMovementInput.y.IsZero();
     }
 
     private void Jumping()
@@ -234,7 +234,10 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
         // This is called when the motor wants to know what its rotation should be right now
     }
 
-    public void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime) => currentState.UpdateVelocity(ref currentVelocity, deltaTime);
+    public void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
+    {
+        currentState.UpdateStates(ref currentVelocity, deltaTime);
+    }
 
     // Vector3 __targetMovementVelocity = Vector3.zero;
     // // This is called when the motor wants to know what its velocity should be right now

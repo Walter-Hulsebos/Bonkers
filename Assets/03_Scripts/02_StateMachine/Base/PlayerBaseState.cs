@@ -19,22 +19,18 @@ public abstract class PlayerBaseState
     }
 
     public abstract void EnterState();
-    public abstract void UpdateState();
+    public abstract void UpdateState(ref Vector3 currentVelocity, float deltaTime);
     public abstract void ExitState();
     public abstract void CheckSwitchStates();
     public abstract void InitialSubState();
-    public void UpdateStates() 
+    public void UpdateStates(ref Vector3 currentVelocity, float deltaTime) 
     {
-        UpdateState();
+        CheckSwitchStates();
+        UpdateState(ref currentVelocity, deltaTime);
         if(currentSubState != null)
         {
-            currentSubState.UpdateStates();
+            currentSubState.UpdateStates(ref currentVelocity, deltaTime);
         }
-    }
-
-    public virtual void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
-    {
-        
     }
 
     protected void SwitchState(PlayerBaseState newState)
