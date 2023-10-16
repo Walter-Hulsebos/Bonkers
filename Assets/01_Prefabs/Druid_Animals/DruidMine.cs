@@ -6,7 +6,7 @@ namespace Bonkers
 {
     public class DruidMine : MonoBehaviour
     {
-        public GameObject skelly;
+        public GameObject squirrel;
         Animator animator;
         private void Awake()
         {
@@ -24,11 +24,10 @@ namespace Bonkers
 
         IEnumerator GoCrazy()
         {
-            Instantiate(skelly, transform.position, Quaternion.identity);
+            Instantiate(squirrel, transform.position, Quaternion.identity);
             StopAllCoroutines();
             Destroy(gameObject);
             yield return null;
         }
-
     }
 }
