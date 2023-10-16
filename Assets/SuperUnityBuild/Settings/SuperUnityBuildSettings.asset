@@ -56,16 +56,16 @@ MonoBehaviour:
     baseBuildFolder: Builds
     buildPath: $VERSION/$RELEASE_TYPE/$PLATFORM/$ARCHITECTURE/$SCRIPTING_BACKEND
     openFolderPostBuild: 1
-    constantsFileLocation: Assets\SuperUnityBuild
+    constantsFileLocation: Assets\99_Setting\SuperUnityBuild
   _productParameters:
-    buildCounter: 1
-    buildVersion: 1.0.0.1
+    buildCounter: 8
+    buildVersion: 1.0.0.8
     versionTemplate: 1.0.0.$BUILD
     autoGenerate: 1
     syncWithPlayerSettings: 0
   _releaseTypeList:
     releaseTypes:
-    - typeName: PC
+    - typeName: Bonkers
       bundleIdentifier: com.common-games.bonkers
       companyName: Common-Games
       productName: Bonkers
@@ -74,24 +74,28 @@ MonoBehaviour:
       buildOptions: 0
       customDefines: 
       sceneList:
-        releaseScenes: []
+        releaseScenes:
+        - fileGUID: 92df5b71179442d4392a8a7532385994
+          sceneActive: 0
+        - fileGUID: 49c21577d8fcba049bf2f94ab33e2dc2
+          sceneActive: 1
   _platformList:
     platforms:
     - {fileID: -5610759192572712543}
   _projectConfigurations:
     configSet:
-      _Buckets: 0000000001000000ffffffffffffffff02000000ffffffff03000000
-      _HashCodes: 9996a24e153eb034c7f8cd22b35be80e000000000000000000000000
-      _Next: ffffffffffffffffffffffffffffffff000000000000000000000000
+      _Buckets: 02000000ffffffff03000000ffffffffffffffffffffffff00000000
+      _HashCodes: 5a8af47a8ca18b35ca96417d3ef55c6a000000000000000000000000
+      _Next: ffffffffffffffffffffffff01000000000000000000000000000000
       _Count: 4
       _Version: 4
       _FreeList: -1
       _FreeCount: 0
       _Keys:
-      - PC/PC/Windows x86 (App)/Mono
-      - PC/PC/Windows x86 (App)
-      - PC/PC
-      - PC
+      - Bonkers/PC/Windows x86 (App)/Mono
+      - Bonkers/PC/Windows x86 (App)
+      - Bonkers/PC
+      - Bonkers
       - 
       - 
       - 
@@ -100,13 +104,13 @@ MonoBehaviour:
         childKeys: []
       - enabled: 1
         childKeys:
-        - PC/PC/Windows x86 (App)/Mono
+        - Bonkers/PC/Windows x86 (App)/Mono
       - enabled: 1
         childKeys:
-        - PC/PC/Windows x86 (App)
+        - Bonkers/PC/Windows x86 (App)
       - enabled: 1
         childKeys:
-        - PC/PC
+        - Bonkers/PC
       - enabled: 1
         childKeys: []
       - enabled: 1
