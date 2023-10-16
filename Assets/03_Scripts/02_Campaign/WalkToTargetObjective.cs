@@ -9,7 +9,6 @@ namespace Bonkers
         public override void CheckifHappening()
         {
             float distance = Vector3.Distance(CampaignManager.instance.GetPlayer().transform.position, gameObject.transform.position);
-            print(distance);
             if (distance < 1.5)
             {
                 CampaignManager.GetCampaignManager<ObjectiveManager>().CompletedObjective();

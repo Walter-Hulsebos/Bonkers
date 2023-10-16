@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "bd903dbc-c860-4d05-ab4b-0a3c1f6c057d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -64,6 +73,17 @@
                     "processors": "",
                     "groups": "CampaignDefault",
                     "action": "ToNextScene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d70079a1-5ff3-49bb-b7d4-af702ae2eba4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Tap(duration=0.2,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "CampaignDefault",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
