@@ -1,3 +1,5 @@
+using Bonkers.Characters;
+using Bonkers.Lobby;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,6 +19,8 @@ namespace Bonkers
 
         Controls.Controls input;
 
+        PlayerCharacter playerInput;
+
         public GameObject mine;
         public GameObject pigeons;
         public GameObject rats;
@@ -32,13 +36,15 @@ namespace Bonkers
         bool inputSpecial3;
         bool inputRightshoulder;
         bool inputToggleKB;
-        bool inputSpecialMouse;
+        bool inputSpecialKeyboard;
 
         public GameObject player;
 
         // Start is called before the first frame update
         void Awake()
         {
+           playerInput = GetComponent<PlayerCharacter>();
+
             inSpecial = InSpecial.None;
 
             input = new Controls.Controls();
@@ -51,7 +57,7 @@ namespace Bonkers
 
             input.Gameplay.SpecialsGamepad.performed += ctx => inputRightshoulder = ctx.ReadValueAsButton();
 
-            input.Gameplay.SpecialMouse.performed += ctx => inputSpecialMouse = ctx.ReadValueAsButton();
+            input.Gameplay.SpecialKeyboard.performed += ctx => inputSpecialKeyboard = ctx.ReadValueAsButton();
 
             input.Gameplay.ToggleSpecialKB.performed += ctx =>
             {
@@ -69,7 +75,7 @@ namespace Bonkers
 
             input.Gameplay.SpecialsGamepad.canceled += ctx => inputRightshoulder = false;
 
-            input.Gameplay.SpecialMouse.canceled += ctx => inputSpecialMouse = false;
+            input.Gameplay.SpecialKeyboard.canceled += ctx => inputSpecialKeyboard = false;
         }
 
         // Update is called once per frame
@@ -84,7 +90,7 @@ namespace Bonkers
                 Debug.Log("Toggled Special moves");
             }
 
-            if (inputRightshoulder || inputSpecialMouse)
+            if (inputRightshoulder || inputSpecialKeyboard)
             {
                 Debug.Log("input2 - RMB or R1 or right shoulder button pressed");
             }
@@ -105,11 +111,16 @@ namespace Bonkers
 
             if(inSpecial == InSpecial.Special)
             {
+                // BUG if the player does a special while moving it wont trigger the animation and they will continue to move 
+                animatorController.enabled = false;
+                playerInput.enabled = false;
                 doable = false;
             }
             else
                 if(inSpecial == InSpecial.None)
             {
+                animatorController.enabled = true;
+                playerInput.enabled = true;
                 doable = true;
             }
         }
@@ -126,6 +137,7 @@ namespace Bonkers
                 inSpecial = InSpecial.Special;
                 Debug.Log("Special1 - both input1 and input2 pressed");
                 StartCoroutine(SpawnRats());
+                animatorController.animSpecial1();
             }
         }
 
@@ -141,6 +153,7 @@ namespace Bonkers
                 inSpecial = InSpecial.Special;
                 Debug.Log("Special2 - both input1 and input2 pressed");
                 Instantiate(pigeons, transform.position+(transform.up * 2), Quaternion.identity);
+                animatorController.animSpecial2();
             }
         }
 
@@ -151,12 +164,12 @@ namespace Bonkers
                 Debug.Log("input1 - LMB (for spceial3)  or cirlce or B button pressed");
             }                      
 
-            if (inputSpecial3 && inputRightshoulder && doable == true || inputSpecial3 && inputSpecialMouse && inputToggleKB && doable == true)
+            if (inputSpecial3 && inputRightshoulder && doable == true || inputSpecialKeyboard && inputToggleKB && doable == true)
             {
                 inSpecial = InSpecial.Special;
                 Debug.Log("Special3 - both input1 and input2 pressed");
                 Instantiate(mine, transform.position+(transform.forward*4), Quaternion.identity);
-                animatorController.handleSpecial3();
+                animatorController.animSpecial3();
             }
         }
 
