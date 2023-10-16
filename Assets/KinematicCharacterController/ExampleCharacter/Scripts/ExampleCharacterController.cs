@@ -286,7 +286,7 @@ namespace KinematicCharacterController.Examples
                     {
                         // Ground movement
                         if (Motor.GroundingStatus.IsStableOnGround)
-                        {
+                        {                                          
                             float currentVelocityMagnitude = currentVelocity.magnitude;
 
                             Vector3 effectiveGroundNormal = Motor.GroundingStatus.GroundNormal;
