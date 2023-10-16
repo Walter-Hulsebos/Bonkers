@@ -120,7 +120,7 @@ namespace Bonkers.Controls
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpecialMouse"",
+                    ""name"": ""SpecialKeyboard"",
                     ""type"": ""Button"",
                     ""id"": ""3f345bb2-a7ac-4995-ada3-902acf13a19e"",
                     ""expectedControlType"": ""Button"",
@@ -525,11 +525,11 @@ namespace Bonkers.Controls
                 {
                     ""name"": """",
                     ""id"": ""aed85c45-bfed-4972-a7d9-10495beada7e"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SpecialMouse"",
+                    ""action"": ""SpecialKeyboard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1261,7 +1261,7 @@ namespace Bonkers.Controls
             m_Gameplay_Special3 = m_Gameplay.FindAction("Special3", throwIfNotFound: true);
             m_Gameplay_Special2 = m_Gameplay.FindAction("Special2", throwIfNotFound: true);
             m_Gameplay_Special1 = m_Gameplay.FindAction("Special1", throwIfNotFound: true);
-            m_Gameplay_SpecialMouse = m_Gameplay.FindAction("SpecialMouse", throwIfNotFound: true);
+            m_Gameplay_SpecialKeyboard = m_Gameplay.FindAction("SpecialKeyboard", throwIfNotFound: true);
             m_Gameplay_ToggleSpecialKB = m_Gameplay.FindAction("ToggleSpecialKB", throwIfNotFound: true);
             m_Gameplay_SpecialsGamepad = m_Gameplay.FindAction("SpecialsGamepad", throwIfNotFound: true);
             // Interface
@@ -1346,7 +1346,7 @@ namespace Bonkers.Controls
         private readonly InputAction m_Gameplay_Special3;
         private readonly InputAction m_Gameplay_Special2;
         private readonly InputAction m_Gameplay_Special1;
-        private readonly InputAction m_Gameplay_SpecialMouse;
+        private readonly InputAction m_Gameplay_SpecialKeyboard;
         private readonly InputAction m_Gameplay_ToggleSpecialKB;
         private readonly InputAction m_Gameplay_SpecialsGamepad;
         public struct GameplayActions
@@ -1363,7 +1363,7 @@ namespace Bonkers.Controls
             public InputAction @Special3 => m_Wrapper.m_Gameplay_Special3;
             public InputAction @Special2 => m_Wrapper.m_Gameplay_Special2;
             public InputAction @Special1 => m_Wrapper.m_Gameplay_Special1;
-            public InputAction @SpecialMouse => m_Wrapper.m_Gameplay_SpecialMouse;
+            public InputAction @SpecialKeyboard => m_Wrapper.m_Gameplay_SpecialKeyboard;
             public InputAction @ToggleSpecialKB => m_Wrapper.m_Gameplay_ToggleSpecialKB;
             public InputAction @SpecialsGamepad => m_Wrapper.m_Gameplay_SpecialsGamepad;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
@@ -1405,9 +1405,9 @@ namespace Bonkers.Controls
                 @Special1.started += instance.OnSpecial1;
                 @Special1.performed += instance.OnSpecial1;
                 @Special1.canceled += instance.OnSpecial1;
-                @SpecialMouse.started += instance.OnSpecialMouse;
-                @SpecialMouse.performed += instance.OnSpecialMouse;
-                @SpecialMouse.canceled += instance.OnSpecialMouse;
+                @SpecialKeyboard.started += instance.OnSpecialKeyboard;
+                @SpecialKeyboard.performed += instance.OnSpecialKeyboard;
+                @SpecialKeyboard.canceled += instance.OnSpecialKeyboard;
                 @ToggleSpecialKB.started += instance.OnToggleSpecialKB;
                 @ToggleSpecialKB.performed += instance.OnToggleSpecialKB;
                 @ToggleSpecialKB.canceled += instance.OnToggleSpecialKB;
@@ -1448,9 +1448,9 @@ namespace Bonkers.Controls
                 @Special1.started -= instance.OnSpecial1;
                 @Special1.performed -= instance.OnSpecial1;
                 @Special1.canceled -= instance.OnSpecial1;
-                @SpecialMouse.started -= instance.OnSpecialMouse;
-                @SpecialMouse.performed -= instance.OnSpecialMouse;
-                @SpecialMouse.canceled -= instance.OnSpecialMouse;
+                @SpecialKeyboard.started -= instance.OnSpecialKeyboard;
+                @SpecialKeyboard.performed -= instance.OnSpecialKeyboard;
+                @SpecialKeyboard.canceled -= instance.OnSpecialKeyboard;
                 @ToggleSpecialKB.started -= instance.OnToggleSpecialKB;
                 @ToggleSpecialKB.performed -= instance.OnToggleSpecialKB;
                 @ToggleSpecialKB.canceled -= instance.OnToggleSpecialKB;
@@ -1614,7 +1614,7 @@ namespace Bonkers.Controls
             void OnSpecial3(InputAction.CallbackContext context);
             void OnSpecial2(InputAction.CallbackContext context);
             void OnSpecial1(InputAction.CallbackContext context);
-            void OnSpecialMouse(InputAction.CallbackContext context);
+            void OnSpecialKeyboard(InputAction.CallbackContext context);
             void OnToggleSpecialKB(InputAction.CallbackContext context);
             void OnSpecialsGamepad(InputAction.CallbackContext context);
         }

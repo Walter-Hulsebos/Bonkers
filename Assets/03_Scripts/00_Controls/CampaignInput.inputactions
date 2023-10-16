@@ -1,0 +1,111 @@
+{
+    "name": "CampaignInput",
+    "maps": [
+        {
+            "name": "Campaign",
+            "id": "69a44a96-2505-44b9-98da-af0192ef0af5",
+            "actions": [
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "86d075e2-1f2f-4530-b797-038a473ec62d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Action F",
+                    "type": "Button",
+                    "id": "0be797c7-17cd-4cef-aca1-05e22b195131",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToNextScene",
+                    "type": "Button",
+                    "id": "f6e9f815-a080-4c7a-8655-bfe3cc55a8ea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "bd903dbc-c860-4d05-ab4b-0a3c1f6c057d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c3d722bb-2b6f-4dd6-80b2-105daafacc29",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "CampaignDefault",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a838c8d2-ec05-47d9-aa40-355a30b2f850",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "CampaignDefault",
+                    "action": "Action F",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6469a1d-a59c-427a-910d-fe6eff86f71a",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "CampaignDefault",
+                    "action": "ToNextScene",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d70079a1-5ff3-49bb-b7d4-af702ae2eba4",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Tap(duration=0.2,pressPoint=0.5)",
+                    "processors": "",
+                    "groups": "CampaignDefault",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "CampaignDefault",
+            "bindingGroup": "CampaignDefault",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

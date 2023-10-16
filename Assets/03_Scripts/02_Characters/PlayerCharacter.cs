@@ -1,12 +1,8 @@
 namespace Bonkers.Characters
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using CGTK.Utils.UnityFunc;
-
-    using JetBrains.Annotations;
 
     using UnityEngine;
     using static UnityEngine.Mathf;
@@ -14,11 +10,8 @@ namespace Bonkers.Characters
     using Unity.Netcode;
     using static Unity.Mathematics.math;
     using static ProjectDawn.Mathematics.math2;
-    using static ProjectDawn.Mathematics.fastmath;
 
     using KinematicCharacterController;
-
-    using Unity.Mathematics;
 
     using F32   = System.Single;
     using F32x2 = Unity.Mathematics.float2;
@@ -77,11 +70,11 @@ namespace Bonkers.Characters
         [SerializeField] private F32 maxStableMoveSpeed = 10f;
 
         [SerializeField] private F32               stableMovementSharpness = 15f;
-        [SerializeField] private F32               orientationSharpness    = 10f;
+        [SerializeField] private F32               orientationSharpness    = 20f;
         [SerializeField] private OrientationMethod orientationMethod       = OrientationMethod.TowardsMovement;
 
         [Header(header: "Air Movement")]
-        [SerializeField] private F32 maxAirMoveSpeed = 15f;
+        [SerializeField] private F32 maxAirMoveSpeed = 10f;
 
         [SerializeField] private F32 airAccelerationSpeed = 15f;
         [SerializeField] private F32 drag                 = 0.1f;
@@ -91,8 +84,8 @@ namespace Bonkers.Characters
 
         [SerializeField] private F32 jumpUpSpeed                = 10f;
         [SerializeField] private F32 jumpScalableForwardSpeed   = 0f;
-        [SerializeField] private F32 jumpPreGroundingGraceTime  = 0f;
-        [SerializeField] private F32 jumpPostGroundingGraceTime = 0f;
+        [SerializeField] private F32 jumpPreGroundingGraceTime  = 0.1f;
+        [SerializeField] private F32 jumpPostGroundingGraceTime = 0.1f;
 
         [Header(header: "Misc")]
         [SerializeField] private Collider[] ignoredColliders;
