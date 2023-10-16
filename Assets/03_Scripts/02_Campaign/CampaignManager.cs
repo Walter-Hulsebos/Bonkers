@@ -18,7 +18,6 @@ namespace Bonkers
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private Image characterIcon;
 
-      
 
         public GameObject player;
 
@@ -43,8 +42,6 @@ namespace Bonkers
                 new ObjectiveManager(),
 
         };
-
-            
         }
 
         private void Awake()
@@ -53,7 +50,6 @@ namespace Bonkers
             Cursor.lockState = CursorLockMode.Locked;
 
         }
-
         public static T GetCampaignManager<T>() where T : CampaignSubManager
         {
             for (int i = 0; i < subManagers.Length; i++)

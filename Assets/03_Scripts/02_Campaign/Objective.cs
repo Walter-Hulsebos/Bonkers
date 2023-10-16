@@ -12,9 +12,12 @@ namespace Bonkers
         // Start is called before the first frame update
         public Objective()
         {
+        }
+        public virtual void Start()
+        {
+
             CampaignManager.GetCampaignManager<ObjectiveManager>().objective.Add(this);
         }
-
         public virtual void CheckifHappening()
         {
 
