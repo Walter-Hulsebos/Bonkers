@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 namespace Bonkers
 {
@@ -18,6 +19,8 @@ namespace Bonkers
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private Image characterIcon;
 
+
+        public VideoClip intro;
 
         public GameObject player;
 
@@ -94,6 +97,8 @@ namespace Bonkers
                 subManagers[i].Start();
             }
             Cursor.visible = false;
+
+          
         }
 
         // Update is called once per frame
