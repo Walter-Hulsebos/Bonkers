@@ -69,11 +69,11 @@ namespace Bonkers
 
         void Update()
         {
-            handleMovement();
-            handleJump();
+            animMovement();
+            animJump();
         }
 
-        void handleMovement()
+        void animMovement()
         {
             bool isWalking = animator.GetBool(WalkingHash);
 
@@ -93,7 +93,7 @@ namespace Bonkers
             }
         }
 
-        void handleJump()
+        void animJump()
         {
             bool isJumping = animator.GetBool(JumpHash);
             
@@ -110,18 +110,18 @@ namespace Bonkers
             }
         }
 
-        public void handleSpecial1()
+        public void animSpecial1()
         {
-            animator.Play("Base Layer.Special3", 0, 0.25f);
+            animator.Play("Base Layer.Special", 0, 0.25f);
         }
-        public void handleSpecial2()
+        public void animSpecial2()
         {
-            animator.Play("Base Layer.Special3", 0, 0.25f);
+            animator.Play("Base Layer.Special", 0, 0.25f);
         }
 
-        public void handleSpecial3()
+        public void animSpecial3()
         {
-            animator.Play("Base Layer.Special3", 0, 0.25f);
+            animator.Play("Base Layer.Special", 0, 0.25f);
         }
 
         void OnEnable()
