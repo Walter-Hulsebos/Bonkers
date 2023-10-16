@@ -13,6 +13,8 @@ namespace Bonkers
 
         public bool enemy;
 
+        public float lifetime = 3;
+
         public GameObject savedEnemy;
         private void Awake()
         {
@@ -32,7 +34,7 @@ namespace Bonkers
 
         IEnumerator Lifetime()
         {
-            yield return new WaitForSeconds(4);
+            yield return new WaitForSeconds(lifetime);
             Destroy(this.gameObject);
         }
 
@@ -44,6 +46,7 @@ namespace Bonkers
         public void ChaseEnemy(GameObject gameObject)
         {
             this.gameObject.transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, 0.02f);
+            this.gameObject.transform.LookAt(gameObject.transform, Vector3.up);
         }
     }
 }

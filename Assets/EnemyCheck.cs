@@ -8,10 +8,7 @@ namespace Bonkers
 {
     public class EnemyCheck : MonoBehaviour
     {
-
         RatCode ratCode;
-        GameObject enemy;
-
         private void Awake()
         {
             ratCode = GetComponentInParent<RatCode>();
