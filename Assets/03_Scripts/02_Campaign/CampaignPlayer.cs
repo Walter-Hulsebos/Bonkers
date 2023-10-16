@@ -9,8 +9,11 @@ namespace Bonkers
         [SerializeField] private int currentHealth;
         [SerializeField] private int maxHealth;
         // Start is called before the first frame update
+
+        
         void Start()
         {
+            CampaignManager.instance.player = gameObject.transform.parent.gameObject;
             currentHealth = maxHealth;
         }
 

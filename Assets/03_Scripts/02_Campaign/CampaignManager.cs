@@ -18,6 +18,9 @@ namespace Bonkers
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private Image characterIcon;
 
+      
+
+        public GameObject player;
 
         [Header("Timed Events")]
         [SerializeField] private TextMeshProUGUI timedEvent;
@@ -27,8 +30,6 @@ namespace Bonkers
         public static CampaignManager instance { get; private set; }
         private static CampaignSubManager[] subManagers;
 
-
-        [SerializeField] private GameObject player;
 
         CampaignManager()
         {
@@ -42,6 +43,15 @@ namespace Bonkers
                 new ObjectiveManager(),
 
         };
+
+            
+        }
+
+        private void Awake()
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
         }
 
         public static T GetCampaignManager<T>() where T : CampaignSubManager
