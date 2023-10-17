@@ -35,15 +35,15 @@ public abstract class PlayerBaseState
     
     public void UpdateStates(ref Vector3 currentVelocity, float deltaTime) 
     {
-        if (canUpdate)
+        if (!canUpdate) return;
+        UpdateState(ref currentVelocity, deltaTime);
+
+        if (currentSubState != null)
         {
-            UpdateState(ref currentVelocity, deltaTime);
-            if(currentSubState != null)
-            {
-                currentSubState.UpdateStates(ref currentVelocity, deltaTime);
-            }   
+            currentSubState.UpdateStates(ref currentVelocity, deltaTime); 
+            
         }
-        
+
         CheckSwitchStates();
         CheckSwitchSubStates();
     }
