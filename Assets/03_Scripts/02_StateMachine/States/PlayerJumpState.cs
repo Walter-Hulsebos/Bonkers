@@ -14,7 +14,9 @@ public sealed class PlayerJumpState : PlayerBaseState
     public override void EnterState()
     {
         Debug.Log("Entering Jump State");
-        Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
+        //Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
+        Ctx.Animator.SetTrigger(Ctx.JumpHash);
+        
         _isJumping = true;
         
         Ctx.CurrentMovementY = Ctx.InitialJumpVelocity;

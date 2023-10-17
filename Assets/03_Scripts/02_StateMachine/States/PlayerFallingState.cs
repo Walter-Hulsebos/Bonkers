@@ -40,7 +40,7 @@ public sealed class PlayerFallingState : PlayerBaseState
         // {
         //     SwitchState(Factory.Grounded());
         // }
-        if (!Ctx.IsFalling)
+        if (Ctx.IsRising)
         {
             SwitchState(Factory.Rising());
         }

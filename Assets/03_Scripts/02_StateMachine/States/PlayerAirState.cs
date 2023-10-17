@@ -6,15 +6,21 @@ public sealed class PlayerAirState : PlayerBaseState
         : base(currentContext, playerStateFactory) 
     {
         IsRootState = true;
-        SetSubState(Factory.Falling());
-        SetSubState(Factory.Rising());
+        
+        _subStateFalling = Factory.Falling();
+        _subStateRising  = Factory.Rising();
     }
+
+    private PlayerBaseState _subStateFalling;
+    private PlayerBaseState _subStateRising;
 
     public override void EnterState() 
     {
         Debug.Log("Entering Air State");
         //Ctx.CurrentMovementY = Ctx.Gravity;
         //Ctx.AppliedMovementY = Ctx.Gravity;
+        
+        CheckSwitchSubStates();
     }
 
     public override void ExitState()
@@ -42,13 +48,29 @@ public sealed class PlayerAirState : PlayerBaseState
         //     Ctx.AppliedMovementY =  (__previousYVelocity + Ctx.CurrentMovementY) * .5f;
         // }
     }
-    
+
+    public override void CheckSwitchSubStates()
+    {
+        if(!Ctx.Motor.GroundingStatus.IsStableOnGround)
+        {
+            if (Ctx.IsFalling)
+            {
+                SetSubState(_subStateFalling);
+            }
+            else if (Ctx.IsRising)
+            {
+                SetSubState(_subStateRising);
+            }
+        }
+    }
+
     public override void CheckSwitchStates() 
     {
         if(Ctx.Motor.GroundingStatus.IsStableOnGround)
         {
             SwitchState(Factory.Grounded());
         }
+        
         // else
         // {
         //     if (Ctx.IsFalling)

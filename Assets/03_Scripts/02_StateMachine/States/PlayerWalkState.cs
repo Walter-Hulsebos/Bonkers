@@ -9,13 +9,14 @@ public sealed class PlayerWalkState : PlayerBaseState
     public override void EnterState() 
     {
         Debug.Log("Entering Walk State");
-        Ctx.Animator.SetBool(Ctx.IsWalkingHash, true);
+        Ctx.Animator.SetTrigger(Ctx.WalkHash);
+        //Ctx.Animator.SetBool(Ctx.IsWalkingHash, true);
     }
 
     public override void ExitState()
     {
         Debug.Log("Exiting Walk State");
-        Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
+        //Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
     }
     
     public override void UpdateState(ref Vector3 currentVelocity, Single deltaTime)

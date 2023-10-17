@@ -88,9 +88,14 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
     public I32 IsIdleHash    { get { return isWalkingHash; } }
     public I32 IsWalkingHash { get { return isWalkingHash; } }
     
+    public I32 WalkHash { get; private set; }
+    public I32 JumpHash { get; private set; }
+    public I32 IdleHash { get; private set; }
+    
     public Bool RequireNewJumpPress {get { return requireNewJumpPress; } set {requireNewJumpPress = value; } }
     public Bool IsJumping { set {isJumping = value; } }
     public Bool IsFalling => (Motor.BaseVelocity.y < 0.0f) && !Motor.GroundingStatus.IsStableOnGround;
+    public Bool IsRising  => (Motor.BaseVelocity.y >= 0.05f) && !Motor.GroundingStatus.IsStableOnGround;
     public Bool IsJumpPressed {  get { return isJumpPressed; } }
     public Bool IsMovementPressed { get { return isMovementPressed; } }
     //public Bool IsRunPressed { get { return isRunPressed; } }
@@ -125,20 +130,22 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
 
         // setup state
         states       = new PlayerStateFactory(currentContext: this);
-        currentState = states.Grounded();
-        currentState.EnterState();
 
         //set hash references
-        isWalkingHash = Animator.StringToHash(name: "isWalking");
-        isJumpingHash = Animator.StringToHash(name: "isJumping");
+        // isWalkingHash = Animator.StringToHash(name: "isWalking");
+        // isJumpingHash = Animator.StringToHash(name: "isJumping");
         //isRunningHash = Animator.StringToHash(name: "isRunning");
+        
+        WalkHash = Animator.StringToHash(name: "walk");
+        JumpHash = Animator.StringToHash(name: "jump");
+        IdleHash = Animator.StringToHash(name: "idle");
         
         SetupJumpVariables();
     }
 
     private void SetupJumpVariables()
     {
-        F32 timeToApex = maxJumpTime / 2;
+        F32 timeToApex = maxJumpTime * 0.5f;
         gravity             = (-2    * maxJumpHeight) / pow(timeToApex, 2);
         initialJumpVelocity = (2     * maxJumpHeight) / timeToApex;
     }
@@ -148,6 +155,12 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
         // Assign to motor
         Motor.CharacterController = this;
     }
+
+    private void Start() 
+    { 
+        currentState = states.Grounded();
+        currentState.EnterState();
+     }
 
     // Update is called once per frame
     private void Update()

@@ -140,7 +140,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!65 &438800380
 BoxCollider:
@@ -1244,11 +1244,11 @@ MonoBehaviour:
   CapsuleHeight: 2
   CapsuleYOffset: 1
   CapsulePhysicsMaterial: {fileID: 0}
-  GroundDetectionExtraDistance: 0
+  GroundDetectionExtraDistance: 0.5
   MaxStableSlopeAngle: 60
   StableGroundLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   DiscreteCollisionEvents: 0
   StepHandling: 2
   MaxStepHeight: 0.5
@@ -1643,7 +1643,7 @@ Animator:
   m_GameObject: {fileID: 8899812593654958989}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0ac1cbf67c323a447979818bd5b605ad, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4ade265abc4265940917b524f4e9d6c7, type: 2}
+  m_Controller: {fileID: 9100000, guid: 80fb5d89123782748a3a9fd26d8cbdd6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

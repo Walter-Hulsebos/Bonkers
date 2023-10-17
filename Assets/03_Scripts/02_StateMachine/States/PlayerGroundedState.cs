@@ -8,13 +8,19 @@ public sealed class PlayerGroundedState : PlayerBaseState
       : base(currentContext, playerStateFactory) 
     {
         IsRootState = true;
-        SetSubState(Factory.Walk());
-        SetSubState(Factory.Idle());
+        // SetSubState(Factory.Walk());
+        // SetSubState(Factory.Idle());
+        _subStateIdle = Factory.Idle();
+        _subStateWalk = Factory.Walk();
     }
+    
+    private PlayerBaseState _subStateIdle;
+    private PlayerBaseState _subStateWalk;
 
     public override void EnterState()
     {
         Debug.Log("Entering Grounded State");
+        CheckSwitchSubStates();
     }
 
     public override void ExitState()
@@ -23,7 +29,20 @@ public sealed class PlayerGroundedState : PlayerBaseState
     }
     
     public override void UpdateState(ref Vector3 currentVelocity, float deltaTime) { }
-    
+
+
+    public override void CheckSwitchSubStates()
+    {
+        if (Ctx.IsMovementPressed)
+        {
+            SetSubState(_subStateWalk);
+        }
+        else
+        {
+            SetSubState(_subStateIdle);
+        }
+    }
+
     public override void CheckSwitchStates() 
     {
         if (Ctx.Motor.GroundingStatus.IsStableOnGround)

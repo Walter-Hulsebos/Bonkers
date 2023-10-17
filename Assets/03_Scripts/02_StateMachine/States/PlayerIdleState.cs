@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public sealed class PlayerIdleState : PlayerBaseState
@@ -9,13 +7,14 @@ public sealed class PlayerIdleState : PlayerBaseState
     public override void EnterState() 
     {
         Debug.Log("Entering Idle State");
-        Ctx.Animator.SetBool(Ctx.IsIdleHash, value: true);
+        //Ctx.Animator.SetBool(Ctx.IsIdleHash, value: true);
+        Ctx.Animator.SetTrigger(Ctx.IdleHash);
     }
 
     public override void ExitState()
     {
         Debug.Log("Exiting Idle State");
-        Ctx.Animator.SetBool(Ctx.IsIdleHash, value: false);
+        //Ctx.Animator.SetBool(Ctx.IsIdleHash, value: false);
     }
 
     public override void UpdateState(ref Vector3 currentVelocity, float deltaTime)
