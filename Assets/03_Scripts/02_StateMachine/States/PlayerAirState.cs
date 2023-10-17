@@ -70,6 +70,13 @@ public sealed class PlayerAirState : PlayerBaseState
         {
             SwitchState(Factory.Grounded());
         }
+        else
+        {
+            if (Ctx.IsJumpPressed && !Ctx.RequireNewJumpPress)
+            {
+                //Double Jump
+            }
+        }
         
         // else
         // {

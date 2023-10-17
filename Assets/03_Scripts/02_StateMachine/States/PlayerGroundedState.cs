@@ -33,13 +33,20 @@ public sealed class PlayerGroundedState : PlayerBaseState
 
     public override void CheckSwitchSubStates()
     {
-        if (Ctx.IsMovementPressed)
+        if (Ctx.Motor.GroundingStatus.IsStableOnGround)
         {
-            SetSubState(_subStateWalk);
+            if (Ctx.IsMovementPressed)
+            {
+                SetSubState(_subStateWalk);
+            }
+            else
+            {
+                SetSubState(_subStateIdle);
+            }
         }
         else
         {
-            SetSubState(_subStateIdle);
+            Debug.Log("We're in air when we should be grounded");
         }
     }
 

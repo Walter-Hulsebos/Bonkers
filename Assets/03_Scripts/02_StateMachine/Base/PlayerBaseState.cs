@@ -11,6 +11,8 @@ public abstract class PlayerBaseState
     protected bool IsRootState { set { isRootState = value; }}
     protected PlayerStateMachine Ctx { get { return ctx; }}
     protected PlayerStateFactory Factory { get { return factory; }}
+    
+    protected bool canUpdate = true;
 
     public PlayerBaseState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
     {
@@ -20,7 +22,11 @@ public abstract class PlayerBaseState
 
     public abstract void EnterState();
     public abstract void UpdateState(ref Vector3 currentVelocity, float deltaTime);
-    public abstract void ExitState();
+
+    public virtual void ExitState()
+    {
+        canUpdate = false;
+    }
     
     public abstract void CheckSwitchStates();
     public virtual  void CheckSwitchSubStates() { }
@@ -29,10 +35,13 @@ public abstract class PlayerBaseState
     
     public void UpdateStates(ref Vector3 currentVelocity, float deltaTime) 
     {
-        UpdateState(ref currentVelocity, deltaTime);
-        if(currentSubState != null)
+        if (canUpdate)
         {
-            currentSubState.UpdateStates(ref currentVelocity, deltaTime);
+            UpdateState(ref currentVelocity, deltaTime);
+            if(currentSubState != null)
+            {
+                currentSubState.UpdateStates(ref currentVelocity, deltaTime);
+            }   
         }
         
         CheckSwitchStates();
@@ -43,9 +52,11 @@ public abstract class PlayerBaseState
     {
         //current state exits state
         ExitState();
+        this.canUpdate = false;
 
         // new state enters state
         newState.EnterState();
+        newState.canUpdate = true;
 
         if (isRootState)
         {
@@ -56,7 +67,6 @@ public abstract class PlayerBaseState
         {
             currentSuperState.SetSubState(newState);
         }
-
     }
 
     protected void SetSuperState(PlayerBaseState newSuperState)

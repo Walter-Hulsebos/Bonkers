@@ -23,9 +23,9 @@ public sealed class PlayerIdleState : PlayerBaseState
     }
     public override void CheckSwitchStates() 
     {
-        if (Ctx.IsMovementPressed)
-        {
-            SwitchState(Factory.Walk());
-        }
+        // if (Ctx.IsMovementPressed)
+        // {
+        //     SwitchState(Factory.Walk());
+        // }
     }
 }

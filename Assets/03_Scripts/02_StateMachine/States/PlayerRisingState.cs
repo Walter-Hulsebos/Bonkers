@@ -30,10 +30,10 @@ public sealed class PlayerRisingState : PlayerBaseState
     
     public override void CheckSwitchStates() 
     {
-        if (Ctx.IsFalling)
-        {
-            SwitchState(Factory.Falling());
-        }
+        // if (Ctx.IsFalling)
+        // {
+        //     SwitchState(Factory.Falling());
+        // }
     }
     
 }
