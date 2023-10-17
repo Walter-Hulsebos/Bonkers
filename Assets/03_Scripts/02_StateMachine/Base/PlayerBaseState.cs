@@ -29,7 +29,7 @@ public abstract class PlayerBaseState
     }
     
     public abstract void CheckSwitchStates();
-    public virtual  void CheckSwitchSubStates() { }
+    //public virtual  void CheckSwitchSubStates() { }
 
     //public virtual void InitialSubState() { }
     
@@ -41,15 +41,16 @@ public abstract class PlayerBaseState
         if (currentSubState != null)
         {
             currentSubState.UpdateStates(ref currentVelocity, deltaTime); 
-            
         }
 
         CheckSwitchStates();
-        CheckSwitchSubStates();
+        //CheckSwitchSubStates();
     }
 
     protected void SwitchState(PlayerBaseState newState)
     {
+        if(newState == this) return;
+        
         //current state exits state
         ExitState();
         this.canUpdate = false;
@@ -69,14 +70,31 @@ public abstract class PlayerBaseState
         }
     }
 
-    protected void SetSuperState(PlayerBaseState newSuperState)
+    private void SetSuperState(PlayerBaseState newSuperState)
     {
         currentSuperState = newSuperState;
     }
-    protected void SetSubState(PlayerBaseState newSubState) 
+    private void SetSubState(PlayerBaseState newSubState) 
     {
         currentSubState = newSubState;
         newSubState.SetSuperState(this);
+    }
+    
+    protected void SwitchSubState(PlayerBaseState newSubState)
+    {
+        if(newSubState == currentSubState) return;
+        
+        if (currentSubState != null)
+        {
+            currentSubState.ExitState();
+            currentSubState.canUpdate = false;   
+        }
+        
+        currentSubState = newSubState;
+        newSubState.SetSuperState(this);
+        
+        currentSubState.EnterState();
+        currentSubState.canUpdate = true;
     }
 
 }

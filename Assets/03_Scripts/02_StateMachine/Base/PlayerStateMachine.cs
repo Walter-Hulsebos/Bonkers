@@ -97,7 +97,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public Bool IsFalling => (Motor.BaseVelocity.y <= 0.0f) && !Motor.GroundingStatus.IsStableOnGround;
     public Bool IsRising  => (Motor.BaseVelocity.y >  0.0f) && !Motor.GroundingStatus.IsStableOnGround;
     public Bool IsJumpPressed {  get { return isJumpPressed; } }
-    public Bool IsMovementPressed { get { return isMovementPressed; } }
+    public Bool IsMovementPressed => lengthsq(getMoveInput.Invoke()) > 0.0f;
     //public Bool IsRunPressed { get { return isRunPressed; } }
     public F32 MoveGroundMaxSpeed { get { return moveGroundMaxSpeed; } }
     //public F32 RunMultiplier { get { return runMultiplier; } }

@@ -47,20 +47,20 @@ public sealed class PlayerAirState : PlayerBaseState
         // }
     }
 
-    public override void CheckSwitchSubStates()
-    {
-        if(!Ctx.Motor.GroundingStatus.IsStableOnGround)
-        {
-            if (Ctx.IsFalling)
-            {
-                SetSubState(_subStateFalling);
-            }
-            else if (Ctx.IsRising)
-            {
-                SetSubState(_subStateRising);
-            }
-        }
-    }
+    // public override void CheckSwitchSubStates()
+    // {
+    //     if(!Ctx.Motor.GroundingStatus.IsStableOnGround)
+    //     {
+    //         if (Ctx.IsFalling)
+    //         {
+    //             SetSubState(_subStateFalling);
+    //         }
+    //         else if (Ctx.IsRising)
+    //         {
+    //             SetSubState(_subStateRising);
+    //         }
+    //     }
+    // }
 
     public override void CheckSwitchStates() 
     {
@@ -70,11 +70,22 @@ public sealed class PlayerAirState : PlayerBaseState
         }
         else
         {
+            if (Ctx.IsFalling)
+            {
+                SwitchSubState(_subStateFalling);
+            }
+            else if (Ctx.IsRising)
+            {
+                SwitchSubState(_subStateRising);
+            }
+            
             if (Ctx.IsJumpPressed && !Ctx.RequireNewJumpPress)
             {
                 //Double Jump
             }
         }
+        
+        
         
         // else
         // {
