@@ -21,11 +21,17 @@ public abstract class PlayerBaseState
     public abstract void EnterState();
     public abstract void UpdateState(ref Vector3 currentVelocity, float deltaTime);
     public abstract void ExitState();
+    
+    public virtual void CheckSwitchSubStates() { }
     public abstract void CheckSwitchStates();
-    public abstract void InitialSubState();
+
+    //public virtual void InitialSubState() { }
+    
     public void UpdateStates(ref Vector3 currentVelocity, float deltaTime) 
     {
+        CheckSwitchSubStates();
         CheckSwitchStates();
+        
         UpdateState(ref currentVelocity, deltaTime);
         if(currentSubState != null)
         {

@@ -8,31 +8,44 @@ public sealed class PlayerGroundedState : PlayerBaseState
       : base(currentContext, playerStateFactory) 
     {
         IsRootState = true;
-        InitialSubState(); 
+        SetSubState(Factory.Walk());
+        SetSubState(Factory.Idle());
     }
 
-    public override void EnterState() { }
-    public override void ExitState()  { }
+    public override void EnterState()
+    {
+        Debug.Log("Entering Grounded State");
+    }
+
+    public override void ExitState()
+    {
+        Debug.Log("Exiting Grounded State");
+    }
     
     public override void UpdateState(ref Vector3 currentVelocity, float deltaTime) { }
     
-    public override void InitialSubState() 
+    public override void CheckSwitchStates() 
     {
-        if (Ctx.IsMovementPressed)
+        if (Ctx.Motor.GroundingStatus.IsStableOnGround)
         {
-            SetSubState(Factory.Walk());
+            // if (Ctx.IsMovementPressed)
+            // {
+            //     SwitchState(Factory.Walk());
+            // }
+            // else
+            // {
+            //     SwitchState(Factory.Idle());
+            // }
+            
+            // if player is grounded and jump is pressed , switch to jump state
+            if (Ctx.IsJumpPressed && !Ctx.RequireNewJumpPress)
+            {
+                SwitchState(Factory.Jump());
+            }
         }
         else
         {
-            SetSubState(Factory.Idle());
-        }
-    }
-    public override void CheckSwitchStates() 
-    {
-        // if player is grounded and jump is pressed , switch to jump state
-        if (Ctx.IsJumpPressed && !Ctx.RequireNewJumpPress)
-        {
-            SwitchState(Factory.Jump());
+            SwitchState(Factory.Air());
         }
     }
 }

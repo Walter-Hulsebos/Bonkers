@@ -8,11 +8,13 @@ public sealed class PlayerWalkState : PlayerBaseState
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base (currentContext, playerStateFactory) { }
     public override void EnterState() 
     {
+        Debug.Log("Entering Walk State");
         Ctx.Animator.SetBool(Ctx.IsWalkingHash, true);
     }
 
     public override void ExitState()
     {
+        Debug.Log("Exiting Walk State");
         Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
     }
     
@@ -29,13 +31,12 @@ public sealed class PlayerWalkState : PlayerBaseState
         // Smooth movement Velocity
         currentVelocity = Vector3.Lerp(a: currentVelocity, b: __targetMovementVelocity, t: 1f - Exp(power: -Ctx.moveGroundSharpness * deltaTime));
     }
-
-    public override void InitialSubState() { }
+    
     public override void CheckSwitchStates() 
     {
-        // if (!Ctx.IsMovementPressed)
-        // {
-        //     SwitchState(Factory.Idle());
-        // }
+        if (!Ctx.IsMovementPressed)
+        {
+            SwitchState(Factory.Idle());
+        }
     }
 }

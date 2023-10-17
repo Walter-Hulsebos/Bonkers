@@ -6,12 +6,7 @@ using static UnityEngine.Mathf;
 
 public sealed class PlayerFallingState : PlayerBaseState
 {
-    public PlayerFallingState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
-        : base(currentContext, playerStateFactory) 
-    {
-        IsRootState = false;
-        InitialSubState(); 
-    }
+    public PlayerFallingState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
 
     private const float MAX_FALL_SPEED = 20.0f;
 
@@ -19,9 +14,14 @@ public sealed class PlayerFallingState : PlayerBaseState
 
     public override void EnterState() 
     {
+        Debug.Log("Entering Falling State");
         _currentYVelocity = Ctx.Motor.BaseVelocity.y; //Should be 0 when entering falling state but just in case
     }
-    public override void ExitState() { }
+
+    public override void ExitState()
+    {
+        Debug.Log("Exiting Falling State");
+    }
     
     public override void UpdateState(ref Vector3 currentVelocity, float deltaTime) 
     {
@@ -33,12 +33,16 @@ public sealed class PlayerFallingState : PlayerBaseState
         currentVelocity.y =  Max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
     }
     
-    public override void InitialSubState() 
-    {
-        
-    }
+
     public override void CheckSwitchStates() 
     {
-        
+        // if (Ctx.Motor.GroundingStatus.IsStableOnGround)
+        // {
+        //     SwitchState(Factory.Grounded());
+        // }
+        if (!Ctx.IsFalling)
+        {
+            SwitchState(Factory.Rising());
+        }
     }
 }

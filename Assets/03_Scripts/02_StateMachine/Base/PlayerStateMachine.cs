@@ -132,16 +132,7 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
         isWalkingHash = Animator.StringToHash(name: "isWalking");
         isJumpingHash = Animator.StringToHash(name: "isJumping");
         //isRunningHash = Animator.StringToHash(name: "isRunning");
-
-        // set player input callbacks
-        // playerInput.CharacterControls.Move.started += OnMovementInput;
-        // playerInput.CharacterControls.Move.canceled += OnMovementInput;
-        // playerInput.CharacterControls.Move.performed += OnMovementInput;
-        // playerInput.CharacterControls.Run.started += OnRun;
-        // playerInput.CharacterControls.Run.canceled += OnRun;
-        // playerInput.CharacterControls.Jump.started += OnJump;
-        // playerInput.CharacterControls.Jump.canceled += OnJump;
-
+        
         SetupJumpVariables();
     }
 

@@ -12,11 +12,12 @@ public sealed class PlayerRisingState : PlayerBaseState
 
     public override void EnterState() 
     {
+        Debug.Log("Entering Rising State");
         _currentYVelocity = Ctx.Motor.BaseVelocity.y; //Should be 0 when entering falling state but just in case
     }
     public override void ExitState()
     {
-        
+        Debug.Log("Exiting Rising State");
     }
     
     public override void UpdateState(ref Vector3 currentVelocity, float deltaTime) 
@@ -27,13 +28,12 @@ public sealed class PlayerRisingState : PlayerBaseState
         currentVelocity.y = Max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
     }
     
-    public override void InitialSubState() 
-    {
-        
-    }
     public override void CheckSwitchStates() 
     {
-        
+        if (Ctx.IsFalling)
+        {
+            SwitchState(Factory.Falling());
+        }
     }
     
 }
