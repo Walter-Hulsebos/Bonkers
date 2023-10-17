@@ -26,7 +26,9 @@ public sealed class PlayerGroundedState : PlayerBaseState
         Debug.Log("Exiting Grounded State");
     }
     
-    public override void UpdateState(ref Vector3 currentVelocity, float deltaTime) { }
+    protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) { }
+    
+    protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) { }
 
 
     // public override void CheckSwitchSubStates()

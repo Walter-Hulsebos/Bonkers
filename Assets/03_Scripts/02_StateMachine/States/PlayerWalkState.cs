@@ -1,10 +1,33 @@
 using System;
+
+using Bonkers.Characters;
+
+using CGTK.Utils.Extensions.Math.Math;
+
+using Sirenix.OdinInspector;
+
 using UnityEngine;
-
 using static UnityEngine.Mathf;
+using static Unity.Mathematics.math;
+using static ProjectDawn.Mathematics.math2;
 
+using static Bonkers.Characters.OrientationMethod;
+
+using F32   = System.Single;
+using F32x3 = Unity.Mathematics.float3;
+
+[Serializable]
 public sealed class PlayerWalkState : PlayerBaseState
 {
+
+    #region Variables
+    
+    [SerializeField] private F32 maxSpeed        = 10f;
+    [SerializeField] private F32 moveSharpness   = 15f;
+    [SerializeField] private F32 orientSharpness = 20f;
+
+    #endregion
+    
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base (currentContext, playerStateFactory) { }
     
     public override void EnterState() 
@@ -20,25 +43,43 @@ public sealed class PlayerWalkState : PlayerBaseState
         //Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
     }
     
-    public override void UpdateState(ref Vector3 currentVelocity, Single deltaTime)
+    
+    protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
     {
-        // Reorient source velocity on current ground slope (this is because we don't want our smoothing to cause any velocity losses in slope changes)
-        currentVelocity = Ctx.Motor.GetDirectionTangentToSurface(direction: currentVelocity, surfaceNormal: Ctx.Motor.GroundingStatus.GroundNormal) * currentVelocity.magnitude;
+        F32 __currentVelocityMagnitude = currentVelocity.magnitude;
 
+        F32x3 __effectiveGroundNormal = Ctx.Motor.GroundingStatus.GroundNormal;
+
+        // Reorient velocity on slope
+        currentVelocity = Ctx.Motor.GetDirectionTangentToSurface(direction: currentVelocity, surfaceNormal: __effectiveGroundNormal) * __currentVelocityMagnitude;
+
+        F32x3 __moveInputVector = Ctx.MoveInputVector;
+        
         // Calculate target velocity
-        Vector3 __inputRight      = Vector3.Cross(lhs: Ctx.CurrentMovementInput, rhs: Ctx.Motor.CharacterUp);
-        Vector3 __reorientedInput = Vector3.Cross(lhs: Ctx.Motor.GroundingStatus.GroundNormal, rhs: __inputRight).normalized * Ctx.CurrentMovementInput.magnitude;
-        Vector3 __targetMovementVelocity = __reorientedInput * Ctx.moveGroundMaxSpeed;
+        F32x3 __inputRight = cross(__moveInputVector, Ctx.Motor.CharacterUp);
+
+        F32x3 __reorientedInput = normalize(cross(__effectiveGroundNormal, __inputRight)) * length(__moveInputVector);
+
+        F32x3 __targetMovementVelocity = __reorientedInput * maxSpeed;
 
         // Smooth movement Velocity
-        currentVelocity = Vector3.Lerp(a: currentVelocity, b: __targetMovementVelocity, t: 1f - Exp(power: -Ctx.moveGroundSharpness * deltaTime));
+        currentVelocity = lerp(currentVelocity, __targetMovementVelocity, t: 1f - exp(-moveSharpness * deltaTime));
     }
-    
-    public override void CheckSwitchStates() 
+
+    protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
     {
-        // if (!Ctx.IsMovementPressed)
-        // {
-        //     SwitchState(Factory.Idle());
-        // }
+        if(orientSharpness <= 0f) return;
+        
+        if(lengthsq(Ctx.LookInputVector).Approx(0f)) return;
+        
+        // Smoothly interpolate from current to target look direction
+        //Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Exp(power: -orientationSharpness * deltaTime));
+        F32x3 __forward = Ctx.Motor.CharacterForward;
+        F32x3 __look    = Ctx.LookInputVector;
+        
+        F32x3 __smoothedLookInputDirection = normalize(slerp(start: __forward, end: __look, t: 1 - exp(-orientSharpness * deltaTime)));
+
+        // Set the current rotation (which will be used by the KinematicCharacterMotor)
+        currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: Ctx.Motor.CharacterUp);
     }
 }

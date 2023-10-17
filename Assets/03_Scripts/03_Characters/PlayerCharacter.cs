@@ -13,6 +13,8 @@ namespace Bonkers.Characters
 
     using KinematicCharacterController;
 
+    using Sirenix.OdinInspector;
+
     using F32   = System.Single;
     using F32x2 = Unity.Mathematics.float2;
     using F32x3 = Unity.Mathematics.float3;
@@ -66,7 +68,9 @@ namespace Bonkers.Characters
         [SerializeField] private KinematicCharacterMotor motor;
         [SerializeField] private new Camera              camera;
 
-        [Header(header: "Stable Movement")]
+        #if ODIN_INSPECTOR
+        [BoxGroup("Stable Movement")]
+        #endif
         [SerializeField] private F32 maxStableMoveSpeed = 10f;
 
         [SerializeField] private F32               stableMovementSharpness = 15f;
@@ -98,7 +102,7 @@ namespace Bonkers.Characters
         [SerializeField] private UnityFunc<F32x2> getMoveInputVector;
         [SerializeField] private UnityFunc<Bool>  getJumpInput;
 
-        [field:ReadOnly]
+        [field:KinematicCharacterController.ReadOnly]
         [field:SerializeField]
         public CharacterState CurrentCharacterState { get; private set; }
 

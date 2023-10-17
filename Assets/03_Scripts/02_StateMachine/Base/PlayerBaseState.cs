@@ -1,5 +1,10 @@
+using System;
+
 using UnityEngine;
 
+using F32 = System.Single;
+
+[Serializable]
 public abstract class PlayerBaseState
 {
     private bool isRootState = false;
@@ -21,31 +26,54 @@ public abstract class PlayerBaseState
     }
 
     public abstract void EnterState();
-    public abstract void UpdateState(ref Vector3 currentVelocity, float deltaTime);
-
     public virtual void ExitState()
     {
         canUpdate = false;
     }
     
-    public abstract void CheckSwitchStates();
+    public virtual void CheckSwitchStates() { }
     //public virtual  void CheckSwitchSubStates() { }
 
     //public virtual void InitialSubState() { }
     
-    public void UpdateStates(ref Vector3 currentVelocity, float deltaTime) 
+
+    public void UpdateStates() 
     {
         if (!canUpdate) return;
-        UpdateState(ref currentVelocity, deltaTime);
 
         if (currentSubState != null)
         {
-            currentSubState.UpdateStates(ref currentVelocity, deltaTime); 
+            currentSubState.UpdateStates(); 
         }
 
         CheckSwitchStates();
         //CheckSwitchSubStates();
     }
+
+    public void UpdateVelocities(ref Vector3 currentVelocity, F32 deltaTime)
+    {
+        if (!canUpdate) return;
+
+        if (currentSubState != null)
+        {
+            currentSubState.UpdateVelocity(ref currentVelocity, deltaTime); 
+        }
+        UpdateVelocity(ref currentVelocity, deltaTime);
+    }
+    
+    public void UpdateRotations(ref Quaternion currentRotation, F32 deltaTime)
+    {
+        if (!canUpdate) return;
+
+        if (currentSubState != null)
+        {
+            currentSubState.UpdateRotations(ref currentRotation, deltaTime); 
+        }
+        UpdateRotation(ref currentRotation, deltaTime);
+    }
+    
+    protected abstract void UpdateVelocity(ref Vector3    currentVelocity, F32 deltaTime);
+    protected abstract void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime);
 
     protected void SwitchState(PlayerBaseState newState)
     {

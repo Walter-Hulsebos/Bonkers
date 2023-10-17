@@ -1,16 +1,37 @@
 using System;
 using UnityEngine;
 
+using F32  = System.Single;
+using static UnityEngine.Mathf;
+using static Unity.Mathematics.math;
+
+[Serializable]
 public sealed class PlayerJumpState : PlayerBaseState
 {
-    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
-      : base(currentContext, playerStateFactory) 
-    {
-        IsRootState = true;
-    }
+    #region Variables
+
+    [SerializeField] private F32 maxJumpHeight = 4.0f;
+    [SerializeField] private F32 maxJumpTime   = 0.75f;
+
+    private F32 _initialJumpVelocity;
     
     private Boolean _isJumping = false;
-    
+
+    #endregion
+
+    #region Constructor
+
+    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
+    {
+        IsRootState = true;
+        
+        SetupJumpVariables();
+    }
+
+    #endregion
+
+    #region Methods
+
     public override void EnterState()
     {
         Debug.Log("Entering Jump State");
@@ -18,9 +39,6 @@ public sealed class PlayerJumpState : PlayerBaseState
         Ctx.Animator.SetTrigger(Ctx.JumpHash);
         
         _isJumping = true;
-        
-        Ctx.CurrentMovementY = Ctx.InitialJumpVelocity;
-        Ctx.AppliedMovementY = Ctx.InitialJumpVelocity;
     }
     public override void ExitState()
     {
@@ -34,10 +52,10 @@ public sealed class PlayerJumpState : PlayerBaseState
         }
     }
     
-    public override void UpdateState(ref Vector3 currentVelocity, float deltaTime)
+    protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
         //TODO: CurrentMovementY???
-        currentVelocity = new Vector3(x: currentVelocity.x, Ctx.InitialJumpVelocity, z: currentVelocity.z);
+        currentVelocity = new Vector3(x: currentVelocity.x, y: _initialJumpVelocity, z: currentVelocity.z);
         
         // // Add move input
         // if (currentMovementInput.sqrMagnitude > 0f)
@@ -62,7 +80,8 @@ public sealed class PlayerJumpState : PlayerBaseState
         // //currentVelocity *= (1f / (1f + (Drag * deltaTime)));
     }
     
-
+    protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) { }
+    
     public override void CheckSwitchStates()
     {
         if (_isJumping)
@@ -70,4 +89,18 @@ public sealed class PlayerJumpState : PlayerBaseState
             SwitchState(Factory.Air());
         }
     }
+
+    #endregion
+
+    #region Custom Methods
+
+    private void SetupJumpVariables()
+    {
+        F32 __timeToApex = maxJumpTime * 0.5f;
+        Ctx.Gravity          = (-2    * maxJumpHeight) / pow(__timeToApex, 2);
+        _initialJumpVelocity = (+2    * maxJumpHeight) / __timeToApex;
+    }
+
+    #endregion
+
 }

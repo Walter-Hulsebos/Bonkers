@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 
+using Bonkers.Characters;
+
 using CGTK.Utils.Extensions.Math.Math;
 using CGTK.Utils.UnityFunc;
 
@@ -15,6 +17,8 @@ using KinematicCharacterController;
 
 using UnityEngine.Serialization;
 
+using static Bonkers.Characters.OrientationMethod;
+
 using F32   = System.Single;
 using F32x2 = Unity.Mathematics.float2;
 using F32x3 = Unity.Mathematics.float3;
@@ -26,29 +30,55 @@ using I32x3 = Unity.Mathematics.int3;
 using Bool  = System.Boolean;
 using Rotor = Unity.Mathematics.quaternion;
 
-
 public class PlayerStateMachine : MonoBehaviour, ICharacterController
 {
+    #region References
+
     [field:SerializeField] public KinematicCharacterMotor Motor { get; private set; }
+    [field:SerializeField] public Camera                  Cam   { get; private set; }
     [field:SerializeField] public Animator                Anims { get; private set; }
+
+    #endregion
+
+    #region Inputs
+
+    [SerializeField] private OrientationMethod orientationMethod = TowardsMovement;
     
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
+    
+    public F32x3 MoveInputVector { get; private set; }
+    public F32x3 LookInputVector { get; private set; }
+
+    #endregion
+    
+    #region Animator Hashes
+
+    public I32 WalkHash { get; private set; }
+    public I32 JumpHash { get; private set; }
+    public I32 IdleHash { get; private set; }
+
+    #endregion
+    
+
 
     //animator hashes
-    private I32 isWalkingHash;
-
-    private I32 isJumpingHash;
+    // private I32 isWalkingHash;
+    //
+    // private I32 isJumpingHash;
     //I32 isRunningHash;
 
     //input values
     private Vector2 currentMovementInput;
 
-    [ReadOnly]
-    [SerializeField] private Vector3 currentMovement;
-    //Vector3 currentRunMovement;
-    [ReadOnly]
-    [SerializeField] private Vector3 appliedMovement;
+    // [ReadOnly]
+    // [SerializeField] private Vector3 currentMovement;
+    // //Vector3 currentRunMovement;
+    // [ReadOnly]
+    // [SerializeField] private Vector3 appliedMovement;
+    
+    public F32x3 CameraPlanarDir { get; private set; }
+    public Rotor CameraPlanarRot { get; private set; }
 
     private Bool isMovementPressed;
     //Bool isRunPressed;
@@ -72,8 +102,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     private Bool isJumping           = false;
     private Bool requireNewJumpPress = false;
     private F32  initialJumpVelocity;
-    public  F32  maxJumpHeight = 4.0f;
-    private F32  maxJumpTime   = 0.75f;
+
 
     // state variables
     private PlayerBaseState    currentState;
@@ -84,13 +113,9 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     
     public Animator Animator { get { return Anims; } }
     //public CharacterController Motor { get { return motor; } }
-    public I32 IsJumpingHash { get { return isJumpingHash; } }
-    public I32 IsIdleHash    { get { return isWalkingHash; } }
-    public I32 IsWalkingHash { get { return isWalkingHash; } }
-    
-    public I32 WalkHash { get; private set; }
-    public I32 JumpHash { get; private set; }
-    public I32 IdleHash { get; private set; }
+    // public I32 IsJumpingHash { get { return isJumpingHash; } }
+    // public I32 IsIdleHash    { get { return isWalkingHash; } }
+    // public I32 IsWalkingHash { get { return isWalkingHash; } }
     
     public Bool RequireNewJumpPress {get { return requireNewJumpPress; } set {requireNewJumpPress = value; } }
     public Bool IsJumping { set {isJumping = value; } }
@@ -102,15 +127,16 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32 MoveGroundMaxSpeed { get { return moveGroundMaxSpeed; } }
     //public F32 RunMultiplier { get { return runMultiplier; } }
     public F32 InitialJumpVelocity { get { return initialJumpVelocity; } }
-    public F32 GroundedGravity { get { return groundedGravity; } }
-    public F32 Gravity { get { return gravity; } }
-    public F32 CurrentMovementY { get { return currentMovement.y; } set { currentMovement.y = value; } }
-    public F32 AppliedMovementY { get { return appliedMovement.y; } set { appliedMovement.y = value; } }
-    public F32 AppliedMovementX { get { return appliedMovement.x; } set { appliedMovement.x = value; } }
-    public F32 AppliedMovementZ { get { return appliedMovement.z; } set { appliedMovement.z = value; } }
-    public Vector2 CurrentMovementInput { get { return currentMovementInput; } }
+    public F32 GroundedGravity     { get { return groundedGravity; } }
+    public F32 Gravity             { get ; set; }
     
-    public Vector3 CurrentVelocity { get; private set; }
+    // public F32 CurrentMovementY { get { return currentMovement.y; } set { currentMovement.y = value; } }
+    // public F32 AppliedMovementY { get { return appliedMovement.y; } set { appliedMovement.y = value; } }
+    // public F32 AppliedMovementX { get { return appliedMovement.x; } set { appliedMovement.x = value; } }
+    // public F32 AppliedMovementZ { get { return appliedMovement.z; } set { appliedMovement.z = value; } }
+    //public Vector2 CurrentMovementInput { get { return currentMovementInput; } }
+    
+    //public Vector3 CurrentVelocity { get; private set; }
 
 
     #if UNITY_EDITOR
@@ -118,6 +144,9 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     {
         Motor = GetComponent<KinematicCharacterMotor>();
         Anims = GetComponent<Animator>();
+        
+        Cam   = GetComponent<Camera>();
+        Cam   = transform.parent.GetComponentInChildren<Camera>();
     }
     #endif
 
@@ -129,7 +158,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         //animator = GetComponent<Animator>();
 
         // setup state
-        states       = new PlayerStateFactory(currentContext: this);
+        states = new PlayerStateFactory(currentContext: this);
 
         //set hash references
         // isWalkingHash = Animator.StringToHash(name: "isWalking");
@@ -140,15 +169,15 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         JumpHash = Animator.StringToHash(name: "jump");
         IdleHash = Animator.StringToHash(name: "idle");
         
-        SetupJumpVariables();
+        //SetupJumpVariables();
     }
 
-    private void SetupJumpVariables()
-    {
-        F32 timeToApex = maxJumpTime * 0.5f;
-        gravity             = (-2    * maxJumpHeight) / pow(timeToApex, 2);
-        initialJumpVelocity = (2     * maxJumpHeight) / timeToApex;
-    }
+    // private void SetupJumpVariables()
+    // {
+    //     F32 timeToApex = maxJumpTime * 0.5f;
+    //     gravity             = (-2    * maxJumpHeight) / pow(timeToApex, 2);
+    //     initialJumpVelocity = (+2    * maxJumpHeight) / timeToApex;
+    // }
 
     private void OnEnable()
     {
@@ -175,47 +204,100 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     private void UpdateInputs()
     {
-        Moving();
-        Jumping();
-        //Running();
+        //if(!Application.isFocused) return;
+            
+        F32x2 __moveAxis = getMoveInput.Invoke();
+
+        F32x3 __moveInputVector = Vector3.ClampMagnitude(vector: new F32x3(x: __moveAxis.x, y: 0f, z: __moveAxis.y), maxLength: 1f);
+
+        Rotor __cameraRotation = Cam.transform.rotation;
+            
+        CameraPlanarDir = normalize(Vector3.ProjectOnPlane(vector: mul(__cameraRotation, forward()), planeNormal: Motor.CharacterUp));
+            
+        if (lengthsq(CameraPlanarDir) == 0f)
+        {
+            CameraPlanarDir = normalize(Vector3.ProjectOnPlane(vector: mul(__cameraRotation, up()), planeNormal: Motor.CharacterUp));
+        }
+        
+        CameraPlanarRot = Rotor.LookRotation(forward: CameraPlanarDir, up: Motor.CharacterUp);
+
+        // Move and look inputs
+        MoveInputVector = mul(CameraPlanarRot, __moveInputVector);
+
+        LookInputVector = CameraPlanarDir;
+
+        // LookInputVector = orientationMethod switch
+        // {
+        //     TowardsCamera   => CameraPlanarDir,
+        //     TowardsMovement => normalize(MoveInputVector),
+        //     _               => LookInputVector,
+        // };
+
+        // // Jumping input
+        // if (getJumpInput.Invoke())
+        // {
+        //     _timeSinceJumpRequested = 0f;
+        //     _jumpRequested          = true;
+        // }
     }
     
-    private void HandleRotation()
+    public void BeforeCharacterUpdate(F32 deltaTime)
     {
-        Vector3 positionToLookAt;
+        // This is called before the motor does anything
+    }
+    
+    /// <summary> Called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling </summary>
+    public void PostGroundingUpdate(F32 deltaTime)
+    {
+        currentState.UpdateStates();
+    }
 
-        positionToLookAt.x = currentMovement.x;
-        positionToLookAt.y = zero;
-        positionToLookAt.z = currentMovement.z;
+    public void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
+    {
+        //currentState.UpdateStates(ref currentVelocity, deltaTime);
+        currentState.UpdateVelocities(ref currentVelocity, deltaTime);
+    }
+    
+    /// <summary>
+    /// (Called by KinematicCharacterMotor during its update cycle)
+    /// This is where you tell your character what its rotation should be right now. 
+    /// This is the ONLY place where you should set the character's rotation
+    /// </summary>
+    public void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
+    {
+        //if(!Application.isFocused) return;
+        //if(CantMove) return;
         
-        positionToLookAt.Normalize();
-
-        Quaternion currentRotation = transform.rotation;
-
-        if (isMovementPressed)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(forward: positionToLookAt);
-            transform.rotation = Quaternion.Slerp(a: currentRotation, b: targetRotation, t: rotationFactorPerFrame * Time.deltaTime);
-        }
-    }
-
-    private void Moving()
-    {
-        //currentMovementInput = context.ReadValue<Vector2>();
-        currentMovementInput = getMoveInput.Invoke();
+        currentState.UpdateRotations(ref currentRotation, deltaTime);
         
-        // currentMovement.x    = currentMovementInput.x * MoveGroundMaxSpeed;
-        // currentMovement.z    = currentMovementInput.y * MoveGroundMaxSpeed;
-        //currentRunMovement.x = currentMovementInput.x * RunMultiplier;
-        //currentRunMovement.z = currentMovementInput.y * RunMultiplier;
+        //Gravity orientation
+        // F32x3   __currentUp            = mul(currentRotation, up());
+        // F32x3   __normalizedNegGravity = -normalizesafe(gravity);
+        // F32     __orientationSpeed     = 1 - exp(-bonusOrientationSharpness * deltaTime);
+        // Vector3 __smoothedGravityDir   = slerpsafe(__currentUp, __normalizedNegGravity, t: __orientationSpeed);
+        //
+        // currentRotation = Quaternion.FromToRotation(fromDirection: __currentUp, toDirection: __smoothedGravityDir) * currentRotation;
     }
 
-    private void Jumping()
-    {
-        //isJumpPressed = context.ReadValueAsButton();
-        isJumpPressed = getJumpInput.Invoke();
-        requireNewJumpPress = false;
-    }
+    
+    // private void HandleRotation()
+    // {
+    //     Vector3 positionToLookAt;
+    //
+    //     positionToLookAt.x = currentMovement.x;
+    //     positionToLookAt.y = zero;
+    //     positionToLookAt.z = currentMovement.z;
+    //     
+    //     positionToLookAt.Normalize();
+    //
+    //     Quaternion currentRotation = transform.rotation;
+    //
+    //     if (isMovementPressed)
+    //     {
+    //         Quaternion targetRotation = Quaternion.LookRotation(forward: positionToLookAt);
+    //         transform.rotation = Quaternion.Slerp(a: currentRotation, b: targetRotation, t: rotationFactorPerFrame * Time.deltaTime);
+    //     }
+    // }
     
     // private void OnEnable()
     // {
@@ -228,20 +310,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     //
     // }
 
-    public void BeforeCharacterUpdate(F32 deltaTime)
-    {
-        // This is called before the motor does anything
-    }
 
-    public void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
-    {
-        // This is called when the motor wants to know what its rotation should be right now
-    }
-
-    public void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
-    {
-        currentState.UpdateStates(ref currentVelocity, deltaTime);
-    }
 
     // Vector3 __targetMovementVelocity = Vector3.zero;
     // // This is called when the motor wants to know what its velocity should be right now
@@ -307,11 +376,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport)
     {
         // This is called after every hit detected in the motor, to give you a chance to modify the HitStabilityReport any way you want
-    }
-
-    public void PostGroundingUpdate(F32 deltaTime)
-    {
-        // This is called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling
     }
 
     public void OnDiscreteCollisionDetected(Collider hitCollider)

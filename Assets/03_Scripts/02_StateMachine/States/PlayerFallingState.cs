@@ -23,7 +23,7 @@ public sealed class PlayerFallingState : PlayerBaseState
         Debug.Log("Exiting Falling State");
     }
     
-    public override void UpdateState(ref Vector3 currentVelocity, float deltaTime) 
+    protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) 
     {
         const Single FALL_MULTIPLIER = 2f;
 
@@ -33,17 +33,5 @@ public sealed class PlayerFallingState : PlayerBaseState
         currentVelocity.y =  Max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
     }
     
-
-    public override void CheckSwitchStates() 
-    {
-        // if (Ctx.Motor.GroundingStatus.IsStableOnGround)
-        // {
-        //     SwitchState(Factory.Grounded());
-        // }
-        
-        // if (Ctx.IsRising)
-        // {
-        //     SwitchState(Factory.Rising());
-        // }
-    }
+    protected override void UpdateRotation(ref Quaternion currentRotation, Single deltaTime) { }
 }

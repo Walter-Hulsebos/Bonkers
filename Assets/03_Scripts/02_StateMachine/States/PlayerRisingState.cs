@@ -20,7 +20,8 @@ public sealed class PlayerRisingState : PlayerBaseState
         Debug.Log("Exiting Rising State");
     }
     
-    public override void UpdateState(ref Vector3 currentVelocity, float deltaTime) 
+    
+    protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) 
     {
         //Use Verlet integration to calculate the new velocity
         float __previousYVelocity = _currentYVelocity;
@@ -28,12 +29,6 @@ public sealed class PlayerRisingState : PlayerBaseState
         currentVelocity.y = Max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
     }
     
-    public override void CheckSwitchStates() 
-    {
-        // if (Ctx.IsFalling)
-        // {
-        //     SwitchState(Factory.Falling());
-        // }
-    }
+    protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) { }
     
 }
