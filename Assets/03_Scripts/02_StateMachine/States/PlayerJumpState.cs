@@ -37,7 +37,7 @@ public sealed class PlayerJumpState : PlayerBaseState
     public override void UpdateState(ref Vector3 currentVelocity, float deltaTime)
     {
         //TODO: CurrentMovementY???
-        currentVelocity = new Vector3(x: currentVelocity.x, Ctx.CurrentMovementY, z: currentVelocity.z);
+        currentVelocity = new Vector3(x: currentVelocity.x, Ctx.InitialJumpVelocity, z: currentVelocity.z);
         
         // // Add move input
         // if (currentMovementInput.sqrMagnitude > 0f)

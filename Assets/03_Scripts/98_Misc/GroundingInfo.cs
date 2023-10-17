@@ -16,11 +16,11 @@ namespace Bonkers
 
         [Sirenix.OdinInspector.ReadOnly]
         [ShowInInspector]
-        [SerializeField] private CharacterGroundingReport groundingReport => motor.GroundingStatus;
+        private CharacterGroundingReport groundingReport => motor.GroundingStatus;
 
         [Sirenix.OdinInspector.ReadOnly]
         [ShowInInspector]
-        [SerializeField] private bool isOnStableGround => motor.GroundingStatus.IsStableOnGround;
+        private bool isOnStableGround => motor.GroundingStatus.IsStableOnGround;
         
         private void Reset()
         {

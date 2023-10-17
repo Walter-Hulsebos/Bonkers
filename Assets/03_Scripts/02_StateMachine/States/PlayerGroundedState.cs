@@ -8,8 +8,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
       : base(currentContext, playerStateFactory) 
     {
         IsRootState = true;
-        // SetSubState(Factory.Walk());
-        // SetSubState(Factory.Idle());
+
         _subStateIdle = Factory.Idle();
         _subStateWalk = Factory.Walk();
     }
