@@ -19,8 +19,6 @@ public sealed class PlayerAirState : PlayerBaseState
         Debug.Log("Entering Air State");
         //Ctx.CurrentMovementY = Ctx.Gravity;
         //Ctx.AppliedMovementY = Ctx.Gravity;
-        
-        CheckSwitchSubStates();
     }
 
     public override void ExitState()

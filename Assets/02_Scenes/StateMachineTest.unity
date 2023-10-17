@@ -757,7 +757,6 @@ GameObject:
   - component: {fileID: 337923161435406723}
   - component: {fileID: 7614250290490971720}
   - component: {fileID: 4255053878460328338}
-  - component: {fileID: 7955836114591830394}
   m_Layer: 7
   m_Name: Camera
   m_TagString: Untagged
@@ -765,76 +764,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1137193097789428167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6240644172326870174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1401992209c437d4fa48462197da10d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isNotOwnerSpawnActions:
-  - _PersistentCalls:
-    - _Target: {fileID: 7387135026992392341}
-      _MethodName: set_enabled
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 0
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-    - _Target: {fileID: 536667594518558388}
-      _MethodName: set_enabled
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 0
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-    - _Target: {fileID: 1781829622547530247}
-      _MethodName: set_enabled
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 0
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-    - _Target: {fileID: 6634847981133957609}
-      _MethodName: set_enabled
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 0
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-    - _Target: {fileID: 751812982149802606}
-      _MethodName: set_enabled
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 0
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-  isNotOwnerDespawnActions: []
 --- !u!1 &1216856881279253169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,36 +1073,6 @@ Transform:
   - {fileID: 6223599589935642638}
   m_Father: {fileID: 8899812593654958988}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2788510516357568937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7363621126998554031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb666e1d5d3084a8b5fdc38a59860c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SyncPositionX: 1
-  SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
-  PositionThreshold: 0.0005
-  RotAngleThreshold: 0.01
-  ScaleThreshold: 0.01
-  UseQuaternionSynchronization: 0
-  UseQuaternionCompression: 0
-  UseHalfFloatPrecision: 0
-  InLocalSpace: 1
-  Interpolate: 1
-  SlerpPosition: 0
 --- !u!1 &3734334066894556265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,26 +1233,6 @@ Transform:
   - {fileID: 7344288065067832052}
   m_Father: {fileID: 8899812593654958988}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &6008069112594331111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8899812593654958989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2340582960
-  AlwaysReplicateAsRoot: 1
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!4 &6223599589935642638
 Transform:
   m_ObjectHideFlags: 0
@@ -1383,7 +1262,6 @@ GameObject:
   - component: {fileID: 1781829622547530247}
   - component: {fileID: 6634847981133957609}
   - component: {fileID: 751812982149802606}
-  - component: {fileID: 1137193097789428167}
   m_Layer: 7
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -1408,7 +1286,7 @@ MonoBehaviour:
   CapsuleHeight: 2
   CapsuleYOffset: 1
   CapsulePhysicsMaterial: {fileID: 0}
-  GroundDetectionExtraDistance: 0.5
+  GroundDetectionExtraDistance: 0
   MaxStableSlopeAngle: 60
   StableGroundLayers:
     serializedVersion: 2
@@ -1449,20 +1327,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
---- !u!114 &6860428200338017639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8899812593654958989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d59967f336034cadb7204248689bc715, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cinemachineBrain: {fileID: 4255053878460328338}
-  cinemachineCamera: {fileID: 7387135026992392341}
 --- !u!136 &7210602111365758166
 CapsuleCollider:
   m_ObjectHideFlags: 8
@@ -1531,7 +1395,6 @@ GameObject:
   - component: {fileID: 7210602111365758166}
   - component: {fileID: 6374798237301734640}
   - component: {fileID: 8571213045031048075}
-  - component: {fileID: 2788510516357568937}
   - component: {fileID: 8571213045031048076}
   m_Layer: 7
   m_Name: Character
@@ -1663,43 +1526,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &7955836114591830394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1021246721933133025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1401992209c437d4fa48462197da10d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isNotOwnerSpawnActions:
-  - _PersistentCalls:
-    - _Target: {fileID: 7614250290490971720}
-      _MethodName: set_enabled
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 0
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-    - _Target: {fileID: 4255053878460328338}
-      _MethodName: set_enabled
-      _PersistentArguments:
-      - _Type: 1
-        _Int: 0
-        _String: 
-        _X: 0
-        _Y: 0
-        _Z: 0
-        _W: 0
-        _Object: {fileID: 0}
-  isNotOwnerDespawnActions: []
 --- !u!4 &8418157014842606141
 Transform:
   m_ObjectHideFlags: 0
@@ -1864,10 +1690,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8899812593654958988}
-  - component: {fileID: 6860428200338017639}
   - component: {fileID: 4127000817190008719}
   - component: {fileID: 8762809233727836501}
-  - component: {fileID: 6008069112594331111}
   m_Layer: 7
   m_Name: PlayerWithCameraRigAndCharacter
   m_TagString: Untagged

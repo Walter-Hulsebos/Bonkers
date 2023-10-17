@@ -27,7 +27,7 @@ using Bool  = System.Boolean;
 using Rotor = Unity.Mathematics.quaternion;
 
 
-public class PlayerStateMachine : NetworkBehaviour, ICharacterController
+public class PlayerStateMachine : MonoBehaviour, ICharacterController
 {
     [field:SerializeField] public KinematicCharacterMotor Motor { get; private set; }
     [field:SerializeField] public Animator                Anims { get; private set; }
@@ -94,8 +94,8 @@ public class PlayerStateMachine : NetworkBehaviour, ICharacterController
     
     public Bool RequireNewJumpPress {get { return requireNewJumpPress; } set {requireNewJumpPress = value; } }
     public Bool IsJumping { set {isJumping = value; } }
-    public Bool IsFalling => (Motor.BaseVelocity.y < 0.0f) && !Motor.GroundingStatus.IsStableOnGround;
-    public Bool IsRising  => (Motor.BaseVelocity.y >= 0.05f) && !Motor.GroundingStatus.IsStableOnGround;
+    public Bool IsFalling => (Motor.BaseVelocity.y <= 0.0f) && !Motor.GroundingStatus.IsStableOnGround;
+    public Bool IsRising  => (Motor.BaseVelocity.y >  0.0f) && !Motor.GroundingStatus.IsStableOnGround;
     public Bool IsJumpPressed {  get { return isJumpPressed; } }
     public Bool IsMovementPressed { get { return isMovementPressed; } }
     //public Bool IsRunPressed { get { return isRunPressed; } }

@@ -6,6 +6,7 @@ using static UnityEngine.Mathf;
 public sealed class PlayerWalkState : PlayerBaseState
 {
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base (currentContext, playerStateFactory) { }
+    
     public override void EnterState() 
     {
         Debug.Log("Entering Walk State");
