@@ -31,8 +31,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495955398065020332}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.16371809, y: 6.696855e-23, z: 1.11139205e-23, w: 0.9865072}
-  m_LocalPosition: {x: 0, y: 1.2955132, z: -3.32387}
+  m_LocalRotation: {x: -0.18607244, y: 1.4301484e-15, z: 2.7084117e-16, w: 0.982536}
+  m_LocalPosition: {x: 0, y: 1.4555836, z: -2.4803848}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -103,10 +103,10 @@ MonoBehaviour:
   Radius: 10
   Orbits:
     Top:
-      Radius: 1
-      Height: 4
+      Radius: 2
+      Height: 3.5
     Center:
-      Radius: 4
+      Radius: 3
       Height: 1
     Bottom:
       Radius: 1
@@ -124,7 +124,7 @@ MonoBehaviour:
       Time: 2
     Restrictions: 0
   VerticalAxis:
-    Value: 12
+    Value: 13
     Center: 12
     Range: {x: -23, y: 89}
     Wrap: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
     Enabled: 1
     DistanceLimit: 0
     MinimumOcclusionTime: 0
-    CameraRadius: 0.1
+    CameraRadius: 1
     Strategy: 0
     MaximumEffort: 4
     SmoothingTime: 0
@@ -424,8 +424,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1995602406158088890}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.16371809, y: 6.696855e-23, z: 1.11139205e-23, w: 0.9865072}
-  m_LocalPosition: {x: 0, y: 1.2955132, z: -3.32387}
+  m_LocalRotation: {x: -0.18607244, y: 1.4301484e-15, z: 2.7084117e-16, w: 0.982536}
+  m_LocalPosition: {x: 0, y: 1.4555836, z: -2.4803848}
   m_LocalScale: {x: 1.7499995, y: 1.75, z: 1.7499998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1428,7 +1428,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 0ac1cbf67c323a447979818bd5b605ad, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

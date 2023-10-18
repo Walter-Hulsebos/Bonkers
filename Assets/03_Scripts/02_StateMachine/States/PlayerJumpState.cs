@@ -15,7 +15,7 @@ public sealed class PlayerJumpState : PlayerBaseState
     
     #region Variables
 
-    [SerializeField] private F32 maxJumpHeight = 4.0f;
+    [SerializeField] private F32 maxJumpHeight = 1.0f;
     [SerializeField] private F32 maxJumpTime   = 0.75f;
 
     private F32  _jumpUpSpeed;
