@@ -17,8 +17,12 @@ namespace Bonkers.Controls
     public sealed class AxisControl : MonoBehaviour, 
                                       ISettableControl<F32>
     {
+        [HideInInspector]
+        [SerializeField] private Boolean showValue = true;
+        
         #if ODIN_INSPECTOR
         [field:ReadOnly]
+        //[field:ShowIf(nameof(showPlayerInput))]
         #endif
         [field:SerializeField] public F32 Value { get; internal set; }
         
@@ -28,13 +32,14 @@ namespace Bonkers.Controls
         [field:SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
         
+        [HideInInspector]
+        [SerializeField] private Boolean showPlayerInput = true;
+        
         #if ODIN_INSPECTOR
         [ShowIf(nameof(showPlayerInput))]
         #endif
         [SerializeField] private PlayerInput playerInput = null;
         
-        [HideInInspector]
-        [SerializeField] private Boolean showPlayerInput = true;
 
         #if UNITY_EDITOR
         [ContextMenu(itemName: "Toggle Show Player Input")]
@@ -44,6 +49,17 @@ namespace Bonkers.Controls
             UnityEditor.Undo.RecordObject(this, name: "Change Show Player Input");
             
             showPlayerInput = !showPlayerInput;
+            
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
+        }
+        
+        [ContextMenu(itemName: "Toggle Show Value")]
+        private void ToggleShowValue()
+        {
+            //Mark as dirty so that Prefab auto-save will save the changes
+            UnityEditor.Undo.RecordObject(this, name: "Change Show Value");
+            
+            showValue = !showValue;
             
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
         }

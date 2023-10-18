@@ -3,7 +3,7 @@ namespace Bonkers.Controls
     #if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
     #endif
-
+    
     using UnityEngine;
 
     using F32x2 = Unity.Mathematics.float2;
@@ -41,5 +41,10 @@ namespace Bonkers.Controls
         [InlineEditor]
         #endif
         [SerializeField] private AxisControl axisY;
+
+        // private void Update()
+        // {
+        //     //Debug.Log($"AxisX2Control: {Value}");
+        // }
     }
 }

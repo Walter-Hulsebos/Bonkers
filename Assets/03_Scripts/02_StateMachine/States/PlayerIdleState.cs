@@ -1,32 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+
 using UnityEngine;
 
-public class PlayerIdleState : PlayerBaseState
+using F32 = System.Single;
+
+public sealed class PlayerIdleState : PlayerBaseState
 {
+    #region Constructor
+
     public PlayerIdleState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
-    public override void EnterState() 
+    
+    #endregion
+    
+    #region Enter/Exit
+    
+    public override void EnterState()
     {
-        Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
-        Ctx.Animator.SetBool(Ctx.IsRunningHash, false);
-        Ctx.AppliedMovementX = 0;
-        Ctx.AppliedMovementZ = 0;
+        //Debug.Log("Entering Idle State");
+        //Ctx.Animator.SetBool(Ctx.IsIdleHash, value: true);
+        Ctx.Anims.SetTrigger(Ctx.IdleHash);
     }
-    public override void UpdateState()
+
+    public override void ExitState()
     {
-        CheckSwitchStates();
+        //Debug.Log("Exiting Idle State");
+        //Ctx.Animator.SetBool(Ctx.IsIdleHash, value: false);
     }
-    public override void ExitState() { }
-    public override void InitialSubState() { }
-    public override void CheckSwitchStates() 
+    
+    #endregion
+
+    #region Update
+    
+    protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
     {
-        if (Ctx.IsMovementPressed && Ctx.IsRunPressed)
-        {
-            SwitchState(Factory.Run());
-        }
-        else if (Ctx.IsMovementPressed)
-        {
-            SwitchState(Factory.Walk());
-        }
+        currentVelocity = Vector3.zero;
     }
+
+    protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
+    {
+        
+    }
+
+    #endregion
+    
 }

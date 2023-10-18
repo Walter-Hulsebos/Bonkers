@@ -1,80 +1,113 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class PlayerJumpState : PlayerBaseState
+using static UnityEngine.Mathf;
+using static Unity.Mathematics.math;
+using static ProjectDawn.Mathematics.math2;
+
+using F32   = System.Single;
+using F32x3 = Unity.Mathematics.float3;
+using Bool  = System.Boolean;
+
+[Serializable]
+public sealed class PlayerJumpState : PlayerBaseState
 {
-    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
-      : base(currentContext, playerStateFactory) {
+    
+    #region Variables
+
+    [SerializeField] private F32 maxJumpHeight = 4.0f;
+    [SerializeField] private F32 maxJumpTime   = 0.75f;
+
+    private F32  _jumpUpSpeed;
+    private Bool _hasJumped = false;
+
+    #endregion
+
+    #region Constructor
+
+    public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
+    {
         IsRootState = true;
-        InitialSubState();
+        
+        SetupJumpVariables();
     }
+    
+    private void SetupJumpVariables()
+    {
+        F32 __timeToApex = maxJumpTime * 0.5f;
+        Ctx.Gravity  = (-2             * maxJumpHeight) / pow(__timeToApex, 2);
+        _jumpUpSpeed = (+2             * maxJumpHeight) / __timeToApex;
+    }
+
+    #endregion
+
+    #region Enter/Exit
+
     public override void EnterState()
     {
-        HandleJump();
-    }
-    public override void UpdateState() 
-    {
-        CheckSwitchStates();
-        HandleGravity();
+        //Debug.Log("Entering Jump State");
+        //Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
+        Ctx.Anims.SetTrigger(Ctx.JumpHash);
+        
+        _hasJumped = false;
     }
     public override void ExitState()
     {
-       Ctx.Animator.SetBool(Ctx.IsJumpingHash, false);
-        if(Ctx.IsJumpPressed)
-        {
-            Ctx.RequireNewJumpPress = true;
-        }
+        //Debug.Log("Exiting Jump State");
+        //Ctx.Animator.SetBool(Ctx.IsJumpingHash, false);
+        
+        _hasJumped = false;
     }
-    public override void InitialSubState() 
+    
+    #endregion
+
+    #region Update
+    
+    protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
-        if (!Ctx.IsMovementPressed && !Ctx.IsRunPressed)
+        //_jumpedThisFrame =  false;
+        //Ctx.TimeSinceJumpRequested += deltaTime;
+        
+        // Calculate jump direction before ungrounding
+        F32x3 __jumpDirection = Ctx.Motor.CharacterUp;
+
+        if (Ctx.Motor.GroundingStatus is
+            {
+                FoundAnyGround:   true, 
+                IsStableOnGround: false,
+            })
         {
-            SetSubState(Factory.Idle());
+            __jumpDirection = Ctx.Motor.GroundingStatus.GroundNormal;
         }
-        else if (Ctx.IsMovementPressed && !Ctx.IsRunPressed)
-        {
-            SetSubState(Factory.Walk());
-        }
-        else
-        {
-            SetSubState(Factory.Run());
-        }
+
+        // Makes the character skip ground probing/snapping on its next update. 
+        // NOTE: If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+        Ctx.Motor.ForceUnground();
+
+        // Add to the return velocity and reset jump state
+        currentVelocity += (Vector3)(__jumpDirection * _jumpUpSpeed - (F32x3)Vector3.Project(vector: currentVelocity, onNormal: Ctx.Motor.CharacterUp));
+        //currentVelocity  += (Vector3)(Ctx.MoveInputVector * jumpScalableForwardSpeed);
+        Ctx.JumpRequested          =  false;
+        Ctx.JumpConsumed           =  true;
+        Ctx.JumpedThisPhysicsFrame =  true;
+
+        _hasJumped = true;
     }
-    public override void CheckSwitchStates() 
+    
+    protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) { }
+    
+    #endregion
+
+    #region Switch States
+    
+    public override void CheckSwitchStates()
     {
-        if(Ctx.CharacterController.isGrounded)
+        if (_hasJumped) //TODO: Could probably be done with JumpedThisPhysicsFrame? Not 100% sure.
         {
-            SwitchState(Factory.Grounded());
+            SwitchState(Factory.Air());
         }
     }
-    void HandleJump()
-    {
-        Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
 
-        Ctx.IsJumping = true;
-        Ctx.CurrentMovementY = Ctx.InitialJumpVelocity;
-        Ctx.AppliedMovementY = Ctx.InitialJumpVelocity;
-    }
-
-    void HandleGravity()
-    {
-        bool isFalling = Ctx.CurrentMovementY <= 0.0f || !Ctx.IsJumpPressed;
-        float fallMultiplier = 2.0f;
-
-        if (isFalling)
-        {
-            float previousYVelocity = Ctx.CurrentMovementY;
-            Ctx.CurrentMovementY = Ctx.CurrentMovementY + (Ctx.Gravity * fallMultiplier * Time.deltaTime);
-            Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * .5f, -20.0f);
-
-        }
-        else
-        {
-            float previousYVelocity = Ctx.CurrentMovementY;
-            Ctx.CurrentMovementY = Ctx.CurrentMovementY + (Ctx.Gravity * Time.deltaTime);
-            Ctx.AppliedMovementY = (previousYVelocity + Ctx.CurrentMovementY) * .5f;
-
-        }
-    }
+    #endregion
+    
 }
