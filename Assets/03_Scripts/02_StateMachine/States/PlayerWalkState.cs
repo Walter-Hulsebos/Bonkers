@@ -27,22 +27,31 @@ public sealed class PlayerWalkState : PlayerBaseState
     [SerializeField] private F32 orientSharpness = 20f;
 
     #endregion
+
+    #region Constructor
     
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base (currentContext, playerStateFactory) { }
     
+    #endregion
+
+    #region Enter/Exit
+    
     public override void EnterState() 
     {
-        Debug.Log("Entering Walk State");
-        Ctx.Animator.SetTrigger(Ctx.WalkHash);
+        //Debug.Log("Entering Walk State");
+        Ctx.Anims.SetTrigger(Ctx.WalkHash);
         //Ctx.Animator.SetBool(Ctx.IsWalkingHash, true);
     }
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Walk State");
+        //Debug.Log("Exiting Walk State");
         //Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
     }
     
+    #endregion
+
+    #region Update
     
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
     {
@@ -68,8 +77,6 @@ public sealed class PlayerWalkState : PlayerBaseState
 
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
     {
-        if(orientSharpness <= 0f) return;
-        
         if(lengthsq(Ctx.LookInputVector).Approx(0f)) return;
         
         // Smoothly interpolate from current to target look direction
@@ -77,9 +84,12 @@ public sealed class PlayerWalkState : PlayerBaseState
         F32x3 __forward = Ctx.Motor.CharacterForward;
         F32x3 __look    = Ctx.LookInputVector;
         
-        F32x3 __smoothedLookInputDirection = normalize(slerp(start: __forward, end: __look, t: 1 - exp(-orientSharpness * deltaTime)));
+        F32x3 __smoothedLookInputDirection = normalizesafe(slerp(start: __forward, end: __look, t: 1 - exp(-orientSharpness * deltaTime)));
 
         // Set the current rotation (which will be used by the KinematicCharacterMotor)
         currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: Ctx.Motor.CharacterUp);
     }
+    
+    #endregion
+    
 }

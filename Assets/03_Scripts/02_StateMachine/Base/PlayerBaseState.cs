@@ -17,7 +17,7 @@ public abstract class PlayerBaseState
     protected PlayerStateMachine Ctx { get { return ctx; }}
     protected PlayerStateFactory Factory { get { return factory; }}
     
-    protected bool canUpdate = true;
+    //protected bool canUpdate = true;
 
     public PlayerBaseState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
     {
@@ -28,7 +28,7 @@ public abstract class PlayerBaseState
     public abstract void EnterState();
     public virtual void ExitState()
     {
-        canUpdate = false;
+        //canUpdate = false;
     }
     
     public virtual void CheckSwitchStates() { }
@@ -39,7 +39,7 @@ public abstract class PlayerBaseState
 
     public void UpdateStates() 
     {
-        if (!canUpdate) return;
+        //if (!canUpdate) return;
 
         if (currentSubState != null)
         {
@@ -52,7 +52,7 @@ public abstract class PlayerBaseState
 
     public void UpdateVelocities(ref Vector3 currentVelocity, F32 deltaTime)
     {
-        if (!canUpdate) return;
+        //if (!canUpdate) return;
 
         if (currentSubState != null)
         {
@@ -63,7 +63,7 @@ public abstract class PlayerBaseState
     
     public void UpdateRotations(ref Quaternion currentRotation, F32 deltaTime)
     {
-        if (!canUpdate) return;
+        //if (!canUpdate) return;
 
         if (currentSubState != null)
         {
@@ -81,11 +81,11 @@ public abstract class PlayerBaseState
         
         //current state exits state
         ExitState();
-        this.canUpdate = false;
+        //this.canUpdate = false;
 
         // new state enters state
         newState.EnterState();
-        newState.canUpdate = true;
+        //newState.canUpdate = true;
 
         if (isRootState)
         {
@@ -115,14 +115,14 @@ public abstract class PlayerBaseState
         if (currentSubState != null)
         {
             currentSubState.ExitState();
-            currentSubState.canUpdate = false;   
+            //currentSubState.canUpdate = false;   
         }
         
         currentSubState = newSubState;
         newSubState.SetSuperState(this);
         
         currentSubState.EnterState();
-        currentSubState.canUpdate = true;
+        //currentSubState.canUpdate = true;
     }
 
 }

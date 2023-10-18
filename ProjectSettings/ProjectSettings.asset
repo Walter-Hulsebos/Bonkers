@@ -135,7 +135,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: 1.0.0.8
+  bundleVersion: 1.0.0.12
   preloadedAssets:
   - {fileID: 1263217620473054, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
   - {fileID: 6887082421333397361, guid: 399aa07b264ce504d9583fe50775e85f, type: 3}
@@ -160,12 +160,12 @@ PlayerSettings:
   applicationIdentifier:
     Standalone: com.common-games.bonkers
   buildNumber:
-    Standalone: 21
+    Standalone: 25
     VisionOS: 0
-    iPhone: 21
+    iPhone: 25
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 22
+  AndroidBundleVersionCode: 26
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -747,7 +747,7 @@ PlayerSettings:
     PS5: UNITY_POST_PROCESSING_STACK_V2
     QNX: UNITY_POST_PROCESSING_STACK_V2
     Stadia: UNITY_POST_PROCESSING_STACK_V2
-    Standalone: UNITY_POST_PROCESSING_STACK_V2;DISABLE_MISSING_SCRIPT_EDITOR;NOBLE_CONNECT;NOBLE_CONNECT_1;NOBLE_CONNECT_1_37;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_VALIDATOR;ODIN_VALIDATOR_3_1
+    Standalone: BUILD_TYPE_INDEV;BUILD_PLATFORM_PC;BUILD_ARCH_WINDOWSX86;BUILD_BACKEND_MONO;UNITY_POST_PROCESSING_STACK_V2;DISABLE_MISSING_SCRIPT_EDITOR;NOBLE_CONNECT;NOBLE_CONNECT_1;NOBLE_CONNECT_1_37;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_VALIDATOR;ODIN_VALIDATOR_3_1
     VisionOS: UNITY_POST_PROCESSING_STACK_V2
     WebGL: UNITY_POST_PROCESSING_STACK_V2
     XboxOne: UNITY_POST_PROCESSING_STACK_V2

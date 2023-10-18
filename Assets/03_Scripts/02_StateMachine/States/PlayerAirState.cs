@@ -9,6 +9,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using static UnityEngine.Mathf;
 using static Unity.Mathematics.math;
+using static ProjectDawn.Mathematics.math2;
 
 using static Bonkers.Characters.OrientationMethod;
 
@@ -20,12 +21,18 @@ public sealed class PlayerAirState : PlayerBaseState
 
     #region Variables
     
-    [SerializeField] private F32 maxSpeed      = 10f;
-    [SerializeField] private F32 airAccelSpeed = 15f;
-    [SerializeField] private F32 drag          = 0.1f;
+    [SerializeField] private F32 maxSpeed        = 10f;
+    [SerializeField] private F32 accSpeed        = 15f;
+    [SerializeField] private F32 drag            = 0.1f;
+    [SerializeField] private F32 orientSharpness = 20f;
+    
+    private PlayerBaseState _subStateFalling;
+    private PlayerBaseState _subStateRising;
 
     #endregion
-    
+
+    #region Constructor
+
     public PlayerAirState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) 
         : base(currentContext, playerStateFactory) 
     {
@@ -35,20 +42,23 @@ public sealed class PlayerAirState : PlayerBaseState
         _subStateRising  = Factory.Rising();
     }
 
-    private PlayerBaseState _subStateFalling;
-    private PlayerBaseState _subStateRising;
+    #endregion
 
+    #region Enter/Exit
+    
     public override void EnterState() 
     {
-        Debug.Log("Entering Air State");
-        //Ctx.CurrentMovementY = Ctx.Gravity;
-        //Ctx.AppliedMovementY = Ctx.Gravity;
+        //Debug.Log("Entering Air State");
     }
 
     public override void ExitState()
     {
-        Debug.Log("Exiting Air State");
+        //Debug.Log("Exiting Air State");
     }
+    
+    #endregion
+
+    #region Update
     
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
     {
@@ -56,7 +66,7 @@ public sealed class PlayerAirState : PlayerBaseState
 
         if (lengthsq(__moveInputVector).Approx(0f)) return;
 
-        F32x3 __addedVelocity = __moveInputVector * airAccelSpeed * deltaTime;
+        F32x3 __addedVelocity = __moveInputVector * accSpeed * deltaTime;
 
         F32x3 __currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(vector: currentVelocity, planeNormal: Ctx.Motor.CharacterUp);
 
@@ -90,91 +100,27 @@ public sealed class PlayerAirState : PlayerBaseState
 
         // Apply added velocity
         currentVelocity += (Vector3)__addedVelocity;
-
-        // if (lengthsq(_moveInputVector) > 0f)
-        // {
-        //     F32x3 __addedVelocity = _moveInputVector * airAccelerationSpeed * deltaTime;
-        //     
-        //     F32x3 __currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(vector: currentVelocity, planeNormal: motor.CharacterUp);
-        //
-        //     // Limit air velocity from inputs
-        //     if (length(__currentVelocityOnInputsPlane) < maxAirMoveSpeed)
-        //     {
-        //         // clamp addedVel to make total vel not exceed max vel on inputs plane
-        //         F32x3 __newTotal = Vector3.ClampMagnitude(vector: __currentVelocityOnInputsPlane + __addedVelocity, maxLength: maxAirMoveSpeed);
-        //         __addedVelocity = __newTotal - __currentVelocityOnInputsPlane;
-        //     }
-        //     else
-        //     {
-        //         // Make sure added vel doesn't go in the direction of the already-exceeding velocity
-        //         if (dot(__currentVelocityOnInputsPlane, __addedVelocity) > 0f)
-        //         {
-        //             __addedVelocity = Vector3.ProjectOnPlane(vector: __addedVelocity, planeNormal: normalize(__currentVelocityOnInputsPlane));
-        //         }
-        //     }
-        //
-        //     // Prevent air-climbing sloped walls
-        //     if (motor.GroundingStatus.FoundAnyGround)
-        //     {
-        //         if (dot((F32x3)currentVelocity + __addedVelocity, __addedVelocity) > 0f)
-        //         {
-        //             F32x3 __perpenticularObstructionNormal = normalize(cross
-        //                                                         (
-        //                                                                    cross
-        //                                                                    (
-        //                                                                        motor.CharacterUp,
-        //                                                                        motor.GroundingStatus.GroundNormal
-        //                                                                    ),
-        //                                                                    motor.CharacterUp
-        //                                                                ));
-        //
-        //             __addedVelocity = Vector3.ProjectOnPlane(vector: __addedVelocity, planeNormal: __perpenticularObstructionNormal);
-        //         }
-        //     }
-        //
-        //     // Apply added velocity
-        //     currentVelocity += (Vector3)__addedVelocity;
-        // }
-        
-        // bool __isFalling = Ctx.CurrentMovementY <= 0.0f || !Ctx.IsJumpPressed;
-        //
-        // const Single FALL_MULTIPLIER = 2.0f;
-        //
-        // float __previousYVelocity = Ctx.CurrentMovementY;
-        //
-        // if (__isFalling)
-        // {
-        //     Ctx.CurrentMovementY += (Ctx.Gravity * FALL_MULTIPLIER * Time.deltaTime);
-        //     Ctx.AppliedMovementY =  Max((__previousYVelocity + Ctx.CurrentMovementY) * .5f, -20.0f);
-        //
-        // }
-        // else
-        // {
-        //     Ctx.CurrentMovementY += (Ctx.Gravity * Time.deltaTime);
-        //     Ctx.AppliedMovementY =  (__previousYVelocity + Ctx.CurrentMovementY) * .5f;
-        // }
     }
 
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
     {
+        if(lengthsq(Ctx.LookInputVector).Approx(0f)) return;
         
+        // Smoothly interpolate from current to target look direction
+        //Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Exp(power: -orientationSharpness * deltaTime));
+        F32x3 __forward = Ctx.Motor.CharacterForward;
+        F32x3 __look    = Ctx.LookInputVector;
+        
+        F32x3 __smoothedLookInputDirection = normalizesafe(slerp(start: __forward, end: __look, t: 1 - exp(-orientSharpness * deltaTime)));
+
+        // Set the current rotation (which will be used by the KinematicCharacterMotor)
+        currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: Ctx.Motor.CharacterUp);
     }
+    
+    #endregion
 
-    // public override void CheckSwitchSubStates()
-    // {
-    //     if(!Ctx.Motor.GroundingStatus.IsStableOnGround)
-    //     {
-    //         if (Ctx.IsFalling)
-    //         {
-    //             SetSubState(_subStateFalling);
-    //         }
-    //         else if (Ctx.IsRising)
-    //         {
-    //             SetSubState(_subStateRising);
-    //         }
-    //     }
-    // }
-
+    #region Switch States
+    
     public override void CheckSwitchStates() 
     {
         if(Ctx.Motor.GroundingStatus.IsStableOnGround)
@@ -192,24 +138,12 @@ public sealed class PlayerAirState : PlayerBaseState
                 SwitchSubState(_subStateRising);
             }
             
-            if (Ctx.IsJumpPressed && !Ctx.RequireNewJumpPress)
+            if (Ctx.JumpRequested)
             {
                 //Double Jump
             }
         }
-        
-        
-        
-        // else
-        // {
-        //     if (Ctx.IsFalling)
-        //     {
-        //         SwitchState(Factory.Falling());
-        //     }
-        //     else
-        //     {
-        //         SwitchState(Factory.Rising());
-        //     }
-        // }
     }
+    
+    #endregion
 }

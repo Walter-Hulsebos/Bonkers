@@ -1,21 +1,25 @@
 using System;
 using UnityEngine;
 
-using F32  = System.Single;
 using static UnityEngine.Mathf;
 using static Unity.Mathematics.math;
+using static ProjectDawn.Mathematics.math2;
+
+using F32   = System.Single;
+using F32x3 = Unity.Mathematics.float3;
+using Bool  = System.Boolean;
 
 [Serializable]
 public sealed class PlayerJumpState : PlayerBaseState
 {
+    
     #region Variables
 
     [SerializeField] private F32 maxJumpHeight = 4.0f;
     [SerializeField] private F32 maxJumpTime   = 0.75f;
 
-    private F32 _initialJumpVelocity;
-    
-    private Boolean _isJumping = false;
+    private F32  _jumpUpSpeed;
+    private Bool _hasJumped = false;
 
     #endregion
 
@@ -27,80 +31,83 @@ public sealed class PlayerJumpState : PlayerBaseState
         
         SetupJumpVariables();
     }
+    
+    private void SetupJumpVariables()
+    {
+        F32 __timeToApex = maxJumpTime * 0.5f;
+        Ctx.Gravity  = (-2             * maxJumpHeight) / pow(__timeToApex, 2);
+        _jumpUpSpeed = (+2             * maxJumpHeight) / __timeToApex;
+    }
 
     #endregion
 
-    #region Methods
+    #region Enter/Exit
 
     public override void EnterState()
     {
-        Debug.Log("Entering Jump State");
+        //Debug.Log("Entering Jump State");
         //Ctx.Animator.SetBool(Ctx.IsJumpingHash, true);
-        Ctx.Animator.SetTrigger(Ctx.JumpHash);
+        Ctx.Anims.SetTrigger(Ctx.JumpHash);
         
-        _isJumping = true;
+        _hasJumped = false;
     }
     public override void ExitState()
     {
-        Debug.Log("Exiting Jump State");
+        //Debug.Log("Exiting Jump State");
         //Ctx.Animator.SetBool(Ctx.IsJumpingHash, false);
-        _isJumping = false;
         
-        if(Ctx.IsJumpPressed)
-        {
-            Ctx.RequireNewJumpPress = true;
-        }
+        _hasJumped = false;
     }
+    
+    #endregion
+
+    #region Update
     
     protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
-        //TODO: CurrentMovementY???
-        currentVelocity = new Vector3(x: currentVelocity.x, y: _initialJumpVelocity, z: currentVelocity.z);
+        //_jumpedThisFrame =  false;
+        //Ctx.TimeSinceJumpRequested += deltaTime;
         
-        // // Add move input
-        // if (currentMovementInput.sqrMagnitude > 0f)
-        // {
-        //     __targetMovementVelocity = (currentMovementInput * moveAirMaxSpeed);
-        //
-        //     // Prevent climbing on un-stable slopes with air movement
-        //     if (Motor.GroundingStatus.FoundAnyGround)
-        //     {
-        //         Vector3 perpenticularObstructionNormal = Vector3.Cross(lhs: Vector3.Cross(lhs: Motor.CharacterUp, rhs: Motor.GroundingStatus.GroundNormal), rhs: Motor.CharacterUp).normalized;
-        //         __targetMovementVelocity = Vector3.ProjectOnPlane(vector: __targetMovementVelocity, planeNormal: perpenticularObstructionNormal);
-        //     }
-        //
-        //     Vector3 velocityDiff = Vector3.ProjectOnPlane(vector: __targetMovementVelocity - currentVelocity, planeNormal: Vector3.up * Gravity);
-        //     currentVelocity += velocityDiff * (moveAirAccSpeed * deltaTime);
-        // }
-        //
-        // // Gravity
-        // //currentVelocity += Gravity * deltaTime;
-        //
-        // // Drag
-        // //currentVelocity *= (1f / (1f + (Drag * deltaTime)));
+        // Calculate jump direction before ungrounding
+        F32x3 __jumpDirection = Ctx.Motor.CharacterUp;
+
+        if (Ctx.Motor.GroundingStatus is
+            {
+                FoundAnyGround:   true, 
+                IsStableOnGround: false,
+            })
+        {
+            __jumpDirection = Ctx.Motor.GroundingStatus.GroundNormal;
+        }
+
+        // Makes the character skip ground probing/snapping on its next update. 
+        // NOTE: If this line weren't here, the character would remain snapped to the ground when trying to jump. Try commenting this line out and see.
+        Ctx.Motor.ForceUnground();
+
+        // Add to the return velocity and reset jump state
+        currentVelocity += (Vector3)(__jumpDirection * _jumpUpSpeed - (F32x3)Vector3.Project(vector: currentVelocity, onNormal: Ctx.Motor.CharacterUp));
+        //currentVelocity  += (Vector3)(Ctx.MoveInputVector * jumpScalableForwardSpeed);
+        Ctx.JumpRequested          =  false;
+        Ctx.JumpConsumed           =  true;
+        Ctx.JumpedThisPhysicsFrame =  true;
+
+        _hasJumped = true;
     }
     
     protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) { }
     
+    #endregion
+
+    #region Switch States
+    
     public override void CheckSwitchStates()
     {
-        if (_isJumping)
+        if (_hasJumped) //TODO: Could probably be done with JumpedThisPhysicsFrame? Not 100% sure.
         {
             SwitchState(Factory.Air());
         }
     }
 
     #endregion
-
-    #region Custom Methods
-
-    private void SetupJumpVariables()
-    {
-        F32 __timeToApex = maxJumpTime * 0.5f;
-        Ctx.Gravity          = (-2    * maxJumpHeight) / pow(__timeToApex, 2);
-        _initialJumpVelocity = (+2    * maxJumpHeight) / __timeToApex;
-    }
-
-    #endregion
-
+    
 }

@@ -509,18 +509,6 @@ namespace Bonkers.Characters
 
         public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport) { }
 
-        public void AddVelocity(Vector3 velocity)
-        {
-            switch (CurrentCharacterState)
-            {
-                case CharacterState.Default:
-                {
-                    _internalVelocityAdd += (F32x3)velocity;
-                    break;
-                }
-            }
-        }
-
         public void ProcessHitStabilityReport
         (
             Collider               hitCollider,
