@@ -1,6 +1,95 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-5610759192572712543
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5886119a5c7b34d8872ab527ca3e1b, type: 3}
+  m_Name: SuperUnityBuildSettings
+  m_EditorClassIdentifier: 
+  _basicSettings:
+    baseBuildFolder: Builds
+    buildPath: $VERSION/$RELEASE_TYPE/$PLATFORM/$ARCHITECTURE/$SCRIPTING_BACKEND
+    openFolderPostBuild: 1
+    constantsFileLocation: Assets\99_Settings\SuperUnityBuild
+  _productParameters:
+    buildCounter: 15
+    buildVersion: 1.0.0.15
+    versionTemplate: 1.0.0.$BUILD
+    autoGenerate: 1
+    syncWithPlayerSettings: 0
+  _releaseTypeList:
+    releaseTypes:
+    - typeName: InDev
+      bundleIdentifier: com.common-games.bonkers
+      companyName: Common-Games
+      productName: Bonkers
+      syncAppNameWithProduct: 1
+      appBuildName: Bonkers
+      buildOptions: 0
+      customDefines: 
+      sceneList:
+        releaseScenes:
+        - fileGUID: 53599d8246d8f3a4ea17b8fc3b2f4d4f
+          sceneActive: 1
+        - fileGUID: 49c21577d8fcba049bf2f94ab33e2dc2
+          sceneActive: 1
+        - fileGUID: 92df5b71179442d4392a8a7532385994
+          sceneActive: 1
+  _platformList:
+    platforms:
+    - {fileID: 6987302496331356052}
+  _projectConfigurations:
+    configSet:
+      _Buckets: ffffffff03000000ffffffffffffffffffffffff0100000002000000
+      _HashCodes: c4037b46cad28e79184c3e72241c1057000000000000000000000000
+      _Next: ffffffffffffffff00000000ffffffff000000000000000000000000
+      _Count: 4
+      _Version: 4
+      _FreeList: -1
+      _FreeCount: 0
+      _Keys:
+      - InDev/PC/Windows x86 (App)/Mono
+      - InDev/PC/Windows x86 (App)
+      - InDev/PC
+      - InDev
+      - 
+      - 
+      - 
+      _Values:
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys:
+        - InDev/PC/Windows x86 (App)/Mono
+      - enabled: 1
+        childKeys:
+        - InDev/PC/Windows x86 (App)
+      - enabled: 1
+        childKeys:
+        - InDev/PC
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+      - enabled: 1
+        childKeys: []
+    showViewOptions: 0
+    showConfigs: 0
+    showBuildInfo: 0
+    hideDisabled: 0
+    treeView: 0
+    selectedKeyChain: 
+  _preBuildActions:
+    buildActions: []
+  _postBuildActions:
+    buildActions: []
+--- !u!114 &6987302496331356052
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,90 +129,3 @@ MonoBehaviour:
     enabled: 0
   platformName: PC
   targetGroup: 1
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d5886119a5c7b34d8872ab527ca3e1b, type: 3}
-  m_Name: SuperUnityBuildSettings
-  m_EditorClassIdentifier: 
-  _basicSettings:
-    baseBuildFolder: Builds
-    buildPath: $VERSION/$RELEASE_TYPE/$PLATFORM/$ARCHITECTURE/$SCRIPTING_BACKEND
-    openFolderPostBuild: 1
-    constantsFileLocation: Assets\99_Setting\SuperUnityBuild
-  _productParameters:
-    buildCounter: 8
-    buildVersion: 1.0.0.8
-    versionTemplate: 1.0.0.$BUILD
-    autoGenerate: 1
-    syncWithPlayerSettings: 0
-  _releaseTypeList:
-    releaseTypes:
-    - typeName: Bonkers
-      bundleIdentifier: com.common-games.bonkers
-      companyName: Common-Games
-      productName: Bonkers
-      syncAppNameWithProduct: 1
-      appBuildName: Bonkers
-      buildOptions: 0
-      customDefines: 
-      sceneList:
-        releaseScenes:
-        - fileGUID: 92df5b71179442d4392a8a7532385994
-          sceneActive: 0
-        - fileGUID: 49c21577d8fcba049bf2f94ab33e2dc2
-          sceneActive: 1
-  _platformList:
-    platforms:
-    - {fileID: -5610759192572712543}
-  _projectConfigurations:
-    configSet:
-      _Buckets: 02000000ffffffff03000000ffffffffffffffffffffffff00000000
-      _HashCodes: 5a8af47a8ca18b35ca96417d3ef55c6a000000000000000000000000
-      _Next: ffffffffffffffffffffffff01000000000000000000000000000000
-      _Count: 4
-      _Version: 4
-      _FreeList: -1
-      _FreeCount: 0
-      _Keys:
-      - Bonkers/PC/Windows x86 (App)/Mono
-      - Bonkers/PC/Windows x86 (App)
-      - Bonkers/PC
-      - Bonkers
-      - 
-      - 
-      - 
-      _Values:
-      - enabled: 1
-        childKeys: []
-      - enabled: 1
-        childKeys:
-        - Bonkers/PC/Windows x86 (App)/Mono
-      - enabled: 1
-        childKeys:
-        - Bonkers/PC/Windows x86 (App)
-      - enabled: 1
-        childKeys:
-        - Bonkers/PC
-      - enabled: 1
-        childKeys: []
-      - enabled: 1
-        childKeys: []
-      - enabled: 1
-        childKeys: []
-    showViewOptions: 0
-    showConfigs: 0
-    showBuildInfo: 0
-    hideDisabled: 0
-    treeView: 0
-    selectedKeyChain: 
-  _preBuildActions:
-    buildActions: []
-  _postBuildActions:
-    buildActions: []
