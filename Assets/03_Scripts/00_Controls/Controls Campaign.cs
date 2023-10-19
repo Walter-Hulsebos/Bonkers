@@ -577,7 +577,7 @@ namespace Bonkers.Controls
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""Tap(duration=0.2,pressPoint=0.5)"",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""Special1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -632,7 +632,7 @@ namespace Bonkers.Controls
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -640,10 +640,10 @@ namespace Bonkers.Controls
                 {
                     ""name"": """",
                     ""id"": ""ce800637-a1c0-4c34-8c00-5528bef62cba"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""SkipScene"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -654,7 +654,7 @@ namespace Bonkers.Controls
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""TimedEvent"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
