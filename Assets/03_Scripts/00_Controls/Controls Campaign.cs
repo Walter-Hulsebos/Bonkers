@@ -632,7 +632,7 @@ namespace Bonkers.Controls
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
+                    ""groups"": """",
                     ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -643,7 +643,7 @@ namespace Bonkers.Controls
                     ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
+                    ""groups"": """",
                     ""action"": ""SkipScene"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -654,7 +654,7 @@ namespace Bonkers.Controls
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
+                    ""groups"": """",
                     ""action"": ""TimedEvent"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false

@@ -10,16 +10,16 @@ namespace Bonkers
         private GameObject hitObject;
         private bool canTrigger;
 
-        private InputAction interaction;
+
 
 
         private void Awake()
         {
-           
+
         }
         private void Start()
         {
-           
+
         }
 
         private void OnTriggerStay(Collider collider)
@@ -41,29 +41,27 @@ namespace Bonkers
             canTrigger = false;
         }
 
-        public void OnReceiveInput(InputAction.CallbackContext context)
+        public void OnReceiveInput()
         {
-            if (context.performed)
+            if (canTrigger)
             {
-                if (canTrigger)
+                if (hitObject != null)
                 {
-                    if (hitObject != null)
+                    switch (hitObject.tag)
                     {
-                        switch (hitObject.tag)
-                        {
-                            case "Enemy":
-                                hitObject.transform.GetComponent<Enemy>().TakeDamage(1);
-                                break;
-                            case "Crate":
-                                hitObject.transform.GetComponent<Crate>().ReceiveHit();
-                                break;
-                            default:
-                                break;
-                        }
+                        case "Enemy":
+                            hitObject.transform.GetComponent<Enemy>().TakeDamage(1);
+                            break;
+                        case "Crate":
+                            hitObject.transform.GetComponent<Crate>().ReceiveHit();
+                            break;
+                        default:
+                            break;
                     }
-
                 }
+
             }
+
         }
     }
 }
