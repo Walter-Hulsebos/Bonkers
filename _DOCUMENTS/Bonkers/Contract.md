@@ -68,7 +68,7 @@ The game design document (GDD) is a vital part of the game development process. 
 It is the responsibility of every team member to work on and update the GDD. The lead designer should oversee the GDD, but it is the team's responsibility to ensure that it is up-to-date and reflects the current state of the game.  
 All changes to the GDD should be communicated to the team to avoid any confusion or misunderstandings.
 
-**3.6 Attitude and Behaviour**
+**3.6 Attitude and Behaviour:**
 All team members are expected to maintain a professional attitude and behaviour during work sessions. This includes but is not limited to: Being respectful, willing to collaborate, general conduct, and being able to take feedback into account.
 
 ----
