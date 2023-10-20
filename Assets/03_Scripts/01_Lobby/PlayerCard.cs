@@ -33,7 +33,7 @@ namespace Bonkers.Lobby
                 characterIconImage.enabled = false;
             }
 
-            playerNameText.text = $"Player{state.ClientId}";
+            playerNameText.text = $"Player {state.ClientId}";
 
             visuals.SetActive(true);
         }
