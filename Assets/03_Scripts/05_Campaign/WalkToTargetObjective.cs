@@ -6,12 +6,23 @@ namespace Bonkers
 {
     public class WalkToTargetObjective : Objective
     {
+
+        private bool isHappening;
         public override void CheckifHappening()
         {
-            float distance = Vector3.Distance(CampaignManager.instance.GetPlayer().transform.position, gameObject.transform.position);
-            if (distance < 1.5)
+            isHappening = true;
+        }
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (isHappening)
             {
-                CampaignManager.GetCampaignManager<ObjectiveManager>().CompletedObjective();
+                if (other.transform.CompareTag("Player"))
+                {
+                    CampaignManager.GetCampaignManager<ObjectiveManager>().CompletedObjective();
+                }
+               
             }
         }
     }

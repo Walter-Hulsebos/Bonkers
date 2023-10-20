@@ -57,7 +57,9 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
+
     
+
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
     public Bool  JumpRequested   { get; internal set; }
@@ -103,7 +105,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32 Gravity { get ; set; }
 
     #if UNITY_EDITOR
-    private void Reset()
+    protected virtual void Reset()
     {
         Motor = GetComponent<KinematicCharacterMotor>();
         Anims = GetComponent<Animator>();
@@ -140,7 +142,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
      }
 
     // Update is called once per frame
-    private void Update()
+    protected virtual void Update()
     {
         //if(!Application.isFocused) return;
             

@@ -10,6 +10,18 @@ namespace Bonkers
         private GameObject hitObject;
         private bool canTrigger;
 
+
+
+
+        private void Awake()
+        {
+
+        }
+        private void Start()
+        {
+
+        }
+
         private void OnTriggerStay(Collider collider)
         {
             switch (collider.transform.tag)
@@ -47,8 +59,9 @@ namespace Bonkers
                             break;
                     }
                 }
-              
+
             }
+
         }
     }
 }
