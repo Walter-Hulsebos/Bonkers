@@ -1,167 +1,283 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.Linq;
+
+using Bonkers.Characters;
+
+using CGTK.Utils.Extensions.Math.Math;
+using CGTK.Utils.UnityFunc;
+
 using UnityEngine;
-using UnityEngine.InputSystem;
+using static UnityEngine.Mathf;
+    
+using Unity.Netcode;
+using static Unity.Mathematics.math;
+using static ProjectDawn.Mathematics.math2;
 
-public class PlayerStateMachine : MonoBehaviour
+using KinematicCharacterController;
+
+using Sirenix.OdinInspector;
+
+using UnityEngine.Serialization;
+
+using static Bonkers.Characters.OrientationMethod;
+
+using F32   = System.Single;
+using F32x2 = Unity.Mathematics.float2;
+using F32x3 = Unity.Mathematics.float3;
+    
+using I32   = System.Int32;
+using I32x2 = Unity.Mathematics.int2;
+using I32x3 = Unity.Mathematics.int3;
+    
+using Bool  = System.Boolean;
+using Rotor = Unity.Mathematics.quaternion;
+
+public class PlayerStateMachine : MonoBehaviour, ICharacterController
 {
-    PlayerInput playerInput;
-    CharacterController characterController;
-    Animator animator;
+    #region References
 
-    //animator hashes
-    int isWalkingHash;
-    int isRunningHash;
-    int isJumpingHash;
+    #if ODIN_INSPECTOR
+    [field:FoldoutGroup("References")]
+    #endif
+    [field:SerializeField] public KinematicCharacterMotor Motor { get; private set; }
+    
+    #if ODIN_INSPECTOR
+    [field:FoldoutGroup("References")]
+    #endif
+    [field:SerializeField] public Camera                  Cam   { get; private set; }
+    
+    #if ODIN_INSPECTOR
+    [field:FoldoutGroup("References")]
+    #endif
+    [field:SerializeField] public Animator                Anims { get; private set; }
 
-    //input values
-    Vector2 currentMovementInput;
-    Vector3 currentMovement;
-    Vector3 currentRunMovement;
-    Vector3 appliedMovement;
-    bool isMovementPressed;
-    bool isRunPressed;
+    #endregion
 
-    //const
-    const float rotationFactorPerFrame = 15.0f;
-    const int zero = 0;
-    float gravity = -9.8f;
-    float groundedGravity = -.05f;
+    #region Inputs
+    
+    [SerializeField] private UnityFunc<F32x2> getMoveInput;
+    [SerializeField] private UnityFunc<Bool>  getJumpInput;
 
-    //moving
-    public float movementSpeed = 1.0f;
-    public float runMultiplier = 8.0f;
+    
 
-    //jumping
-    bool isJumpPressed = false;
-    bool isJumping = false;
-    bool requireNewJumpPress = false;
-    float initialJumpVelocity;
-    public float maxJumpHeight = 4.0f;
-    float maxJumpTime = 0.75f;
+    public F32x3 MoveInputVector { get; private set; }
+    public F32x3 LookInputVector { get; private set; }
+    public Bool  JumpRequested   { get; internal set; }
+
+    #endregion
+    
+    #region Animator Hashes
+
+    public I32 WalkHash { get; private set; }
+    public I32 JumpHash { get; private set; }
+    public I32 IdleHash { get; private set; }
+
+    #endregion
+    
+    [SerializeField] public F32 JumpPreGroundingGraceTime  { get; private set; } = 0.1f;
+    [SerializeField] public F32 JumpPostGroundingGraceTime { get; private set; } = 0.1f;
+    
+    public F32x3 CameraPlanarDir { get; private set; }
+    public Rotor CameraPlanarRot { get; private set; }
+    
+    //private Bool _requireNewJumpPress = false;
+
 
     // state variables
-    PlayerBaseState currentState;
-    PlayerStateFactory states;
+    private PlayerStateFactory _states;
 
     // getters and setters
-    public PlayerBaseState CurrentState { get { return currentState; } set { currentState = value; } }
-    public Animator Animator { get { return animator; } }
-    public CharacterController CharacterController { get { return characterController; } }
-    public int IsJumpingHash { get { return isJumpingHash; } }
-    public int IsWalkingHash { get { return isWalkingHash; } }
-    public int IsRunningHash { get { return isRunningHash; } }
-    public bool RequireNewJumpPress {get { return requireNewJumpPress; } set {requireNewJumpPress = value; } }
-    public bool IsJumping { set {isJumping = value; } }
-    public bool IsJumpPressed {  get { return isJumpPressed; } }
-    public bool IsMovementPressed { get { return isMovementPressed; } }
-    public bool IsRunPressed { get { return isRunPressed; } }
-    public float MovementSpeed { get { return movementSpeed; } }
-    public float RunMultiplier { get { return runMultiplier; } }
-    public float InitialJumpVelocity { get { return initialJumpVelocity; } }
-    public float GroundedGravity { get { return groundedGravity; } }
-    public float Gravity { get { return gravity; } }
-    public float CurrentMovementY { get { return currentMovement.y; } set { currentMovement.y = value; } }
-    public float AppliedMovementY { get { return appliedMovement.y; } set { appliedMovement.y = value; } }
-    public float AppliedMovementX { get { return appliedMovement.x; } set { appliedMovement.x = value; } }
-    public float AppliedMovementZ { get { return appliedMovement.z; } set { appliedMovement.z = value; } }
-    public Vector2 CurrentMovementInput { get { return currentMovementInput; } }
+    public PlayerBaseState CurrentState { get; internal set; }
+    
+    //public Bool RequireNewJumpPress {get { return _requireNewJumpPress; } set {_requireNewJumpPress = value; } }
+    public Bool IsFalling => (Motor.BaseVelocity.y <= 0.0f) && !Motor.GroundingStatus.IsStableOnGround;
+    public Bool IsRising  => (Motor.BaseVelocity.y >  0.0f) && !Motor.GroundingStatus.IsStableOnGround;
+    public Bool IsMovementPressed => lengthsq(getMoveInput.Invoke()) > 0.0f;
+    
 
+    public Bool JumpConsumed            { get; internal set; } = false;
+    public Bool JumpedThisPhysicsFrame  { get; internal set; } = false;
+    public F32  TimeSinceJumpRequested  { get; internal set; } = Infinity;
+    public F32  TimeSinceLastAbleToJump { get; internal set; } = 0f;
+
+    public Bool CanJumpAgain => (TimeSinceLastAbleToJump <= JumpPostGroundingGraceTime);
+
+    public F32 Gravity { get ; set; }
+
+    #if UNITY_EDITOR
+    protected virtual void Reset()
+    {
+        Motor = GetComponent<KinematicCharacterMotor>();
+        Anims = GetComponent<Animator>();
+        
+        Cam   = GetComponent<Camera>();
+        Cam   = transform.parent.GetComponentInChildren<Camera>();
+    }
+    #endif
 
     private void Awake()
     {
-        //set reference variables
-        playerInput = new PlayerInput();
-        characterController = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
-
         // setup state
-        states = new PlayerStateFactory(this);
-        currentState = states.Grounded();
-        currentState.EnterState();
+        _states = new PlayerStateFactory(currentContext: this);
 
         //set hash references
-        isWalkingHash = Animator.StringToHash("isWalking");
-        isRunningHash = Animator.StringToHash("isRunning");
-        isJumpingHash = Animator.StringToHash("isJumping");
-
-        // set player input callbacks
-        playerInput.CharacterControls.Move.started += OnMovementInput;
-        playerInput.CharacterControls.Move.canceled += OnMovementInput;
-        playerInput.CharacterControls.Move.performed += OnMovementInput;
-        playerInput.CharacterControls.Run.started += OnRun;
-        playerInput.CharacterControls.Run.canceled += OnRun;
-        playerInput.CharacterControls.Jump.started += OnJump;
-        playerInput.CharacterControls.Jump.canceled += OnJump;
-
-        SetupJumpVariables();
+        WalkHash = Animator.StringToHash(name: "walk");
+        JumpHash = Animator.StringToHash(name: "jump");
+        IdleHash = Animator.StringToHash(name: "idle");
+        
+        Motor.CharacterController = this;
     }
 
-    void SetupJumpVariables()
+    private void OnEnable()
     {
-        float timeToApex = maxJumpTime / 2;
-        gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
-        initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        // Assign to motor
+        //
         
     }
 
+    private void Start() 
+    { 
+        CurrentState = _states.Grounded();
+        CurrentState.EnterState();
+     }
+
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        HandleRotation();
-        currentState.UpdateStates();
-        characterController.Move(appliedMovement * Time.deltaTime);
-    }
-    private void HandleRotation()
-    {
-        Vector3 positionToLookAt;
+        //if(!Application.isFocused) return;
+            
+        F32x2 __moveAxis = getMoveInput.Invoke();
 
-        positionToLookAt.x = currentMovement.x;
-        positionToLookAt.y = zero;
-        positionToLookAt.z = currentMovement.z;
+        F32x3 __moveInputVector = Vector3.ClampMagnitude(vector: new F32x3(x: __moveAxis.x, y: 0f, z: __moveAxis.y), maxLength: 1f);
 
-        Quaternion currentRotation = transform.rotation;
-
-        if (isMovementPressed)
+        Rotor __cameraRotation = Cam.transform.rotation;
+        CameraPlanarDir = normalizesafe(Vector3.ProjectOnPlane(vector: mul(__cameraRotation, forward()), planeNormal: Motor.CharacterUp));
+        if (lengthsq(CameraPlanarDir) == 0f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
-            transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFactorPerFrame * Time.deltaTime);
+            CameraPlanarDir = normalizesafe(Vector3.ProjectOnPlane(vector: mul(__cameraRotation, up()), planeNormal: Motor.CharacterUp));
+        }
+        CameraPlanarRot = Rotor.LookRotation(forward: CameraPlanarDir, up: Motor.CharacterUp);
+
+        // Move and look inputs
+        MoveInputVector = mul(CameraPlanarRot, __moveInputVector);
+
+        F32x3 __lookInputNormalized = normalizesafe(MoveInputVector);
+
+        // Only set the look input if we are moving
+        //if (any(__lookInputNormalized > 0f))
+        if(!lengthsq(__lookInputNormalized).Approx(0f))
+        {
+            LookInputVector = __lookInputNormalized;    
+        }
+
+        // Jumping input
+        if (getJumpInput.Invoke())
+        {
+            TimeSinceJumpRequested = 0f;
+            JumpRequested = true;
+        }
+        
+    }
+    public void BeforeCharacterUpdate(F32 deltaTime)
+    {
+        // This is called before the motor does anything
+        //Debug.Log("BeforeCharacterUpdate");
+        CurrentState.UpdateStates();
+    }
+    
+    /// <summary> Called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling </summary>
+    public void PostGroundingUpdate(F32 deltaTime)
+    {
+        //Debug.Log("PostGroundingUpdate");
+        //TODO: Call UpdateStates() here instead of in Update()!!!
+        //CurrentState.UpdateStates();
+    }
+
+    /// <summary>
+    /// (Called by KinematicCharacterMotor during its update cycle)
+    /// This is where you tell your character what its velocity should be right now. 
+    /// This is the ONLY place where you can set the character's velocity
+    /// </summary>
+    public void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
+    {
+        JumpedThisPhysicsFrame = false;
+        TimeSinceJumpRequested += deltaTime;
+        
+        //Debug.Log("UpdateVelocity");
+        //currentState.UpdateStates(ref currentVelocity, deltaTime);
+        CurrentState.UpdateVelocities(ref currentVelocity, deltaTime);
+    }
+    
+    /// <summary>
+    /// (Called by KinematicCharacterMotor during its update cycle)
+    /// This is where you tell your character what its rotation should be right now. 
+    /// This is the ONLY place where you should set the character's rotation
+    /// </summary>
+    public void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
+    {
+        //if(CantMove) return;
+        //Debug.Log("UpdateRotation");
+        
+        CurrentState.UpdateRotations(ref currentRotation, deltaTime);
+        
+        //Gravity orientation
+        // F32x3   __currentUp            = mul(currentRotation, up());
+        // F32x3   __normalizedNegGravity = -normalizesafe(gravity);
+        // F32     __orientationSpeed     = 1 - exp(-bonusOrientationSharpness * deltaTime);
+        // Vector3 __smoothedGravityDir   = slerpsafe(__currentUp, __normalizedNegGravity, t: __orientationSpeed);
+        //
+        // currentRotation = Quaternion.FromToRotation(fromDirection: __currentUp, toDirection: __smoothedGravityDir) * currentRotation;
+    }
+    
+    public void AfterCharacterUpdate(F32 deltaTime)
+    {
+        // // Handle jumping pre-ground grace period
+        if (JumpRequested && TimeSinceJumpRequested > JumpPreGroundingGraceTime)
+        {
+            JumpRequested = false;
+        }
+        
+        if (Motor.GroundingStatus.FoundAnyGround)
+        {
+            // If we're on a ground surface, reset jumping values
+            if (!JumpedThisPhysicsFrame)
+            {
+                JumpConsumed = false;
+            }
+        
+            TimeSinceLastAbleToJump = 0f;
+        }
+        else
+        {
+            // Keep track of time since we were last able to jump (for grace period)
+            TimeSinceLastAbleToJump += deltaTime;
         }
     }
 
-    void OnMovementInput(InputAction.CallbackContext context)
+    public Bool IsColliderValidForCollisions(Collider coll)
     {
-        currentMovementInput = context.ReadValue<Vector2>();
-        currentMovement.x = currentMovementInput.x * MovementSpeed;
-        currentMovement.z = currentMovementInput.y * MovementSpeed;
-        currentRunMovement.x = currentMovementInput.x * RunMultiplier;
-        currentRunMovement.z = currentMovementInput.y * RunMultiplier;
-        isMovementPressed = currentMovementInput.x != zero || currentMovementInput.y != zero;
+        // This is called after when the motor wants to know if the collider can be collided with (or if we just go through it)
+        return true;
     }
 
-    private void OnJump(InputAction.CallbackContext context)
+    public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
-        isJumpPressed = context.ReadValueAsButton();
-        requireNewJumpPress = false;
+        //TODO: [Garon, Walter] Add Coyote Time in here!! 
     }
 
-    private void OnRun(InputAction.CallbackContext context)
-    {
-        isRunPressed = context.ReadValueAsButton();
-    }
-    private void OnEnable()
-    {
-        playerInput.CharacterControls.Enable();
-    }
+    public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport) { }
 
-    private void OnDisable()
+    public void ProcessHitStabilityReport
+    (
+        Collider               hitCollider,
+        Vector3                hitNormal,
+        Vector3                hitPoint,
+        Vector3                atCharacterPosition,
+        Quaternion             atCharacterRotation,
+        ref HitStabilityReport hitStabilityReport
+    ) { }
+    public void OnDiscreteCollisionDetected(Collider hitCollider)
     {
-        playerInput.CharacterControls.Disable();
-
+        // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
     }
 }
