@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using static UnityEngine.Mathf;
+using static Unity.Mathematics.math;
 
 public sealed class PlayerRisingState : PlayerBaseState
 {
@@ -40,8 +41,8 @@ public sealed class PlayerRisingState : PlayerBaseState
         //Use Verlet integration to calculate the new velocity
         //TODO: Evaluate if using _currentYVelocity is correct here, since it isn't shared with the Falling state.
         float __previousYVelocity = _currentYVelocity;
-        _currentYVelocity += (Ctx.Gravity * Time.deltaTime);
-        currentVelocity.y = Max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
+        _currentYVelocity += (length(Ctx.Gravity) * Time.deltaTime);
+        currentVelocity.y = max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
     }
     
     protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) { }

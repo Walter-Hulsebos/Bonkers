@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Bonkers.Controls;
+//using Bonkers.Controls;
 using UnityEngine.SceneManagement;
 
 namespace Bonkers.Lobby
@@ -31,12 +31,12 @@ namespace Bonkers.Lobby
             //foreach (var index in connectedPlayers)
             //{
             Instantiate(character);
-            CinemachineInputHandler[] x = character.GetComponentsInChildren<CinemachineInputHandler>();
-
-            foreach (var item in x)
-            {
-                item.playerInput = playerInput;
-            }
+            // CinemachineInputHandler[] x = character.GetComponentsInChildren<CinemachineInputHandler>();
+            //
+            // foreach (var item in x)
+            // {
+            //     item.playerInput = playerInput;
+            // }
 
 
 
