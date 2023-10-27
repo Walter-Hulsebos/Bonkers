@@ -45,6 +45,18 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.heurekagames.assethunterpro": {
+      "version": "file:com.heurekagames.assethunterpro",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.heurekagames.utils": {
+      "version": "file:com.heurekagames.utils",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.mibdev.fullscreen-editor": {
       "version": "file:Fullscreen",
       "depth": 0,
@@ -242,6 +254,17 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       }
     },
+    "com.unity.render-pipelines.universal": {
+      "version": "14.0.8",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1",
+        "com.unity.burst": "1.8.4",
+        "com.unity.render-pipelines.core": "14.0.8",
+        "com.unity.shadergraph": "14.0.8"
+      }
+    },
     "com.unity.scriptablebuildpipeline": {
       "version": "1.21.20",
       "depth": 1,
@@ -307,7 +330,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.matchmaker": {
-      "version": "1.1.1",
+      "version": "1.1.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -484,6 +507,12 @@
     },
     "com.veriorpies.parrelsync": {
       "version": "file:ParrelSync",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "net.codestage.advanced-fps-counter": {
+      "version": "file:AdvancedFPSCounter",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

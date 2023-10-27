@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-using Bonkers.Characters;
+//using Bonkers.Characters;
 
 using CGTK.Utils.Extensions.Math.Math;
 using CGTK.Utils.UnityFunc;
@@ -19,7 +19,6 @@ using Sirenix.OdinInspector;
 
 using UnityEngine.Serialization;
 
-using static Bonkers.Characters.OrientationMethod;
 
 using F32   = System.Single;
 using F32x2 = Unity.Mathematics.float2;
@@ -57,7 +56,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
-    
+
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
     public Bool  JumpRequested   { get; internal set; }
@@ -100,10 +99,10 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     public Bool CanJumpAgain => (TimeSinceLastAbleToJump <= JumpPostGroundingGraceTime);
 
-    public F32 Gravity { get ; set; }
+    public F32x3 Gravity { get ; set; }
 
     #if UNITY_EDITOR
-    private void Reset()
+    protected virtual void Reset()
     {
         Motor = GetComponent<KinematicCharacterMotor>();
         Anims = GetComponent<Animator>();
@@ -140,7 +139,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
      }
 
     // Update is called once per frame
-    private void Update()
+    protected virtual void Update()
     {
         //if(!Application.isFocused) return;
             

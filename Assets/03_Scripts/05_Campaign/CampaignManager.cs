@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 namespace Bonkers
 {
@@ -19,6 +20,10 @@ namespace Bonkers
         [SerializeField] private Image characterIcon;
 
 
+        public VideoClip intro;
+
+        public GameObject player;
+
         [Header("Timed Events")]
         [SerializeField] private TextMeshProUGUI timedEvent;
 
@@ -27,8 +32,6 @@ namespace Bonkers
         public static CampaignManager instance { get; private set; }
         private static CampaignSubManager[] subManagers;
 
-
-        [SerializeField] private GameObject player;
 
         CampaignManager()
         {
@@ -44,6 +47,12 @@ namespace Bonkers
         };
         }
 
+        private void Awake()
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+        }
         public static T GetCampaignManager<T>() where T : CampaignSubManager
         {
             for (int i = 0; i < subManagers.Length; i++)
@@ -71,13 +80,18 @@ namespace Bonkers
             }
         }
 
-        public void ToNextScene(InputAction.CallbackContext context)
+
+
+
+        public void ToNextScene()
         {
-            if (context.performed)
+
             {
                 LoadLevelByName(Levels.Campaign_02, Vector3.zero);
             }
         }
+
+
 
         // Start is called before the first frame update
         void Start()
@@ -88,6 +102,8 @@ namespace Bonkers
                 subManagers[i].Start();
             }
             Cursor.visible = false;
+
+
         }
 
         // Update is called once per frame
@@ -99,20 +115,14 @@ namespace Bonkers
             }
         }
         #region ForwardToManager
-        public void ForwardNextSentence(InputAction.CallbackContext context)
+        public void ForwardNextSentence()
         {
-            if (context.performed)
-            {
-                GetCampaignManager<DialogueManager>().DisplayLine();
-            }
+            GetCampaignManager<DialogueManager>().DisplayLine();
         }
 
-        public void ForwardTimedEvent(InputAction.CallbackContext context)
+        public void ForwardTimedEvent()
         {
-            if (context.performed)
-            {
-                GetCampaignManager<TimedEventManager>().ReactToTimedEvent();
-            }
+            GetCampaignManager<TimedEventManager>().ReactToTimedEvent();
         }
         #endregion
 

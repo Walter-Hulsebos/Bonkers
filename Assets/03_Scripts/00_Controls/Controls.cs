@@ -13,13 +13,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
+using UnityEngine.InputSystem.Utilities; 
 
 namespace Bonkers.Controls
 {
     public partial class @Controls: IInputActionCollection2, IDisposable
     {
-        public InputActionAsset asset { get; }
+        public InputActionAsset asset { get;}
         public @Controls()
         {
             asset = InputActionAsset.FromJson(@"{

@@ -81,11 +81,12 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
     using UnityEngine;
     using UnityEngine.AddressableAssets;
 	using System.Runtime.Serialization;
+    using System.IO;
 
-	/// <summary>
-	/// Draws an AssetReference property.
-	/// </summary>
-	/// <typeparam name="T">The concrete type of AssetReference to be drawn. For example, <c>AssetReferenceTexture</c>.</typeparam>
+    /// <summary>
+    /// Draws an AssetReference property.
+    /// </summary>
+    /// <typeparam name="T">The concrete type of AssetReference to be drawn. For example, <c>AssetReferenceTexture</c>.</typeparam>
 	[DrawerPriority(0, 1, 0)]
     public class AssetReferenceDrawer<T> : OdinValueDrawer<T>, IDefinesGenericMenuItems
         where T: AssetReference
@@ -97,7 +98,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
         private bool disallowSubAssets;
         private bool showSubAssetField;
 
-        private string lastAssetGuid;
+        private bool updateShowSubAssetField;
 
         private List<AssetReferenceUIRestriction> restrictions;
 
@@ -136,6 +137,8 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
             }
 
             this.disallowSubAssets = Property.GetAttribute<DisallowAddressableSubAssetFieldAttribute>() != null;
+
+            this.updateShowSubAssetField = true;
         }
 
         protected override void DrawPropertyLayout(GUIContent label)
@@ -145,7 +148,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                 var value = ValueEntry.SmartValue;
 
                 // Update showSubAssetField.
-                if (Event.current.type == EventType.Layout)
+                if (this.updateShowSubAssetField && Event.current.type == EventType.Layout)
                 {
                     if (value == null || value.AssetGUID == null || value.editorAsset == null)
                     {
@@ -159,9 +162,8 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                     {
                         this.showSubAssetField = false;
                     }
-                    else if (value.AssetGUID != lastAssetGuid)
+                    else
                     {
-                        lastAssetGuid = value.AssetGUID;
                         var path = AssetDatabase.GUIDToAssetPath(value.AssetGUID);
 
                         if (path == null)
@@ -171,8 +173,12 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                         else
                         {
                             this.showSubAssetField = AssetDatabase.LoadAllAssetRepresentationsAtPath(path).Length > 0;
+
+                            Debug.Log(showSubAssetField ? "Show" : "Hide");
                         }
                     }
+
+                    this.updateShowSubAssetField = false;
                 }
 
                 var rect = SirenixEditorGUI.GetFeatureRichControlRect(label, out var controlId, out var _, out var valueRect);
@@ -222,6 +228,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                         drop.SubObjectName = null;
                     }
 
+                    this.updateShowSubAssetField = true; 
                     this.ValueEntry.SmartValue = drop;
                 }
 
@@ -303,6 +310,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
         {
             var selected = selection.FirstOrDefault();
             this.ValueEntry.SmartValue = CreateAssetReferenceFrom(selected);
+            this.updateShowSubAssetField = true;
         }
 
         private void OnSubAssetSelect(IEnumerable<UnityEngine.Object> selection)
@@ -340,14 +348,16 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                 instance.SetEditorSubObject(obj);
             }
 
-            // TODO: Option for auto create addressable entry?
-
             return instance;
         }
 
         public void PopulateGenericMenu(InspectorProperty property, GenericMenu genericMenu)
         {
-            genericMenu.AddItem(new GUIContent("Set To Null"), false, () => property.ValueEntry.WeakSmartValue = null);
+            genericMenu.AddItem(new GUIContent("Set To Null"), false, () =>
+            {
+                this.ValueEntry.WeakSmartValue = null;
+                this.updateShowSubAssetField = true;
+            });
 
             if (this.ValueEntry.SmartValue != null && string.IsNullOrEmpty(this.ValueEntry.SmartValue.SubObjectName) == false)
             {
@@ -357,6 +367,7 @@ namespace Sirenix.OdinInspector.Modules.Addressables.Editor
                     {
                         this.ValueEntry.SmartValue.SetEditorSubObject(null);
                     }
+                    this.updateShowSubAssetField = true;
                 });
             }
             else
