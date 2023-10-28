@@ -184,12 +184,24 @@ namespace Bonkers.Lobby
 
                 if (__lobby == null)
                 {
-                    Debug.Log($"No lobbies found.");    
-                    return null;
+                    Debug.Log(message: $"No lobbies found. Retrying in 3 seconds...");
+                    await UniTask.Delay(millisecondsDelay: 1000);
+                    Debug.Log(message: "2");
+                    await UniTask.Delay(millisecondsDelay: 1000);
+                    Debug.Log(message: "1");
                 }
                 
+                __lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options: __quickJoinOptions);
+                
+                if (__lobby == null)
+                {
+                    Debug.LogWarning(message: $"No lobbies found after second atempt, <b>aborting</b>!");
+                }
+                
+                
+                
                 // If we found one grab the relay allocation details.
-                JoinAllocation __joinAlloc = await RelayService.Instance.JoinAllocationAsync(__lobby.Data[KEY_RELAY_JOIN_CODE].Value);
+                JoinAllocation __joinAlloc = await RelayService.Instance.JoinAllocationAsync(joinCode: __lobby.Data[key: KEY_RELAY_JOIN_CODE].Value);
                 
                 //Set Transform As Client (a)
                 
@@ -201,7 +213,7 @@ namespace Bonkers.Lobby
             }
             catch (Exception __exception)
             {
-                Debug.Log($"<color=red>[Warning] no lobbies found. ({__exception.Message})</color>");
+                Debug.Log(message: $"<color=red>[Warning] no lobbies found. ({__exception.Message})</color>");
                 return null;
             }
         }

@@ -16,6 +16,7 @@ namespace SingularityGroup.HotReload.Editor {
         UnsupportedPackages,
         SymbolicLinks,
         AutoRecompiledWhenPlaymodeStateChanges,
+        UnityBestDevelopmentToolAward2023,
     }
     
 	internal static class HotReloadSuggestionsHelper {
@@ -68,6 +69,23 @@ namespace SingularityGroup.HotReload.Editor {
         internal static readonly OpenURLButton recompileTroubleshootingButton = new OpenURLButton("Documentation", Constants.RecompileTroubleshootingURL);
         internal static readonly OpenURLButton featuresDocumentationButton = new OpenURLButton("Documentation", Constants.FeaturesDocumentationURL);
         public static Dictionary<HotReloadSuggestionKind, AlertEntry> suggestionMap = new Dictionary<HotReloadSuggestionKind, AlertEntry> {
+            { HotReloadSuggestionKind.UnityBestDevelopmentToolAward2023, new AlertEntry(
+                AlertType.Suggestion, 
+                "Vote for the \"Best Development Tool\" Award!", 
+                "Hot Reload was nominated for the \"Best Development Tool\" Award. Please consider voting. Thank you!",
+                actionData: () => {
+                    GUILayout.Space(6f);
+                    using (new EditorGUILayout.HorizontalScope()) {
+                        if (GUILayout.Button(" Vote ")) {
+                            Application.OpenURL(Constants.VoteForAwardURL);
+                            SetSuggestionInactive(HotReloadSuggestionKind.UnityBestDevelopmentToolAward2023);
+                        }
+                        GUILayout.FlexibleSpace();
+                    }
+                },
+                timestamp: DateTime.Now,
+                entryType: EntryType.Foldout
+            )},
             { HotReloadSuggestionKind.UnsupportedChanges, new AlertEntry(
                 AlertType.Suggestion, 
                 "Which changes does Hot Reload support?", 

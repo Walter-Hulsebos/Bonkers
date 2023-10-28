@@ -121,6 +121,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CursorDelta_X",
+                    "type": "Value",
+                    "id": "608b4787-ed51-43e4-b89c-4472d2bdebcf",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CursorDelta_Y",
+                    "type": "Value",
+                    "id": "25dae5db-1a3b-4da7-a9bd-025a5bf0d869",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -574,6 +592,94 @@
                     "action": "Special3",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5190ca5-fe20-40a0-a735-ef76775ca47e",
+                    "path": "<Mouse>/delta/x",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=1)",
+                    "groups": "Keyboard & Mouse",
+                    "action": "CursorDelta_X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f32b36e-eee0-41ec-b940-41abbfd14ea8",
+                    "path": "<Pointer>/delta/x",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=1)",
+                    "groups": "Keyboard & Mouse",
+                    "action": "CursorDelta_X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82e9ba41-5375-4a72-8f58-b4ab6d0268ee",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=2)",
+                    "groups": "Gamepad",
+                    "action": "CursorDelta_X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76748b4a-6008-4c71-b111-b8614d509e35",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=2)",
+                    "groups": "Gamepad",
+                    "action": "CursorDelta_X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2b9f835-7a61-4170-a9d6-391fe9568234",
+                    "path": "<Mouse>/delta/y",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=1)",
+                    "groups": "Keyboard & Mouse",
+                    "action": "CursorDelta_Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e90b673d-0638-4d85-85f7-32f83f18f37f",
+                    "path": "<Pointer>/delta/y",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=1)",
+                    "groups": "Keyboard & Mouse",
+                    "action": "CursorDelta_Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "745e0968-6f28-4bef-b5cc-f1bff0b9c2fa",
+                    "path": "<Gamepad>/rightStick/y",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=2)",
+                    "groups": "Gamepad",
+                    "action": "CursorDelta_Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f6205075-3258-4fd7-99e0-1ea1842e0152",
+                    "path": "<Gamepad>/leftStick/y",
+                    "interactions": "",
+                    "processors": "ScaleFloat(scaleBy=2)",
+                    "groups": "Gamepad",
+                    "action": "CursorDelta_Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -592,7 +698,7 @@
                 },
                 {
                     "name": "PointDelta",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "689b7b8e-745c-4eb2-873f-c511971e2202",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -666,17 +772,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "8b6e7275-0a9f-4132-8750-9a90ba38e30a",
-                    "path": "<VirtualMouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c2801bea-158e-4688-9b26-06034aad6f16",
                     "path": "<Mouse>/position",
                     "interactions": "",
@@ -692,7 +787,7 @@
                     "path": "<Pointer>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard & Mouse",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1029,11 +1124,33 @@
                 },
                 {
                     "name": "",
+                    "id": "cf3c9272-fbbc-4a89-be76-c88d45da0c17",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bcd39313-cd48-49cd-b7b1-14d063e0066d",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9d3fb460-b142-4c2b-8458-aef46703d702",
                     "path": "<Pen>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard & Mouse",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1044,7 +1161,7 @@
                     "path": "<Touchscreen>/touch*/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1172,19 +1289,19 @@
                 },
                 {
                     "name": "",
-                    "id": "47eb22cb-8097-4524-ae31-ed51d0237c66",
-                    "path": "<Gamepad>/leftStick",
+                    "id": "0b956cc6-6c17-444b-9e2d-498e507b8f9c",
+                    "path": "<Pointer>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "",
                     "action": "PointDelta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "0b956cc6-6c17-444b-9e2d-498e507b8f9c",
-                    "path": "<Pointer>/delta",
+                    "id": "3eac53b5-0645-4e3f-af65-881c33389c15",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

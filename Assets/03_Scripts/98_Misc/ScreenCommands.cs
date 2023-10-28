@@ -16,6 +16,7 @@ namespace Bonkers
     using I32x2 = Unity.Mathematics.int2;
 
     [PublicAPI]
+    [UsedImplicitly]
     [CommandPrefix(prefixName: "screen.")]
     public static class ScreenCommands
     {
