@@ -11,59 +11,78 @@ namespace Bonkers.Controls
     using UnityEngine;
     using UnityEngine.InputSystem;
 
-    using F32 = System.Single;
-    
+    using F32  = System.Single;
+    using Bool = System.Boolean;
+
     [AddComponentMenu("Bonkers/Controls/Axis Control")]
     public sealed class AxisControl : MonoBehaviour, 
-                                      ISettableControl<F32>
+                                      IControl<F32>
     {
-        [HideInInspector]
-        [SerializeField] private Boolean showValue = true;
-        
-        #if ODIN_INSPECTOR
-        [field:ReadOnly]
-        //[field:ShowIf(nameof(showPlayerInput))]
-        #endif
-        [field:SerializeField] public F32 Value { get; internal set; }
-        
+        #region Variables
+
+        #region Actions
+
         #if ODIN_INSPECTOR
         [field:LabelText("Action")]
         #endif
         [field:SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
-        
-        [HideInInspector]
-        [SerializeField] private Boolean showPlayerInput = true;
-        
+
+        #endregion
+
+        #region PlayerInput
+
         #if ODIN_INSPECTOR
         [ShowIf(nameof(showPlayerInput))]
         #endif
         [SerializeField] private PlayerInput playerInput = null;
         
+        [HideInInspector]
+        [SerializeField] private Bool showPlayerInput = true;
 
         #if UNITY_EDITOR
         [ContextMenu(itemName: "Toggle Show Player Input")]
         private void ToggleShowPlayerInput()
         {
-            //Mark as dirty so that Prefab auto-save will save the changes
+            // Mark as dirty so that Prefab auto-save will save the changes
             UnityEditor.Undo.RecordObject(this, name: "Change Show Player Input");
-            
+
             showPlayerInput = !showPlayerInput;
-            
-            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
-        }
-        
-        [ContextMenu(itemName: "Toggle Show Value")]
-        private void ToggleShowValue()
-        {
-            //Mark as dirty so that Prefab auto-save will save the changes
-            UnityEditor.Undo.RecordObject(this, name: "Change Show Value");
-            
-            showValue = !showValue;
-            
+
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
         }
         #endif
+
+        #endregion
+
+        #region Value
+
+        #if ODIN_INSPECTOR
+        [field:ReadOnly]
+        #endif
+        [field:SerializeField] public F32 Value { get; internal set; }
+        
+        [HideInInspector]
+        [SerializeField] private Bool showValue = true;
+
+        #if UNITY_EDITOR
+        [ContextMenu(itemName: "Toggle Show Value")]
+        private void ToggleShowValue()
+        {
+            // Mark as dirty so that Prefab auto-save will save the changes
+            UnityEditor.Undo.RecordObject(this, name: "Change Show Value");
+
+            showValue = !showValue;
+
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
+        }
+        #endif
+
+        #endregion
+
+        #endregion
+
+        #region Methods
 
         #if UNITY_EDITOR
         private void Reset()
@@ -74,7 +93,7 @@ namespace Bonkers.Controls
 
         private void Awake()
         {
-            if(playerInput == null)
+            if (playerInput == null)
             {
                 this.GetPlayerInput(out playerInput);
             }
@@ -83,7 +102,7 @@ namespace Bonkers.Controls
         private void OnEnable()
         {
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
-            
+
             playerInput.onActionTriggered += OnAnyInputCallback;
         }
 
@@ -94,15 +113,15 @@ namespace Bonkers.Controls
 
         public void OnAnyInputCallback(InputAction.CallbackContext callbackContext)
         {
-            if(Action.action == null)
+            if (Action.action == null)
             {
                 Debug.Log(message: $"[Warning] {nameof(Action)} is null.", context: this);
                 return;
             }
-            
+
             if (Action.action.id != callbackContext.action.id) return;
 
-            if (callbackContext.action.expectedControlType is "Axis" or "Digital" )
+            if (callbackContext.action.expectedControlType is "Axis" or "Digital")
             {
                 Value = callbackContext.ReadValue<F32>();
             }
@@ -112,9 +131,6 @@ namespace Bonkers.Controls
             }
         }
 
-        void ISettableControl<F32>.SetValue(F32 value)
-        {
-            Value = value;
-        }
+        #endregion
     }
 }

@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Value>k__BackingField: 0
   <Action>k__BackingField: {fileID: 8771580136217200285, guid: 7b0fffd381a21eb41a7730498ce1e99b, type: 3}
   playerInput: {fileID: 1609574961811962854}
   showPlayerInput: 0
+  <Value>k__BackingField: 0
 --- !u!1 &495955398065020332
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,10 +441,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Value>k__BackingField: 0
   <Action>k__BackingField: {fileID: 3536553529838571641, guid: d6923793dd168064091880429d629e00, type: 3}
   playerInput: {fileID: 1609574961811962854}
   showPlayerInput: 0
+  <Value>k__BackingField: 0
 --- !u!1 &1995602406158088890
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,8 +1219,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3914473df5e91142aa12c02b16d71be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  binding: {fileID: 0}
   axisX: {fileID: 3817145894686159709}
   axisY: {fileID: 4173976153280911931}
+  useCompositeBindings: 1
+  playerInput: {fileID: 0}
+  showPlayerInput: 1
+  showValue: 1
 --- !u!1 &7333433675823837876
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,10 +1270,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Value>k__BackingField: 0
   <Action>k__BackingField: {fileID: -7222896263999569596, guid: 7b0fffd381a21eb41a7730498ce1e99b, type: 3}
   playerInput: {fileID: 1609574961811962854}
   showPlayerInput: 0
+  <Value>k__BackingField: 0
 --- !u!1 &8260145900374493132
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,10 +1318,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Value>k__BackingField: 0
   <Action>k__BackingField: {fileID: -1946564365313720924, guid: 7dead05c54ca85b4681351aafd8bd03a, type: 3}
   playerInput: {fileID: 1609574961811962854}
   showPlayerInput: 0
+  <Value>k__BackingField: 0
 --- !u!1 &8545792728971593387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,11 +1366,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a704cf93a1c54d488bfb9afc1c63b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showValue: 1
-  <Value>k__BackingField: 0
   <Action>k__BackingField: {fileID: -110570398994490061, guid: d6923793dd168064091880429d629e00, type: 3}
-  showPlayerInput: 0
   playerInput: {fileID: 1609574961811962854}
+  showPlayerInput: 0
+  <Value>k__BackingField: 0
+  showValue: 1
 --- !u!1 &8604593960523539970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,8 +1415,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a704cf93a1c54d488bfb9afc1c63b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showValue: 1
-  <Value>k__BackingField: 0
   <Action>k__BackingField: {fileID: -4587827356370442066, guid: d6923793dd168064091880429d629e00, type: 3}
-  showPlayerInput: 0
   playerInput: {fileID: 1609574961811962854}
+  showPlayerInput: 0
+  <Value>k__BackingField: 0
+  showValue: 1

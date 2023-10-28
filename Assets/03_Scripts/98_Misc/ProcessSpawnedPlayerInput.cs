@@ -1,5 +1,7 @@
 namespace Bonkers
 {
+    using System;
+
     using JetBrains.Annotations;
 
     using UnityEngine;
@@ -9,26 +11,42 @@ namespace Bonkers
 
     public sealed class ProcessSpawnedPlayerInput : MonoBehaviour
     {
-        [SerializeField] private UltEvent<PlayerInput>[] actionsOnJoin;
+        [SerializeField] private PlayerInputManager    playerInputManager;
+        [SerializeField] private UltEvent<PlayerInput> actionsOnJoin;
+        [SerializeField] private UltEvent<PlayerInput> actionsOnLeave;
 
-        [SerializeField] private UltEvent<PlayerInput>[] actionsOnLeave;
+        #if UNITY_EDITOR
+        private void Reset()
+        {
+            playerInputManager = GetComponent<PlayerInputManager>();
+        }
+        #endif
+
+        private void OnEnable()
+        {
+            if (playerInputManager == null) return;
+
+            playerInputManager.onPlayerJoined += PlayerJoined;
+        }
         
+        private void OnDisable()
+        {
+            if (playerInputManager == null) return;
+            
+            playerInputManager.onPlayerLeft += PlayerLeft;
+        }
+
         [PublicAPI]
         public void PlayerJoined(PlayerInput playerInput)
         {
-            foreach (UltEvent<PlayerInput> __action in actionsOnJoin)
-            {
-                __action.Invoke(playerInput);
-            }
+            actionsOnJoin.Invoke(playerInput);
         }
 
         [PublicAPI]
         public void PlayerLeft(PlayerInput playerInput)
         {
-            foreach (UltEvent<PlayerInput> __action in actionsOnLeave)
-            {
-                __action.Invoke(playerInput);
-            }
-        }  
+            actionsOnLeave.Invoke(playerInput);
+        }
+        
     }
 }

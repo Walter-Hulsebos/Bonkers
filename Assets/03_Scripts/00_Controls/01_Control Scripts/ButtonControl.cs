@@ -16,11 +16,6 @@ namespace Bonkers.Controls
                                         ISettableControl<Bool>
     {
         #if ODIN_INSPECTOR
-        [field:ReadOnly]
-        #endif
-        [field:SerializeField] public Bool Value { get; internal set; }
-        
-        #if ODIN_INSPECTOR
         [field:LabelText("Action")]
         #endif
         [field:SerializeField]
@@ -35,7 +30,7 @@ namespace Bonkers.Controls
         [HideInInspector]
         #endif
         [SerializeField] private Bool showPlayerInput = true;
-
+        
         #if UNITY_EDITOR
         [ContextMenu(itemName: "Toggle Show Player Input")]
         private void ToggleShowPlayerInput()
@@ -48,6 +43,11 @@ namespace Bonkers.Controls
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
         }
         #endif
+        
+        #if ODIN_INSPECTOR
+        [field:ReadOnly]
+        #endif
+        [field:SerializeField] public Bool Value { get; internal set; }
 
         #if UNITY_EDITOR
         private void Reset()

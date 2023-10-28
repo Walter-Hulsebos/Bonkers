@@ -80,6 +80,7 @@ namespace SingularityGroup.HotReload.Editor {
                     HotReloadTimelineHelper.RenderAlertFilters();
                 }
             }
+            HotReloadState.ShowingRedDot = false;
         }
         
         public override void OnOpen() {

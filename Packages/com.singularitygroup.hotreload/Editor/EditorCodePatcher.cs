@@ -105,6 +105,14 @@ namespace SingularityGroup.HotReload.Editor {
                 HotReloadPrefs.ShowOnStartup = showOnStartupLegacy;
             }
 #pragma warning restore CS0612 // Type or member is obsolete
+            
+            HotReloadState.ShowingRedDot = false;
+
+            if (DateTime.Now < new DateTime(2023, 11, 1)) {
+                HotReloadSuggestionsHelper.SetSuggestionsShown(HotReloadSuggestionKind.UnityBestDevelopmentToolAward2023);
+            } else {
+                HotReloadSuggestionsHelper.SetSuggestionInactive(HotReloadSuggestionKind.UnityBestDevelopmentToolAward2023);
+            }
         }
 
         public static void ResetSettingsOnQuit() {
