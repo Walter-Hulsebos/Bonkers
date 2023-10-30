@@ -15,6 +15,7 @@ using static ProjectDawn.Mathematics.math2;
 
 using F32 = System.Single;
 using F32x3 = Unity.Mathematics.float3;
+using Cysharp.Threading.Tasks;
 
 [Serializable]
     public sealed class PlayerAttackState : PlayerBaseState
@@ -22,7 +23,7 @@ using F32x3 = Unity.Mathematics.float3;
 
     #region Variables
 
-    [SerializeField] private F32 Damage = 10;
+    private InSpecial inSpecial;
 
     #endregion
 
@@ -30,15 +31,38 @@ using F32x3 = Unity.Mathematics.float3;
     public PlayerAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
 
     #endregion
-
-        public override void EnterState()
-        {
+    private enum InSpecial
+    {
+        None,
+        Special
+    }
+    public override void EnterState()
+    {
         Debug.Log("Penis is active");
         Ctx.Anims.SetTrigger(Ctx.Special1Hash);
+        HandleSpecial1();
     }
 
     public override void ExitState()
     {
+    }
+
+    void HandleSpecial1()
+    {
+        inSpecial = InSpecial.Special;
+        SpawnRats();
+    }
+    async void SpawnRats()
+    {
+        GameObject.Instantiate(Ctx.Data.ratPrefab, Ctx.transform.position + (Ctx.transform.forward * 2), Quaternion.identity);
+        await UniTask.WaitForEndOfFrame(Ctx);
+        GameObject.Instantiate(Ctx.Data.ratPrefab, Ctx.transform.position + (Ctx.transform.forward * 2) + (Ctx.transform.right * 1), Quaternion.identity);
+        await UniTask.WaitForEndOfFrame(Ctx);
+        GameObject.Instantiate(Ctx.Data.ratPrefab, Ctx.transform.position + (Ctx.transform.forward * 2) + (Ctx.transform.right * -2), Quaternion.identity);
+        await UniTask.WaitForEndOfFrame(Ctx);
+        GameObject.Instantiate(Ctx.Data.ratPrefab, Ctx.transform.position + (Ctx.transform.forward * 1) + (Ctx.transform.right * 0.5f), Quaternion.identity);
+        await UniTask.WaitForEndOfFrame(Ctx);
+        GameObject.Instantiate(Ctx.Data.ratPrefab, Ctx.transform.position + (Ctx.transform.forward * 1) + (Ctx.transform.right * -0.5f), Quaternion.identity);
     }
 
     #region Updates

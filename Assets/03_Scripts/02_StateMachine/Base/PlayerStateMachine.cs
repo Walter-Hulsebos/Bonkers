@@ -30,6 +30,7 @@ using I32x3 = Unity.Mathematics.int3;
     
 using Bool  = System.Boolean;
 using Rotor = Unity.Mathematics.quaternion;
+using JetBrains.Annotations;
 
 public class PlayerStateMachine : MonoBehaviour, ICharacterController
 {
@@ -104,7 +105,9 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     public F32 Gravity { get ; set; }
 
-    #if UNITY_EDITOR
+    [field: SerializeField] public PlayerData Data { get; [UsedImplicitly] private set; }
+
+#if UNITY_EDITOR
     protected virtual void Reset()
     {
         Motor = GetComponent<KinematicCharacterMotor>();

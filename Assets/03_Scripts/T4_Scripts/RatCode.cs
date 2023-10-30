@@ -14,6 +14,7 @@ namespace Bonkers
         public bool enemy;
 
         public float lifetime = 3;
+        public float ratSpeed = 10;
 
         public GameObject savedEnemy;
         private void Awake()
@@ -26,7 +27,7 @@ namespace Bonkers
         void Update()
         {
             if (enemy == false)
-                rb.velocity = transform.forward * 4f;
+                rb.velocity = transform.forward * ratSpeed;
             else
             if (enemy == true)
                 ChaseEnemy(savedEnemy);

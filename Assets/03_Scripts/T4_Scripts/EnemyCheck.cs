@@ -26,7 +26,7 @@ namespace Bonkers
 
         IEnumerator Lifetime()
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(9999f);
             Destroy(this.gameObject);
         }
     }
