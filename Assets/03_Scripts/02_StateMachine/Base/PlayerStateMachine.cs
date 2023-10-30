@@ -121,9 +121,9 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         _states = new PlayerStateFactory(currentContext: this);
 
         //set hash references
-        WalkHash = Animator.StringToHash(name: "walk");
-        JumpHash = Animator.StringToHash(name: "jump");
-        IdleHash = Animator.StringToHash(name: "idle");
+        WalkHash     = Animator.StringToHash(name: "walk");
+        JumpHash     = Animator.StringToHash(name: "jump");
+        IdleHash     = Animator.StringToHash(name: "idle");
         Special1Hash = Animator.StringToHash(name: "special1");
         
         Motor.CharacterController = this;
