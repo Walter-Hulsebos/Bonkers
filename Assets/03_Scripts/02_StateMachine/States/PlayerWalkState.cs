@@ -48,11 +48,11 @@ public sealed class PlayerWalkState : PlayerBaseState
         //Debug.Log("Exiting Walk State");
         //Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
     }
-    
+
     #endregion
 
     #region Update
-    
+
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
     {
         F32 __currentVelocityMagnitude = currentVelocity.magnitude;

@@ -33,11 +33,11 @@ public sealed class PlayerFallingState : PlayerBaseState
     {
         //Debug.Log("Exiting Falling State");
     }
-    
+
     #endregion
-    
+
     #region Update
-    
+
     protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) 
     {
         // const Single FALL_MULTIPLIER = 2f;

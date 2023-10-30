@@ -26,20 +26,17 @@ public sealed class PlayerIdleState : PlayerBaseState
         //Debug.Log("Exiting Idle State");
         //Ctx.Animator.SetBool(Ctx.IsIdleHash, value: false);
     }
-    
+
     #endregion
 
     #region Update
-    
+
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
     {
         currentVelocity = Vector3.zero;
     }
 
-    protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
-    {
-        
-    }
+    protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime){}
 
     #endregion
     

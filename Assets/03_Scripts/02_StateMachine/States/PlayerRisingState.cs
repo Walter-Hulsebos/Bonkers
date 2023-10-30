@@ -31,17 +31,18 @@ public sealed class PlayerRisingState : PlayerBaseState
     {
         //Debug.Log("Exiting Rising State");
     }
-    
+
     #endregion
-    
+
     #region Update
-    
+
+
     protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) 
-    {
-        //Use Verlet integration to calculate the new velocity
+    {   
+        //use verlet intergration 
         //TODO: Evaluate if using _currentYVelocity is correct here, since it isn't shared with the Falling state.
         float __previousYVelocity = _currentYVelocity;
-        _currentYVelocity += (length(Ctx.Gravity) * Time.deltaTime);
+        _currentYVelocity += (Ctx.Gravity * Time.deltaTime);
         currentVelocity.y = max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
     }
     

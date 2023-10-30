@@ -56,18 +56,21 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
+    [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
     public Bool  JumpRequested   { get; internal set; }
+    public Bool Special1Requested { get; internal set; }
 
     #endregion
-    
+
     #region Animator Hashes
 
     public I32 WalkHash { get; private set; }
     public I32 JumpHash { get; private set; }
     public I32 IdleHash { get; private set; }
+    public I32 Special1Hash { get; private set; } 
 
     #endregion
     
@@ -99,7 +102,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     public Bool CanJumpAgain => (TimeSinceLastAbleToJump <= JumpPostGroundingGraceTime);
 
-    public F32x3 Gravity { get ; set; }
+    public F32 Gravity { get ; set; }
 
     #if UNITY_EDITOR
     protected virtual void Reset()
@@ -121,6 +124,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         WalkHash = Animator.StringToHash(name: "walk");
         JumpHash = Animator.StringToHash(name: "jump");
         IdleHash = Animator.StringToHash(name: "idle");
+        Special1Hash = Animator.StringToHash(name: "special1");
         
         Motor.CharacterController = this;
     }
@@ -173,6 +177,13 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
             TimeSinceJumpRequested = 0f;
             JumpRequested = true;
         }
+
+        //Attack Input
+        if(getSpecial1Input.Invoke())
+        {
+           Special1Requested = true;
+        }
+            
         
     }
     public void BeforeCharacterUpdate(F32 deltaTime)
@@ -277,4 +288,5 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     {
         // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
     }
+
 }

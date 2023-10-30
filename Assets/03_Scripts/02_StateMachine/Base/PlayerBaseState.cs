@@ -25,7 +25,10 @@ public abstract class PlayerBaseState
         factory = playerStateFactory;
     }
 
-    public abstract void EnterState();
+    public virtual void EnterState()
+    {
+    }
+    
     public virtual void ExitState()
     {
         //canUpdate = false;

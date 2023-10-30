@@ -23,6 +23,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
     
     private PlayerBaseState _subStateIdle;
     private PlayerBaseState _subStateWalk;
+    private PlayerBaseState _subStateAttack;
     
     #endregion
 
@@ -35,6 +36,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
 
         _subStateIdle = Factory.Idle();
         _subStateWalk = Factory.Walk();
+        _subStateAttack = Factory.Special1();
     }
 
     #endregion
@@ -50,11 +52,10 @@ public sealed class PlayerGroundedState : PlayerBaseState
     {
         //Debug.Log("Exiting Grounded State");
     }
-    
+
     #endregion
 
     #region Update
-
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime) { }
     
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime) { }
@@ -67,6 +68,21 @@ public sealed class PlayerGroundedState : PlayerBaseState
     {
         if (Ctx.Motor.GroundingStatus.IsStableOnGround)
         {
+            // if the player is grounded and attack is pressed, switch to attack state
+            if (Ctx.Special1Requested)
+            {
+                SwitchSubState(_subStateAttack);
+                Debug.Log("Still Attacking");
+            }
+            else if (Ctx.IsMovementPressed && !Ctx.Special1Requested)
+            {
+                SwitchSubState(_subStateWalk);
+            }
+            else if (!Ctx.IsMovementPressed && !Ctx.Special1Requested)
+            {
+                SwitchSubState(_subStateIdle);
+            }
+
             // if player is grounded and jump is pressed , switch to jump state
             if (Ctx.JumpRequested) //&& !Ctx.RequireNewJumpPress)
             {
@@ -76,15 +92,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
                     SwitchState(Factory.Jump());
                 }
             }
-            
-            if (Ctx.IsMovementPressed)
-            {
-                SwitchSubState(_subStateWalk);
-            }
-            else
-            {
-                SwitchSubState(_subStateIdle);
-            }
+           
         }
         else
         {

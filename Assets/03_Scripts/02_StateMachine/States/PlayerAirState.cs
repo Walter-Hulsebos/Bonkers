@@ -55,11 +55,11 @@ public sealed class PlayerAirState : PlayerBaseState
     {
         //Debug.Log("Exiting Air State");
     }
-    
+
     #endregion
 
     #region Update
-    
+
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
     {
         F32x3 __moveInputVector = Ctx.MoveInputVector;

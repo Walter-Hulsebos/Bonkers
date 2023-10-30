@@ -37,4 +37,9 @@ public class PlayerStateFactory
         {
             return new PlayerRisingState(currentContext: context, playerStateFactory: this);
         }
+
+    public PlayerBaseState Special1()
+    {
+        return new PlayerAttackState(currentContext: context, playerStateFactory: this);
+    }
 }

@@ -58,11 +58,10 @@ public sealed class PlayerJumpState : PlayerBaseState
         
         _hasJumped = false;
     }
-    
+
     #endregion
 
     #region Update
-    
     protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
         //_jumpedThisFrame =  false;
