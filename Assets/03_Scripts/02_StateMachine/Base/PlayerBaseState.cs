@@ -58,7 +58,7 @@ public abstract class PlayerBaseState
 
     public void UpdateVelocities(ref Vector3 currentVelocity, F32 deltaTime)
     {
-        currentSubState?.UpdateVelocity(ref currentVelocity, deltaTime);
+        currentSubState?.UpdateVelocities(ref currentVelocity, deltaTime);
         UpdateVelocity(ref currentVelocity, deltaTime);
     }
     public void UpdateRotations(ref Quaternion currentRotation, F32 deltaTime)

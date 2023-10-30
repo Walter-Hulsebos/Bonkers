@@ -191,14 +191,18 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         // This is called before the motor does anything
         //Debug.Log("BeforeCharacterUpdate");
         CurrentState.UpdateStates();
+        
+        CurrentState.UpdateBeforeCharacterUpdate(deltaTime: deltaTime);
     }
     
     /// <summary> Called after the motor has finished its ground probing, but before PhysicsMover/Velocity/etc.... handling </summary>
     public void PostGroundingUpdate(F32 deltaTime)
     {
-        //Debug.Log("PostGroundingUpdate");
+        CurrentState.UpdatePostGroundingUpdate(deltaTime: deltaTime);
+        
+        
         //TODO: Call UpdateStates() here instead of in Update()!!!
-        //CurrentState.UpdateStates();
+        
     }
 
     /// <summary>
@@ -260,6 +264,8 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
             // Keep track of time since we were last able to jump (for grace period)
             TimeSinceLastAbleToJump += deltaTime;
         }
+        
+        CurrentState.UpdateAfterCharacterUpdate(deltaTime: deltaTime);
     }
 
     public Bool IsColliderValidForCollisions(Collider coll)
@@ -271,9 +277,13 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public void OnGroundHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
         //TODO: [Garon, Walter] Add Coyote Time in here!! 
+        CurrentState.UpdateOnGroundHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
     }
 
-    public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport) { }
+    public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+    {
+        CurrentState.UpdateOnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
+    }
 
     public void ProcessHitStabilityReport
     (
