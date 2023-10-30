@@ -22,9 +22,7 @@ using Cysharp.Threading.Tasks;
     {
 
     #region Variables
-
     private InSpecial inSpecial;
-
     #endregion
 
     #region Constructor
@@ -38,7 +36,6 @@ using Cysharp.Threading.Tasks;
     }
     public override void EnterState()
     {
-        Debug.Log("Penis is active");
         Ctx.Anims.SetTrigger(Ctx.Special1Hash);
         HandleSpecial1();
     }
@@ -73,6 +70,8 @@ using Cysharp.Threading.Tasks;
 
     protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
+        currentVelocity = Vector3.zero;
+
         //if(Ctx.Anims.GetCurrentAnimatorClipInfo(layerIndex: 0))
         AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
 

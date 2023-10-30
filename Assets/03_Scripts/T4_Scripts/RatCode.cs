@@ -11,10 +11,11 @@ namespace Bonkers
         GameObject player;
         Rigidbody rb;
 
+        public float ratSpeed = 10f;
+
         public bool enemy;
 
         public float lifetime = 3;
-        public float ratSpeed = 10;
 
         public GameObject savedEnemy;
         private void Awake()
@@ -44,10 +45,10 @@ namespace Bonkers
             savedEnemy = gameObject;
         }
 
-        public void ChaseEnemy(GameObject gameObject)
+        public void ChaseEnemy(GameObject target)
         {
-            this.gameObject.transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, 0.02f);
-            this.gameObject.transform.LookAt(gameObject.transform, Vector3.up);
+            this.gameObject.transform.position = Vector3.MoveTowards(transform.position,target.transform.position, 0.02f);
+            this.gameObject.transform.LookAt(target.transform, Vector3.up);
         }
     }
 }

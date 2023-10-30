@@ -20,14 +20,6 @@ using F32x3 = Unity.Mathematics.float3;
 public sealed class PlayerWalkState : PlayerBaseState
 {
 
-    #region Variables
-    
-    [SerializeField] private F32 maxSpeed        = 10f;
-    [SerializeField] private F32 moveSharpness   = 15f;
-    [SerializeField] private F32 orientSharpness = 20f;
-
-    #endregion
-
     #region Constructor
     
     public PlayerWalkState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base (currentContext, playerStateFactory) { }
@@ -69,10 +61,10 @@ public sealed class PlayerWalkState : PlayerBaseState
 
         F32x3 __reorientedInput = normalize(cross(__effectiveGroundNormal, __inputRight)) * length(__moveInputVector);
 
-        F32x3 __targetMovementVelocity = __reorientedInput * maxSpeed;
+        F32x3 __targetMovementVelocity = __reorientedInput * Ctx.Data.PlayerMaxSpeed;
 
         // Smooth movement Velocity
-        currentVelocity = lerp(currentVelocity, __targetMovementVelocity, t: 1f - exp(-moveSharpness * deltaTime));
+        currentVelocity = lerp(currentVelocity, __targetMovementVelocity, t: 1f - exp(-Ctx.Data.MoveSharpness * deltaTime));
     }
 
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
@@ -84,7 +76,7 @@ public sealed class PlayerWalkState : PlayerBaseState
         F32x3 __forward = Ctx.Motor.CharacterForward;
         F32x3 __look    = Ctx.LookInputVector;
         
-        F32x3 __smoothedLookInputDirection = normalizesafe(slerp(start: __forward, end: __look, t: 1 - exp(-orientSharpness * deltaTime)));
+        F32x3 __smoothedLookInputDirection = normalizesafe(slerp(start: __forward, end: __look, t: 1 - exp(-Ctx.Data.OrientSharpness * deltaTime)));
 
         // Set the current rotation (which will be used by the KinematicCharacterMotor)
         currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: Ctx.Motor.CharacterUp);

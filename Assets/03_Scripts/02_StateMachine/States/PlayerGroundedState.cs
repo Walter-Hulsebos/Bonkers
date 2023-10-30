@@ -80,7 +80,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
                 _isAttacking1 = true;
             }
 
-            if (_isAttacking1)
+            if (_isAttacking1 )
             {
                 AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
                 F32 animPercentage = __animStateInfo.normalizedTime;
@@ -91,9 +91,9 @@ public sealed class PlayerGroundedState : PlayerBaseState
                 }
             }
             
-            if (!_isAttacking1)
+            if (!_isAttacking1 && !Ctx.Special1Requested)
             {
-                if (Ctx.IsMovementPressed)
+                if (Ctx.IsMovementPressed && !Ctx.Special1Requested)
                 {
                     SwitchSubState(_subStateWalk);
                 }
