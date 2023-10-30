@@ -53,15 +53,15 @@ using F32x3 = Unity.Mathematics.float3;
         AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
 
         Debug.Log($"Expected Hash = {Ctx.Special1Hash}, tag hash {__animStateInfo.tagHash}, short hash {__animStateInfo.shortNameHash}, long hash {__animStateInfo.fullPathHash}");
-       // if (__animStateInfo.tagHash == Ctx.Special1Hash)
-        {
+        // if (__animStateInfo.tagHash == Ctx.Special1Hash)
+        //{
             F32 animPercentage = __animStateInfo.normalizedTime;
 
             if (animPercentage > 1.0f)
             {
                 
             }
-        }
+        //}
     }
     #endregion
 }

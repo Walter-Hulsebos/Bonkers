@@ -61,7 +61,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
     public Bool  JumpRequested   { get; internal set; }
-    public Bool Special1Requested { get; internal set; }
+    public Bool  Special1Requested => getSpecial1Input.Invoke();
 
     #endregion
 
@@ -179,11 +179,11 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         }
 
         //Attack Input
-        if(getSpecial1Input.Invoke())
-        {
-           Special1Requested = true;
-        }
-            
+        // if(getSpecial1Input.Invoke())
+        // {
+        //    Special1Requested = true;
+        // }
+        //     
         
     }
     public void BeforeCharacterUpdate(F32 deltaTime)

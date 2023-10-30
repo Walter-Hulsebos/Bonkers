@@ -15,6 +15,7 @@ using static ProjectDawn.Mathematics.math2;
 
 using F32   = System.Single;
 using F32x3 = Unity.Mathematics.float3;
+using Bool  = System.Boolean;
 
 public sealed class PlayerGroundedState : PlayerBaseState
 {
@@ -24,6 +25,8 @@ public sealed class PlayerGroundedState : PlayerBaseState
     private PlayerBaseState _subStateIdle;
     private PlayerBaseState _subStateWalk;
     private PlayerBaseState _subStateAttack;
+    
+    private Bool _isAttacking1 = false;
     
     #endregion
 
@@ -73,15 +76,34 @@ public sealed class PlayerGroundedState : PlayerBaseState
             {
                 SwitchSubState(_subStateAttack);
                 Debug.Log("Still Attacking");
+                
+                _isAttacking1 = true;
             }
-            else if (Ctx.IsMovementPressed && !Ctx.Special1Requested)
+
+            if (_isAttacking1)
             {
-                SwitchSubState(_subStateWalk);
+                AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
+                F32 animPercentage = __animStateInfo.normalizedTime;
+                
+                if (animPercentage > 1.0f)
+                {
+                    _isAttacking1 = false;
+                }
             }
-            else if (!Ctx.IsMovementPressed && !Ctx.Special1Requested)
+            
+            if (!_isAttacking1)
             {
-                SwitchSubState(_subStateIdle);
+                if (Ctx.IsMovementPressed)
+                {
+                    SwitchSubState(_subStateWalk);
+                }
+                else if (!Ctx.IsMovementPressed && !Ctx.Special1Requested)
+                {
+                    SwitchSubState(_subStateIdle);
+                }
             }
+            
+
 
             // if player is grounded and jump is pressed , switch to jump state
             if (Ctx.JumpRequested) //&& !Ctx.RequireNewJumpPress)
