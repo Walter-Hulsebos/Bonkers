@@ -19,7 +19,11 @@ public class PlayerStateFactory
         {
             return new PlayerWalkState(currentContext: context, playerStateFactory: this);
         }
-        
+    public PlayerBasicAttackState BasicAttack()
+    {
+        return new PlayerBasicAttackState(currentContext: context, playerStateFactory: this);
+
+    }
     public PlayerBaseState Jump() 
     {
         return new PlayerJumpState(currentContext: context, playerStateFactory: this);

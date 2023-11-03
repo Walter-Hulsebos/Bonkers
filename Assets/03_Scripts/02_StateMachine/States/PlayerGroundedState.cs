@@ -23,6 +23,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
     
     private PlayerBaseState _subStateIdle;
     private PlayerBaseState _subStateWalk;
+    private PlayerBaseState _subStateBasicAttack;
     
     #endregion
 
@@ -35,6 +36,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
 
         _subStateIdle = Factory.Idle();
         _subStateWalk = Factory.Walk();
+        _subStateBasicAttack = Factory.BasicAttack();
     }
 
     #endregion
@@ -76,7 +78,10 @@ public sealed class PlayerGroundedState : PlayerBaseState
                     SwitchState(Factory.Jump());
                 }
             }
-            
+            if (Ctx.BasicAttackRequested)
+            {
+                SwitchSubState(_subStateBasicAttack);
+            }
             if (Ctx.IsMovementPressed)
             {
                 SwitchSubState(_subStateWalk);

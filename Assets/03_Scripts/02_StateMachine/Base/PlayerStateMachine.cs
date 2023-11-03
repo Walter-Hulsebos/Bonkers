@@ -56,10 +56,13 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
+    [SerializeField] private UnityFunc<Bool>  getBasicAttackInput;
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
     public Bool  JumpRequested   { get; internal set; }
+    public bool BasicAttackRequested => getBasicAttackInput.Invoke();
+
 
     #endregion
     
@@ -68,6 +71,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public I32 WalkHash { get; private set; }
     public I32 JumpHash { get; private set; }
     public I32 IdleHash { get; private set; }
+    public I32 BasicAttackHash { get; private set; }
 
     #endregion
     
@@ -121,6 +125,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         WalkHash = Animator.StringToHash(name: "walk");
         JumpHash = Animator.StringToHash(name: "jump");
         IdleHash = Animator.StringToHash(name: "idle");
+        BasicAttackHash = Animator.StringToHash(name: "basicAttack");
         
         Motor.CharacterController = this;
     }
