@@ -96,9 +96,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Special3",
+                    "name": "Ultimate",
                     "type": "Button",
-                    "id": "1e73b48f-fbdb-4f3d-8609-57ff87c978f7",
+                    "id": "0818dcc9-1146-4a97-8f5b-45791802282e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Grab",
+                    "type": "Button",
+                    "id": "71bf28ed-9bed-4bf0-8a56-99aff94cd5e7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -617,6 +626,17 @@
                 },
                 {
                     "name": "",
+                    "id": "7691733d-2a3f-444b-ad17-f92e3cc22bf5",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BasicAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "092659d2-dd09-43cc-8292-48ab5d797a30",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -628,8 +648,19 @@
                 },
                 {
                     "name": "",
-                    "id": "bc472659-594f-4327-9fb0-efad0254df8e",
+                    "id": "9a239000-89d9-470d-a498-807f205820a2",
                     "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc472659-594f-4327-9fb0-efad0254df8e",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -639,12 +670,34 @@
                 },
                 {
                     "name": "",
-                    "id": "50608a86-ed9d-4c67-835c-3523d8e25b10",
-                    "path": "",
+                    "id": "6a5addec-49f4-42e1-a60e-0a31bc982d5a",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Special3",
+                    "action": "Special2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6147935b-6944-4eac-b6dc-11217319b803",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ultimate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "abd6de3a-21ae-495d-9ef6-1e1633d0f518",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

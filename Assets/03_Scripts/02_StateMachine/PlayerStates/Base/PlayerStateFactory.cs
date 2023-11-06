@@ -51,10 +51,6 @@ public class PlayerStateFactory
     {
         return new D_S2AttackState(currentContext: context, playerStateFactory: this);
     }
-    public PlayerBaseState DruidSpecial3()
-    {
-        return new D_S3AttackState(currentContext: context, playerStateFactory: this);
-    }
     #endregion
 
     #region Smith Attack
@@ -70,10 +66,6 @@ public class PlayerStateFactory
     {
         return new S_S2AttackState(currentContext: context, playerStateFactory: this);
     }
-    public PlayerBaseState SmithSpecial3()
-    {
-        return new S_S3AttackState(currentContext: context, playerStateFactory: this);
-    }
     #endregion
 
     #region CatWoman
@@ -88,10 +80,6 @@ public class PlayerStateFactory
     public PlayerBaseState CatWomanSpecial2()
     {
         return new C_S2AttackState(currentContext: context, playerStateFactory: this);
-    }
-    public PlayerBaseState CatWomanSpecial3()
-    {
-        return new C_S3AttackState(currentContext: context, playerStateFactory: this);
     }
     #endregion
 }

@@ -65,21 +65,18 @@ public sealed class PlayerGroundedState : PlayerBaseState
         _subStateBasicAttack_Druid    = Factory.DruidBasicAttack();
         _subStateAttackSpecial1_Druid = Factory.DruidSpecial1();
         _subStateAttackSpecial2_Druid = Factory.DruidSpecial2();
-        _subStateAttackSpecial3_Druid = Factory.DruidSpecial3();
         #endregion
 
         #region Smith Attack
         _subStateBasicAttack_Smith =    Factory.SmithBasicAttack();
         _subStateAttackSpecial1_Smith = Factory.SmithSpecial1();
         _subStateAttackSpecial2_Smith = Factory.SmithSpecial2();
-        _subStateAttackSpecial3_Smith = Factory.SmithSpecial3();
         #endregion
 
         #region CatWoman Attack
         _subStateBasicAttack_CatWoman = Factory.CatWomanBasicAttack();
         _subStateAttackSpecial1_CatWoman = Factory.CatWomanSpecial1();
         _subStateAttackSpecial2_CatWoman = Factory.CatWomanSpecial2();
-        _subStateAttackSpecial3_CatWoman = Factory.CatWomanSpecial3();
         #endregion
     }
 
@@ -159,23 +156,6 @@ public sealed class PlayerGroundedState : PlayerBaseState
                         break;
                     case CatWoman:
                         SwitchSubState(_subStateAttackSpecial2_CatWoman);
-                        break;
-                }
-
-                _isAttacking = true;
-            }
-            if (Ctx.Special3Requested) 
-            {
-                switch (Ctx.character)
-                {
-                    case Druid:
-                        SwitchSubState(_subStateAttackSpecial3_Druid);
-                        break;
-                    case Smith:
-                        SwitchSubState(_subStateAttackSpecial3_Smith);
-                        break;
-                    case CatWoman:
-                        SwitchSubState(_subStateAttackSpecial3_CatWoman);
                         break;
                 }
 

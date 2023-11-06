@@ -72,7 +72,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     [SerializeField] private UnityFunc<Bool>  getBasicAttackInput;
     [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
     [SerializeField] private UnityFunc<Bool>  getSpecial2Input;
-    [SerializeField] private UnityFunc<Bool>  getSpecial3Input;
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
@@ -80,7 +79,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public Bool BasicAttackRequested => getBasicAttackInput.Invoke();
     public Bool  Special1Requested => getSpecial1Input.Invoke();
     public Bool Special2Requested => getSpecial2Input.Invoke();
-    public Bool Special3Requested => getSpecial3Input.Invoke();
 
     #endregion
 
@@ -92,7 +90,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public I32 BasicAttackHash { get; private set; }
     public I32 Special1Hash { get; private set; } 
     public I32 Special2Hash { get; private set; }
-    public I32 Special3Hash { get; private set; }
 
     #endregion
 
@@ -151,8 +148,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         BasicAttackHash = Animator.StringToHash(name: "basicAttack"); 
         Special1Hash    = Animator.StringToHash(name: "special1");
         Special2Hash    = Animator.StringToHash(name: "special2");
-        Special3Hash    = Animator.StringToHash(name: "special3");
-
 
         Motor.CharacterController = this;
     }
