@@ -31,6 +31,7 @@ namespace Bonkers
                 default:
                     hitObject = collider.gameObject;
                     canTrigger = true;
+                   
                     break;
             }
         }
@@ -39,6 +40,7 @@ namespace Bonkers
         {
             hitObject = null;
             canTrigger = false;
+           
         }
 
         public void OnReceiveInput()
@@ -47,6 +49,7 @@ namespace Bonkers
             {
                 if (hitObject != null)
                 {
+                   
                     switch (hitObject.tag)
                     {
                         case "Enemy":
@@ -54,6 +57,7 @@ namespace Bonkers
                             break;
                         case "Crate":
                             hitObject.transform.GetComponent<Crate>().ReceiveHit();
+                           
                             break;
                         default:
                             break;

@@ -40,7 +40,7 @@ namespace Bonkers
         [SerializeField] UnityFunc<bool> getTestButton;
         [SerializeField] UnityFunc<bool> getAttackButton;
         [SerializeField] UnityFunc<bool> getInteractionButton;
- 
+        [SerializeField] UnityFunc<bool> getTimedEventButton; 
         protected override void Update()
         {
             base.Update();
@@ -58,7 +58,10 @@ namespace Bonkers
             {
                 CampaignManager.instance.ForwardNextSentence();
             }
-
+            if (getTimedEventButton.Invoke())
+            {
+                CampaignManager.instance.ForwardTimedEvent();
+            }
 
         }
     }

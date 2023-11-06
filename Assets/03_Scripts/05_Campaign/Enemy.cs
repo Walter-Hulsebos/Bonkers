@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +15,10 @@ namespace Bonkers
         public NavMeshAgent enemyAgent;
         public states state;
         private Timer attackCooldown;
+
+        private Rigidbody rb;
+        private int percentageDamage;
+        private int knockbackForce;
 
         public float distance = 10;
         public float angle = 30;
@@ -39,10 +44,9 @@ namespace Bonkers
         // Start is called before the first frame update
         public virtual void Start()
         {
+            rb = GetComponent<Rigidbody>();
             attackCooldown = new Timer();
             currentHealth = maxHealth;
-
-
             nextPoint = locations[0];
             state = states.Wandering;
             scanInterval = 1.0f / scanFrequency;
@@ -283,11 +287,16 @@ namespace Bonkers
 
         public void TakeDamage(float value)
         {
-            SetCurrentHealth(currentHealth -= value);
-            if (GetCurrentHealth() <= 0)
+            int calcValue = value * 0.1;
+            percentageDamage += calcValue;
+            knockbackForce = percentageDamage;
+
+            if (rb != null)
             {
-                Die();
+                Vector3 direction = CampaignManager.instance.player.transform.position - transform.position;
+                rb.AddForce(direction.normalized * knockbackForce, ForceMode.Impulse);
             }
+
             print("Enemy took damage");
         }
 
