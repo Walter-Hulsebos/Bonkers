@@ -18,35 +18,32 @@ using F32x3 = Unity.Mathematics.float3;
 using Cysharp.Threading.Tasks;
 
 [Serializable]
-    public sealed class PlayerAttackState : PlayerBaseState
-    {
-
-    #region Variables
-    private InSpecial inSpecial;
+public sealed class D_S1AttackState : PlayerBaseState
+{
+    #region Enums
+    private InSpecial1 inSpecial1;
     #endregion
 
     #region Constructor
-    public PlayerAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
+    public D_S1AttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
 
     #endregion
-    private enum InSpecial
+    private enum InSpecial1
     {
         None,
-        Special
+        Special1
     }
     public override void EnterState()
     {
         Ctx.Anims.SetTrigger(Ctx.Special1Hash);
-        HandleSpecial1();
+        HandleDruidSpecial1();
     }
 
-    public override void ExitState()
-    {
-    }
+    public override void ExitState(){}
 
-    void HandleSpecial1()
+    void HandleDruidSpecial1()
     {
-        inSpecial = InSpecial.Special;
+        inSpecial1 = InSpecial1.Special1;
         SpawnRats();
     }
     async void SpawnRats()
@@ -64,12 +61,10 @@ using Cysharp.Threading.Tasks;
 
     #region Updates
 
-    protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
-        {
-        }
+    protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime){}
 
     protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
-        {
+    {
         currentVelocity = Vector3.zero;
 
         //if(Ctx.Anims.GetCurrentAnimatorClipInfo(layerIndex: 0))
@@ -78,12 +73,12 @@ using Cysharp.Threading.Tasks;
         Debug.Log($"Expected Hash = {Ctx.Special1Hash}, tag hash {__animStateInfo.tagHash}, short hash {__animStateInfo.shortNameHash}, long hash {__animStateInfo.fullPathHash}");
         // if (__animStateInfo.tagHash == Ctx.Special1Hash)
         //{
-            F32 animPercentage = __animStateInfo.normalizedTime;
+        F32 animPercentage = __animStateInfo.normalizedTime;
 
-            if (animPercentage > 1.0f)
-            {
-                
-            }
+        if (animPercentage > 1.0f)
+        {
+
+        }
         //}
     }
     #endregion

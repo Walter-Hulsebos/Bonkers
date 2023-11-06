@@ -53,16 +53,34 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     #endregion
 
-    #region Inputs
+    #region Enums
+    public Character character;
+
+    public enum Character
+    {
+        Druid,
+        Smith,
+        CatWoman
+    }
     
+    #endregion
+
+    #region Inputs
+
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
+    [SerializeField] private UnityFunc<Bool>  getBasicAttackInput;
     [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
+    [SerializeField] private UnityFunc<Bool>  getSpecial2Input;
+    [SerializeField] private UnityFunc<Bool>  getSpecial3Input;
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
     public Bool  JumpRequested   { get; internal set; }
+    public Bool BasicAttackRequested => getBasicAttackInput.Invoke();
     public Bool  Special1Requested => getSpecial1Input.Invoke();
+    public Bool Special2Requested => getSpecial2Input.Invoke();
+    public Bool Special3Requested => getSpecial3Input.Invoke();
 
     #endregion
 
@@ -71,10 +89,13 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public I32 WalkHash { get; private set; }
     public I32 JumpHash { get; private set; }
     public I32 IdleHash { get; private set; }
+    public I32 BasicAttackHash { get; private set; }
     public I32 Special1Hash { get; private set; } 
+    public I32 Special2Hash { get; private set; }
+    public I32 Special3Hash { get; private set; }
 
     #endregion
-    
+
     [SerializeField] public F32 JumpPreGroundingGraceTime  { get; private set; } = 0.1f;
     [SerializeField] public F32 JumpPostGroundingGraceTime { get; private set; } = 0.1f;
     
@@ -124,11 +145,15 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         _states = new PlayerStateFactory(currentContext: this);
 
         //set hash references
-        WalkHash     = Animator.StringToHash(name: "walk");
-        JumpHash     = Animator.StringToHash(name: "jump");
-        IdleHash     = Animator.StringToHash(name: "idle");
-        Special1Hash = Animator.StringToHash(name: "special1");
-        
+        WalkHash        = Animator.StringToHash(name: "walk");
+        JumpHash        = Animator.StringToHash(name: "jump");
+        IdleHash        = Animator.StringToHash(name: "idle");
+        BasicAttackHash = Animator.StringToHash(name: "basicAttack"); 
+        Special1Hash    = Animator.StringToHash(name: "special1");
+        Special2Hash    = Animator.StringToHash(name: "special2");
+        Special3Hash    = Animator.StringToHash(name: "special3");
+
+
         Motor.CharacterController = this;
     }
 

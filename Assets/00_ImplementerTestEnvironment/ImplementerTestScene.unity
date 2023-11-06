@@ -440,6 +440,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402137349}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &797720967 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7810638768455106952, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+  m_PrefabInstance: {fileID: 2117358924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &956752452
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,6 +767,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1413798082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8546962817095042558, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+  m_PrefabInstance: {fileID: 2117358924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1505133370
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,6 +931,17 @@ Transform:
   - {fileID: 1240617819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1644565963 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3473531146168281134, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+  m_PrefabInstance: {fileID: 2117358924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2093875832
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,6 +1089,30 @@ PrefabInstance:
     - target: {fileID: 7142269343624364718, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2617668660
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298145251555141669, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+      propertyPath: getSpecial2Input._target
+      value: 
+      objectReference: {fileID: 1413798082}
+    - target: {fileID: 8298145251555141669, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+      propertyPath: getSpecial3Input._target
+      value: 
+      objectReference: {fileID: 1644565963}
+    - target: {fileID: 8298145251555141669, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+      propertyPath: getBasicAttackInput._target
+      value: 
+      objectReference: {fileID: 797720967}
+    - target: {fileID: 8298145251555141669, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+      propertyPath: getSpecial2Input._methodName
+      value: get_Value
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298145251555141669, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+      propertyPath: getSpecial3Input._methodName
+      value: get_Value
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298145251555141669, guid: 740bb683c23fd5a41a444dc821d782b5, type: 3}
+      propertyPath: getBasicAttackInput._methodName
+      value: get_Value
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
