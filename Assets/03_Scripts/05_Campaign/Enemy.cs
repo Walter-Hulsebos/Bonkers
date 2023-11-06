@@ -17,13 +17,13 @@ namespace Bonkers
         private Timer attackCooldown;
 
         private Rigidbody rb;
-        private int percentageDamage;
-        private int knockbackForce;
+        private float percentageDamage;
+        private float knockbackForce;
 
         public float distance = 10;
         public float angle = 30;
         public float height = 10.0f;
-        public Color meshColor = Color.red;
+        public UnityEngine.Color meshColor = UnityEngine.Color.red;
         public int scanFrequency = 30;
         public LayerMask layers;
         public LayerMask occlusionLayers;
@@ -155,7 +155,7 @@ namespace Bonkers
             {
                 Gizmos.DrawWireSphere(colliders[i].transform.position, 1f);
             }
-            Gizmos.color = Color.green;
+            Gizmos.color = UnityEngine.Color.green;
             foreach (var obj in objects)
             {
                 Gizmos.DrawSphere(obj.transform.position, 1f);
@@ -287,7 +287,7 @@ namespace Bonkers
 
         public void TakeDamage(float value)
         {
-            int calcValue = value * 0.1;
+            float calcValue = value * 0.1f;
             percentageDamage += calcValue;
             knockbackForce = percentageDamage;
 
