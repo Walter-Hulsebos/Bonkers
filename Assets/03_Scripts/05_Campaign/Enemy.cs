@@ -233,7 +233,7 @@ namespace Bonkers
                     enemyAgent.speed = 3f;
                     enemyAgent.SetDestination(nextPoint.transform.position);
 
-                    if (enemyAgent.transform.position.x == nextPoint.transform.position.x)
+                    if (enemyAgent.transform.position.x == nextPoint.transform.position.x && enemyAgent.transform.position.z == nextPoint.transform.position.z)
                     {
                         posNumber++;
 
