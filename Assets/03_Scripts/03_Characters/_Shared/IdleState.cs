@@ -25,7 +25,7 @@ namespace Bonkers.Characters.Shared
     using F32x3 = Unity.Mathematics.float3;
 
     [Serializable]
-    public sealed class WalkState : PlayerState
+    public sealed class IdleState : PlayerState
     {
 
         #region References
@@ -69,12 +69,6 @@ namespace Bonkers.Characters.Shared
         
         #region Variables
 
-        [SerializeField] private F32 maxSpeed;
-        [SerializeField] private F32 moveSharpness;
-        [SerializeField] private F32 orientSharpness;
-        
-        //[SerializeField] private AnimationStateReference walkAnim;
-
         #endregion
         
 
@@ -82,17 +76,16 @@ namespace Bonkers.Characters.Shared
 
         public override void OnEnter()
         {
-            Debug.Log(message: "Entering Walk State");
+            Debug.Log(message: "Entering Idle State");
             
-            //animator.SetTrigger(name: walkAnim.StateName);
-
-            //Ctx.Animator.SetBool(Ctx.IsWalkingHash, true);
+            
         }
 
         public override void OnExit()
         {
-            Debug.Log(message: "Exiting Walk State");
-            //Ctx.Animator.SetBool(Ctx.IsWalkingHash, false);
+            Debug.Log(message: "Exiting Idle State");
+            
+            
         }
 
         #endregion
@@ -101,40 +94,12 @@ namespace Bonkers.Characters.Shared
 
         public override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
         {
-            F32 __currentVelocityMagnitude = currentVelocity.magnitude;
-
-            F32x3 __effectiveGroundNormal = motor.GroundingStatus.GroundNormal;
-
-            // Reorient velocity on slope
-            currentVelocity = motor.GetDirectionTangentToSurface
-                                  (direction: currentVelocity, surfaceNormal: __effectiveGroundNormal) * __currentVelocityMagnitude;
-
-            F32x3 __moveInputVector = inputs.MoveInputVector;
-
-            // Calculate target velocity
-            F32x3 __inputRight = cross(x: __moveInputVector, y: motor.CharacterUp);
-
-            F32x3 __reorientedInput = normalize(x: cross(x: __effectiveGroundNormal, y: __inputRight)) * length(x: __moveInputVector);
-
-            F32x3 __targetMovementVelocity = __reorientedInput * maxSpeed;
-
-            // Smooth movement Velocity
-            currentVelocity = lerp(start: currentVelocity, end: __targetMovementVelocity, t: 1f - exp(x: -moveSharpness * deltaTime));
+            
         }
 
         public override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
         {
-            if (lengthsq(x: inputs.LookInputVector).Approx(compareTo: 0f)) return;
-
-            // Smoothly interpolate from current to target look direction
-            //Vector3.Slerp(motor.CharacterForward, _lookInputVector, 1 - Exp(power: -orientationSharpness * deltaTime));
-            F32x3 __forward = motor.CharacterForward;
-            F32x3 __look    = inputs.LookInputVector;
-
-            F32x3 __smoothedLookInputDirection = normalizesafe(x: slerp(start: __forward, end: __look, t: 1 - exp(x: -orientSharpness * deltaTime)));
-
-            // Set the current rotation (which will be used by the KinematicCharacterMotor)
-            currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: motor.CharacterUp);
+            
         }
 
         #endregion

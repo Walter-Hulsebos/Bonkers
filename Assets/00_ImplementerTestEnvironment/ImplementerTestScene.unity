@@ -1211,7 +1211,7 @@ MonoBehaviour:
     _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"Motor","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"KinematicCharacterController.KinematicCharacterMotor,
       KCC, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Animator","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
       UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"WalkState","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"Bonkers.Characters.Shared.WalkState,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"IdleState","value":null,"typeHandle":{"Identification":null,"$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 2117358928}
     - {fileID: 2117358929}
@@ -1247,13 +1247,9 @@ MonoBehaviour:
   animator: {fileID: 2117358929}
   motor: {fileID: 2117358928}
   inputs: {fileID: 2117358931}
-  maxSpeed: 0
-  moveSharpness: 0
-  orientSharpness: 0
-  walkAnim:
-    _stateName: Not Assigned
-    _assigned: 0
-    _linkedAnimator: {fileID: 2117358929}
+  maxSpeed: 10
+  moveSharpness: 15
+  orientSharpness: 20
 --- !u!114 &2117358931
 MonoBehaviour:
   m_ObjectHideFlags: 0

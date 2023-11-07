@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 
+using Bonkers.Controls;
+
 //using Bonkers.Characters;
 
 using CGTK.Utils.Extensions.Math.Math;
@@ -57,12 +59,12 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
-    [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
+    [SerializeField] private UnityFunc<ButtonState>  getSpecial1Input;
 
-    public F32x3 MoveInputVector { get; private set; }
-    public F32x3 LookInputVector { get; private set; }
-    public Bool  JumpRequested   { get; internal set; }
-    public Bool  Special1Requested => getSpecial1Input.Invoke();
+    public F32x3       MoveInputVector   { get; private set; }
+    public F32x3       LookInputVector   { get; private set; }
+    public Bool        JumpRequested     { get; internal set; }
+    public ButtonState Special1Requested => getSpecial1Input.Invoke();
 
     #endregion
 

@@ -8,12 +8,23 @@ namespace Bonkers.Controls
 
     using UnityEngine;
     using UnityEngine.InputSystem;
-    
+
+    using static ButtonState;
+
     using Bool = System.Boolean;
+    
+    public enum ButtonState
+    {
+        Released  = 0,
+        Pressed   = 1,
+        ThisFrame = 2,
+        PressedThisFrame  = Pressed  | ThisFrame,
+        ReleasedThisFrame = Released | ThisFrame,
+    }
     
     [AddComponentMenu("Bonkers/Controls/Button Control")]
     public sealed class ButtonControl : MonoBehaviour, 
-                                        ISettableControl<Bool>
+                                        ISettableControl<ButtonState>
     {
         #if ODIN_INSPECTOR
         [field:LabelText("Action")]
@@ -45,9 +56,28 @@ namespace Bonkers.Controls
         #endif
         
         #if ODIN_INSPECTOR
-        [field:ReadOnly]
+        [field: ReadOnly]
+        [ShowInInspector]
         #endif
-        [field:SerializeField] public Bool Value { get; internal set; }
+        public ButtonState Value { get; internal set; } = Released;
+        
+        #if ODIN_INSPECTOR
+        [ShowInInspector]
+        #endif
+        public Bool IsPressed            => Value == Pressed;
+        #if ODIN_INSPECTOR                  
+        [ShowInInspector]                   
+        #endif                              
+        public Bool IsReleased           => Value == Released;
+        #if ODIN_INSPECTOR                  
+        [ShowInInspector]                   
+        #endif                              
+        public Bool WasPressedThisFrame  => Value == PressedThisFrame;
+        #if ODIN_INSPECTOR                  
+        [ShowInInspector]                   
+        #endif                              
+        public Bool WasReleasedThisFrame => Value == ReleasedThisFrame;
+        
 
         #if UNITY_EDITOR
         private void Reset()
@@ -88,17 +118,22 @@ namespace Bonkers.Controls
 
             if (callbackContext.action.expectedControlType is "Button")
             {
-                Value = callbackContext.ReadValueAsButton();
+                //Value = callbackContext.ReadValueAsButton();
+                Value = callbackContext.action.IsPressed() ? Pressed : Released;
+                
+                if (WasPressedThisFrame)
+                {
+                    Value = PressedThisFrame;
+                }
+                else if (WasReleasedThisFrame)
+                {
+                    Value = ReleasedThisFrame;
+                }
             }
             else
             {
                 Debug.Log(message: $"[Warning] {nameof(Action)}'s expected control type is not <b>Axis</b>, it's {callbackContext.action.expectedControlType}", context: this);
             }
-        }
-
-        void ISettableControl<Bool>.SetValue(Bool value)
-        {
-            Value = value;
         }
     }
 }

@@ -7,6 +7,9 @@ using CGTK.Utils.Extensions.Math.Math;
 using Sirenix.OdinInspector;
 
 using UnityEngine;
+
+using static Bonkers.Controls.ButtonState;
+
 using static UnityEngine.Mathf;
 using static Unity.Mathematics.math;
 using static ProjectDawn.Mathematics.math2;
@@ -59,6 +62,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
     #endregion
 
     #region Update
+    
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime) { }
     
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime) { }
@@ -72,7 +76,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
         if (Ctx.Motor.GroundingStatus.IsStableOnGround)
         {
             // if the player is grounded and attack is pressed, switch to attack state
-            if (Ctx.Special1Requested)
+            if (Ctx.Special1Requested == Pressed)
             {
                 SwitchSubState(_subStateAttack);
                 Debug.Log("Still Attacking");
@@ -80,7 +84,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
                 _isAttacking1 = true;
             }
 
-            if (_isAttacking1 )
+            if (_isAttacking1)
             {
                 AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
                 F32 animPercentage = __animStateInfo.normalizedTime;
@@ -91,13 +95,13 @@ public sealed class PlayerGroundedState : PlayerBaseState
                 }
             }
             
-            if (!_isAttacking1 && !Ctx.Special1Requested)
+            if (!_isAttacking1)
             {
-                if (Ctx.IsMovementPressed && !Ctx.Special1Requested)
+                if (Ctx.IsMovementPressed)
                 {
                     SwitchSubState(_subStateWalk);
                 }
-                else if (!Ctx.IsMovementPressed && !Ctx.Special1Requested)
+                else if (!Ctx.IsMovementPressed)
                 {
                     SwitchSubState(_subStateIdle);
                 }
