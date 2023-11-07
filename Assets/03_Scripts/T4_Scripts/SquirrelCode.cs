@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.PlayerLoop;
 
 namespace Bonkers
 {
@@ -26,10 +22,15 @@ namespace Bonkers
         {
             if (other.CompareTag("Player"))
             {
-                Destroy(this.gameObject);
+                StartCoroutine(Jumpscare());
             }
         }
 
+        IEnumerator Jumpscare()
+        {
+            yield return new WaitForSeconds(0.2f);
+            Destroy(this.gameObject);
+        }
         IEnumerator Lifetime()
         {
             yield return new WaitForSeconds(0.75f);

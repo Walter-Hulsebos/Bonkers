@@ -155,8 +155,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     private void OnEnable()
     {
         // Assign to motor
-        //
-        
     }
 
     private void Start() 
