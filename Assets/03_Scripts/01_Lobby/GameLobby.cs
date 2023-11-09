@@ -87,11 +87,13 @@ namespace Bonkers.Lobby
             }
         }
         
+        /*
         [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.AfterSceneLoad)]
         private static async void AfterSceneLoad()
         {
             await Authenticate();
         }
+        */
 
         public static async UniTask Authenticate()
         {
