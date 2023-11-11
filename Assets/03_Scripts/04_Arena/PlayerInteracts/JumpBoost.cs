@@ -6,7 +6,7 @@ namespace Bonkers
 {
     public class JumpBoost : MonoBehaviour
     {
- [SerializeField] private float launchForce = 10;
+ [SerializeField] private float launchForce = 50;
         
         private void OnTriggerEnter(Collider other)
         {
