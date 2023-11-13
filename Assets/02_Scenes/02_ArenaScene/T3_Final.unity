@@ -3221,6 +3221,67 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6259940701776955668, guid: 80c67a357bcd74a4fa6e547fbf0df6c2, type: 3}
+--- !u!1001 &707658348
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -461.4691
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 224.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 505.50824
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3181645782849965863, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4188439077405366460, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5968090221709379160, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
+      propertyPath: m_Name
+      value: T3_FVX_FallingLeaves
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 45c7014b485a8dc41bb7e251e038fc94, type: 3}
 --- !u!1 &714270102 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5568371526223589888, guid: 80c67a357bcd74a4fa6e547fbf0df6c2, type: 3}
@@ -9933,3 +9994,4 @@ SceneRoots:
   - {fileID: 1074283147}
   - {fileID: 1044188830}
   - {fileID: 1961099616}
+  - {fileID: 707658348}
