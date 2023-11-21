@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+
 namespace Bonkers.Controls
 {
     using JetBrains.Annotations;
@@ -22,9 +24,9 @@ namespace Bonkers.Controls
         ReleasedThisFrame = Released | ThisFrame,
     }
     
-    [AddComponentMenu("Bonkers/Controls/Button Control")]
-    public sealed class ButtonControl : MonoBehaviour, 
-                                        ISettableControl<ButtonState>
+    [AddComponentMenu("Bonkers/Controls/Button Control +")]
+    public sealed class ButtonControlPlus : MonoBehaviour, 
+                                            ISettableControl<ButtonState>
     {
         #if ODIN_INSPECTOR
         [field:LabelText("Action")]
@@ -56,8 +58,7 @@ namespace Bonkers.Controls
         #endif
         
         #if ODIN_INSPECTOR
-        [field: ReadOnly]
-        [ShowInInspector]
+        [ShowInInspector, ReadOnly]
         #endif
         public ButtonState Value { get; internal set; } = Released;
         
@@ -106,7 +107,7 @@ namespace Bonkers.Controls
             playerInput.onActionTriggered -= OnAnyInputCallback;
         }
 
-        public void OnAnyInputCallback(InputAction.CallbackContext callbackContext)
+        public async void OnAnyInputCallback(InputAction.CallbackContext callbackContext)
         {
             if(Action.action == null)
             {
@@ -118,21 +119,40 @@ namespace Bonkers.Controls
 
             if (callbackContext.action.expectedControlType is "Button")
             {
-                //Value = callbackContext.ReadValueAsButton();
-                Value = callbackContext.action.IsPressed() ? Pressed : Released;
-                
-                if (WasPressedThisFrame)
+                if (callbackContext.action.WasPressedThisFrame())
                 {
                     Value = PressedThisFrame;
+                    Debug.Log(message: $"Button {gameObject.name} WasPressedThisFrame ({Time.frameCount})", context: this);
+
+                    await UniTask.Yield();
+                    
+                    Value = Pressed;
+                    Debug.Log(message: $"Button {gameObject.name} Pressed ({Time.frameCount})", context: this);
                 }
-                else if (WasReleasedThisFrame)
+                else if (callbackContext.action.WasReleasedThisFrame())
                 {
                     Value = ReleasedThisFrame;
+                    Debug.Log(message: $"Button {gameObject.name} WasReleasedThisFrame ({Time.frameCount})", context: this);
+                    
+                    await UniTask.Yield();
+                    
+                    Value = Released;
+                    Debug.Log(message: $"Button {gameObject.name} Released ({Time.frameCount})", context: this);
                 }
+                // else if (callbackContext.action.IsPressed())
+                // {
+                //     Value = Pressed;
+                //     Debug.Log(message: $"Button {gameObject.name} Pressed ({Time.frameCount})", context: this);
+                // }
+                // else
+                // {
+                //     Value = Released;
+                //     Debug.Log(message: $"Button {gameObject.name} Released ({Time.frameCount})", context: this);
+                // }
             }
             else
             {
-                Debug.Log(message: $"[Warning] {nameof(Action)}'s expected control type is not <b>Axis</b>, it's {callbackContext.action.expectedControlType}", context: this);
+                Debug.Log(message: $"[Warning] {nameof(Action)}'s expected control type is not <b>Button</b>, it's {callbackContext.action.expectedControlType}", context: this);
             }
         }
     }
