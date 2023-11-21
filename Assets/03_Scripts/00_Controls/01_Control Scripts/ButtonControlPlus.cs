@@ -124,6 +124,8 @@ namespace Bonkers.Controls
                     Value = PressedThisFrame;
                     Debug.Log(message: $"Button {gameObject.name} WasPressedThisFrame ({Time.frameCount})", context: this);
 
+                    //I don't understand why, but we need two yields here.
+                    await UniTask.Yield();
                     await UniTask.Yield();
                     
                     Value = Pressed;
@@ -134,21 +136,14 @@ namespace Bonkers.Controls
                     Value = ReleasedThisFrame;
                     Debug.Log(message: $"Button {gameObject.name} WasReleasedThisFrame ({Time.frameCount})", context: this);
                     
+                    //I don't understand why, but we need two yields here.
+                    await UniTask.Yield();
                     await UniTask.Yield();
                     
                     Value = Released;
                     Debug.Log(message: $"Button {gameObject.name} Released ({Time.frameCount})", context: this);
                 }
-                // else if (callbackContext.action.IsPressed())
-                // {
-                //     Value = Pressed;
-                //     Debug.Log(message: $"Button {gameObject.name} Pressed ({Time.frameCount})", context: this);
-                // }
-                // else
-                // {
-                //     Value = Released;
-                //     Debug.Log(message: $"Button {gameObject.name} Released ({Time.frameCount})", context: this);
-                // }
+                //NOTE: [Walter] Can't have checks for Pressed and Released here, because playerInput.onActionTriggered only happens on changes (WasPressedThisFrame and WasReleasedThisFrame for Buttons) .
             }
             else
             {

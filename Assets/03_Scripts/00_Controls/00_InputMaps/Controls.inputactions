@@ -69,9 +69,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Special3",
+                    "name": "Special1",
                     "type": "Button",
-                    "id": "1e73b48f-fbdb-4f3d-8609-57ff87c978f7",
+                    "id": "0b84f6df-55ae-4e0a-bd19-bcfbc6c6df53",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -87,9 +87,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Special1",
+                    "name": "Special3",
                     "type": "Button",
-                    "id": "0b84f6df-55ae-4e0a-bd19-bcfbc6c6df53",
+                    "id": "1e73b48f-fbdb-4f3d-8609-57ff87c978f7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -529,52 +529,8 @@
                 },
                 {
                     "name": "",
-                    "id": "ae6993f8-b5f0-4a1c-bc6c-023cd8d2b80e",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Special1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8796c6ac-ada5-4be6-9ef5-29c21a490ac0",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Special1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "bc472659-594f-4327-9fb0-efad0254df8e",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Special2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "db239f0e-64e8-4488-8e1c-e428eea8d556",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Special2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "fc9e9b95-51bb-4117-bfa5-568ff3f7983c",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/backButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard & Mouse",
@@ -678,6 +634,50 @@
                     "processors": "ScaleFloat(scaleBy=2)",
                     "groups": "Gamepad",
                     "action": "CursorDelta_Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8796c6ac-ada5-4be6-9ef5-29c21a490ac0",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ae6993f8-b5f0-4a1c-bc6c-023cd8d2b80e",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "db239f0e-64e8-4488-8e1c-e428eea8d556",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bc472659-594f-4327-9fb0-efad0254df8e",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
