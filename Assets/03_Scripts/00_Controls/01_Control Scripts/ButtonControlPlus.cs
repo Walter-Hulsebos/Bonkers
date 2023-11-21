@@ -2,63 +2,93 @@ namespace Bonkers.Controls
 {
     using JetBrains.Annotations;
 
-    #if ODIN_INSPECTOR
+#if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
-    #endif
+#endif
 
     using UnityEngine;
     using UnityEngine.InputSystem;
-    
+
+    using static ButtonState;
+
     using Bool = System.Boolean;
-    
-    [AddComponentMenu("Bonkers/Controls/Button Control")]
-    public sealed class ButtonControl : MonoBehaviour, 
-                                        ISettableControl<Bool>
+
+    public enum ButtonState
     {
-        #if ODIN_INSPECTOR
-        [field:LabelText("Action")]
-        #endif
-        [field:SerializeField]
+        Released = 0,
+        Pressed = 1,
+        ThisFrame = 2,
+        PressedThisFrame = Pressed | ThisFrame,
+        ReleasedThisFrame = Released | ThisFrame,
+    }
+
+    [AddComponentMenu("Bonkers/Controls/Button Control +")]
+    public sealed class ButtonControlPlus : MonoBehaviour,
+                                        ISettableControl<ButtonState>
+    {
+#if ODIN_INSPECTOR
+        [field: LabelText("Action")]
+#endif
+        [field: SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
-        
-        #if ODIN_INSPECTOR
+
+#if ODIN_INSPECTOR
         [ShowIf(nameof(showPlayerInput))]
-        #endif
+#endif
         [SerializeField] private PlayerInput playerInput = null;
-        
-        #if ODIN_INSPECTOR
+
+#if ODIN_INSPECTOR
         [HideInInspector]
-        #endif
+#endif
         [SerializeField] private Bool showPlayerInput = true;
-        
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
         [ContextMenu(itemName: "Toggle Show Player Input")]
         private void ToggleShowPlayerInput()
         {
             //Mark as dirty so that Prefab auto-save will save the changes
             UnityEditor.Undo.RecordObject(this, name: "Change Show Player Input");
-            
+
             showPlayerInput = !showPlayerInput;
-            
+
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
         }
-        #endif
-        
-        #if ODIN_INSPECTOR
-        [field:ReadOnly]
-        #endif
-        [field:SerializeField] public Bool Value { get; internal set; }
+#endif
 
-        #if UNITY_EDITOR
+#if ODIN_INSPECTOR
+        [field: ReadOnly]
+        [ShowInInspector]
+#endif
+        public ButtonState Value { get; internal set; } = Released;
+
+#if ODIN_INSPECTOR
+        [ShowInInspector]
+#endif
+        public Bool IsPressed => Value == Pressed;
+#if ODIN_INSPECTOR
+        [ShowInInspector]
+#endif
+        public Bool IsReleased => Value == Released;
+#if ODIN_INSPECTOR
+        [ShowInInspector]
+#endif
+        public Bool WasPressedThisFrame => Value == PressedThisFrame;
+#if ODIN_INSPECTOR
+        [ShowInInspector]
+#endif
+        public Bool WasReleasedThisFrame => Value == ReleasedThisFrame;
+
+
+#if UNITY_EDITOR
         private void Reset()
         {
             this.GetPlayerInput(out playerInput);
         }
-        #endif
-        
+#endif
+
         private void Awake()
         {
-            if(playerInput == null)
+            if (playerInput == null)
             {
                 this.GetPlayerInput(out playerInput);
             }
@@ -67,7 +97,7 @@ namespace Bonkers.Controls
         private void OnEnable()
         {
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
-            
+
             playerInput.onActionTriggered += OnAnyInputCallback;
         }
 
@@ -78,17 +108,28 @@ namespace Bonkers.Controls
 
         public void OnAnyInputCallback(InputAction.CallbackContext callbackContext)
         {
-            if(Action.action == null)
+            if (Action.action == null)
             {
                 Debug.Log(message: $"[Warning] {nameof(Action)} is null.", context: this);
                 return;
             }
-            
+
             if (Action.action.id != callbackContext.action.id) return;
 
             if (callbackContext.action.expectedControlType is "Button")
             {
-                Value = callbackContext.ReadValueAsButton();
+                if (callbackContext.action.WasPressedThisFrame())
+                {
+                    Value = PressedThisFrame;
+                }
+                else if (callbackContext.action.WasReleasedThisFrame())
+                {
+                    Value = ReleasedThisFrame;
+                }
+                else
+                {
+                    Value = callbackContext.action.IsPressed() ? Pressed : Released;
+                }
             }
             else
             {

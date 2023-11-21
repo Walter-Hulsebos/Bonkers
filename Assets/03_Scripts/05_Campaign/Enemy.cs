@@ -40,6 +40,7 @@ namespace Bonkers
         private int posNumber;
         private GameObject nextPoint;
 
+        private RaycastHit rayHit;
 
         // Start is called before the first frame update
         public virtual void Start()
@@ -224,6 +225,27 @@ namespace Bonkers
             }
         }
 
+
+        public void FixedUpdate()
+        {
+            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out rayHit, 10f, LayerMask.NameToLayer("Ground"), QueryTriggerInteraction.Collide))
+            {
+                if (rayHit.transform.gameObject.layer != LayerMask.NameToLayer("Ground"))
+                {
+                    if (gameObject.GetComponent<Rigidbody>().isKinematic)
+                    {
+                        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                        gameObject.GetComponent<Rigidbody>().useGravity = true;
+                        gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                    }
+                }
+            }
+
+
+
+
+        }
+
         public void MoveAI()
         {
             switch (state)
@@ -259,7 +281,7 @@ namespace Bonkers
                                 {
                                     if (attackCooldown.isActive && attackCooldown.TimerDone())
                                     {
-                                        objects[i].transform.GetComponent<CampaignPlayer>().SetCurrentHealth(1, Operator.SUBSTRACT);
+                                        objects[i].transform.GetComponent<CampaignPlayer>().SetKnockBackPercentage(1f, gameObject.transform.position);
                                     }
                                 }
                             }
@@ -294,13 +316,12 @@ namespace Bonkers
             if (rb != null)
             {
                 Vector3 direction = CampaignManager.instance.player.transform.position - transform.position;
-                rb.AddForce(direction.normalized * knockbackForce, ForceMode.Impulse);
+                rb.AddForce(direction * knockbackForce, ForceMode.VelocityChange);
             }
-
             print("Enemy took damage");
         }
 
-        public void Die() 
+        public void Die()
         {
             Destroy(gameObject);
         }

@@ -10,9 +10,6 @@ namespace Bonkers
         private GameObject hitObject;
         private bool canTrigger;
 
-
-
-
         private void Awake()
         {
 
@@ -53,12 +50,12 @@ namespace Bonkers
                     switch (hitObject.tag)
                     {
                         case "Enemy":
-                            hitObject.transform.GetComponent<Enemy>().TakeDamage(1);
+                            hitObject.transform.GetComponent<Enemy>().TakeDamage(1f);
                             break;
                         case "Crate":
                             hitObject.transform.GetComponent<Crate>().ReceiveHit();
-                           
                             break;
+                        case "Heirloom":
                         default:
                             break;
                     }

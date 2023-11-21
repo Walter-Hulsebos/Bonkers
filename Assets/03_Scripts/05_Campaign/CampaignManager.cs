@@ -20,6 +20,8 @@ namespace Bonkers
         [SerializeField] private Image characterIcon;
 
 
+        private bool bossfightCompleted;
+
         public VideoClip intro;
 
         public GameObject player;
@@ -157,6 +159,11 @@ namespace Bonkers
         {
             return player;
         }
+        public bool GetCompletedBossFight()
+        {
+            return bossfightCompleted;
+        }
+
     }
 }
 public enum Levels
