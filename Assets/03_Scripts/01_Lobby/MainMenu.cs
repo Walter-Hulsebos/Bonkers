@@ -11,6 +11,7 @@ namespace Bonkers
     {
         [SerializeField] private Image pressAnyButtonImage;
         [SerializeField] private GameObject menu;
+        [SerializeField] private GameObject LogoAndText;
         public void Start()
         {
            
@@ -20,6 +21,7 @@ namespace Bonkers
 
             if (Keyboard.current.anyKey.isPressed)
             {
+                LogoAndText.SetActive(false);
                 pressAnyButtonImage.enabled = false;
                 menu.SetActive(true);
             }
