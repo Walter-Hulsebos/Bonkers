@@ -65,20 +65,19 @@ namespace Bonkers.Controls
         #if ODIN_INSPECTOR
         [ShowInInspector]
         #endif
-        public Bool IsPressed            => Value == Pressed;
+        public Bool IsPressed => Value == Pressed;
         #if ODIN_INSPECTOR                  
         [ShowInInspector]                   
         #endif                              
-        public Bool IsReleased           => Value == Released;
+        public Bool IsReleased => Value == Released;
         #if ODIN_INSPECTOR                  
         [ShowInInspector]                   
         #endif                              
-        public Bool WasPressedThisFrame  => Value == PressedThisFrame;
+        public Bool WasPressedThisFrame => Value == PressedThisFrame;
         #if ODIN_INSPECTOR                  
         [ShowInInspector]                   
         #endif                              
         public Bool WasReleasedThisFrame => Value == ReleasedThisFrame;
-        
 
         #if UNITY_EDITOR
         private void Reset()
@@ -97,6 +96,8 @@ namespace Bonkers.Controls
 
         private void OnEnable()
         {
+            Debug.Log(message: $"Button {gameObject.name} OnEnable ({Time.frameCount})", context: this);
+            
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
             
             playerInput.onActionTriggered += OnAnyInputCallback;
