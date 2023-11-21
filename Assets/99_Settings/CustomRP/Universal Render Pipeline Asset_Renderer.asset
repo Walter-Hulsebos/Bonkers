@@ -16,6 +16,19 @@ MonoBehaviour:
   lightModePasses:
   - Outline
   - Outline Two
+--- !u!114 &-1764344055938823510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86d00a53f2822b64481959d3dd7e65e7, type: 3}
+  m_Name: DepthNormalsFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32,9 +45,9 @@ MonoBehaviour:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
-  - {fileID: 3040830894724228583}
   - {fileID: -2903736125104707215}
-  m_RendererFeatureMap: e72512769633332a7129aafd60dbb3d7
+  - {fileID: 3040830894724228583}
+  m_RendererFeatureMap: 7129aafd60dbb3d7e72512769633332a
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:
@@ -72,6 +85,20 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &1034472559306930597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d921a98f7da4a4c8deeee219868874, type: 3}
+  m_Name: Outlines
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings: {material: {fileID: 2100000, guid: a00c06b90ffadf54a9650982c95705bb, type: 2}, materialPassIndex: 0, renderEvent: 300}
 --- !u!114 &3040830894724228583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +109,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
-  m_Name: Outlines
+  m_Name: InnerOutliner
   m_EditorClassIdentifier: 
   m_Active: 1
   passMaterial: {fileID: 2100000, guid: a6919a0557a2a9e4d95b5ff01fbdb891, type: 2}
