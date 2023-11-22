@@ -109,7 +109,7 @@ public class MatchplayNetworkServer : IDisposable
     {
         gameHasStarted = true;
 
-        NetworkManager.Singleton.SceneManager.LoadScene(sceneName: "ImplementerTestScene", loadSceneMode: LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName: "T3_Final", loadSceneMode: LoadSceneMode.Single);
     }
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
