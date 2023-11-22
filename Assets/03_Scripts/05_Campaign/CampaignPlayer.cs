@@ -6,15 +6,15 @@ namespace Bonkers
 {
     public class CampaignPlayer : MonoBehaviour
     {
-        [SerializeField] private int currentHealth;
-        [SerializeField] private int maxHealth;
+        [SerializeField] private float knockbackPercentage;
+        private Rigidbody rb;
         // Start is called before the first frame update
 
         
         void Start()
         {
+            rb = gameObject.GetComponent<Rigidbody>();
             CampaignManager.instance.player = gameObject.transform.parent.gameObject;
-            currentHealth = maxHealth;
         }
 
         // Update is called once per frame
@@ -23,24 +23,21 @@ namespace Bonkers
 
         }
 
-        public int GetCurrentHealth()
+        public float GetCurrentKnockBack()
         {
-            return currentHealth;
+            return knockbackPercentage;
         }
 
-        public void SetCurrentHealth(int amount, Operator _operator)
+        public void SetKnockBackPercentage(float amount, Vector3 fromObject)
         {
-            print("Player got hit");
-            switch (_operator)
+
+            float calcValue = amount * 0.1f;
+            knockbackPercentage += calcValue;
+
+            if (rb != null)
             {
-                case Operator.ADD:
-                    currentHealth += amount;
-                    break;
-                case Operator.SUBSTRACT:
-                    currentHealth -= amount;
-                    break;
-                default:
-                    break;
+                Vector3 direction = fromObject - gameObject.transform.position;
+                rb.AddForce(direction * knockbackPercentage, ForceMode.Impulse);
             }
         }
     }

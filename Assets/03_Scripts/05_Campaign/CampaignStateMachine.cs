@@ -37,19 +37,19 @@ namespace Bonkers
     public class CampaignStateMachine : PlayerStateMachine
     {
 
-        [SerializeField] UnityFunc<bool> getTestButton;
+          //[SerializeField] UnityFunc<bool> getTestButton;
         [SerializeField] UnityFunc<bool> getAttackButton;
         [SerializeField] UnityFunc<bool> getInteractionButton;
- 
+      //  [SerializeField] UnityFunc<bool> getTimedEventButton;
         protected override void Update()
         {
             base.Update();
 
-            if (getTestButton.Invoke())
-            {
-                print("Invoked Test Buttons");
-                CampaignManager.instance.ToNextScene();
-            }
+            // if (getTestButton.Invoke())
+            //{
+            //    print("Invoked Test Buttons");
+            //   CampaignManager.instance.ToNextScene();
+            //}
             if (getAttackButton.Invoke())
             {
                 CampaignManager.instance.player.GetComponentInChildren<PlayerHitBox>().OnReceiveInput();
@@ -58,7 +58,10 @@ namespace Bonkers
             {
                 CampaignManager.instance.ForwardNextSentence();
             }
-
+            //    if (getTimedEventButton.Invoke())
+            //   {
+            //       CampaignManager.instance.ForwardTimedEvent();
+            //  }
 
         }
     }
