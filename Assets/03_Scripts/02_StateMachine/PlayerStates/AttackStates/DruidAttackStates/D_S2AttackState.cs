@@ -45,6 +45,7 @@ public sealed class D_S2AttackState : PlayerBaseState
     {
         inSpecial2 = InSpecial2.Special2;
         // put your special here
+        GameObject.Instantiate(Ctx.Data.acornPrefab, Ctx.transform.position + (Ctx.transform.forward * 4), Quaternion.identity);
     }
  
     #region Updates

@@ -21,4 +21,10 @@ public class PlayerData : ScriptableObject
     [Header("Druid Rat Combat")]
     public GameObject ratPrefab;
 
+    [Header("Druid Acorn Combat")]
+    public GameObject acornPrefab;
+
+    [Header("Druid Audio")]
+    public AudioClip druidAudioRats;
+
 }
