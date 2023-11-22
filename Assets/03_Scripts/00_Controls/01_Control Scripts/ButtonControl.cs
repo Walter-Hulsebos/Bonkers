@@ -95,10 +95,5 @@ namespace Bonkers.Controls
                 Debug.Log(message: $"[Warning] {nameof(Action)}'s expected control type is not <b>Axis</b>, it's {callbackContext.action.expectedControlType}", context: this);
             }
         }
-
-        void ISettableControl<Bool>.SetValue(Bool value)
-        {
-            Value = value;
-        }
     }
 }

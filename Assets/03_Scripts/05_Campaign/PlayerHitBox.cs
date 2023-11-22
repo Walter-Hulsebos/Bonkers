@@ -7,11 +7,8 @@ namespace Bonkers
 {
     public class PlayerHitBox : MonoBehaviour
     {
-        private GameObject hitObject;
-        private bool canTrigger;
-
-
-
+       [SerializeField] private GameObject hitObject;
+       [SerializeField] private bool canTrigger;
 
         private void Awake()
         {
@@ -31,6 +28,7 @@ namespace Bonkers
                 default:
                     hitObject = collider.gameObject;
                     canTrigger = true;
+                   
                     break;
             }
         }
@@ -39,6 +37,7 @@ namespace Bonkers
         {
             hitObject = null;
             canTrigger = false;
+           
         }
 
         public void OnReceiveInput()
@@ -50,11 +49,12 @@ namespace Bonkers
                     switch (hitObject.tag)
                     {
                         case "Enemy":
-                            hitObject.transform.GetComponent<Enemy>().TakeDamage(1);
+                            hitObject.transform.GetComponent<Enemy>().TakeDamage(1f);
                             break;
                         case "Crate":
                             hitObject.transform.GetComponent<Crate>().ReceiveHit();
                             break;
+                        case "Heirloom":
                         default:
                             break;
                     }

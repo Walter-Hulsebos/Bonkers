@@ -72,6 +72,8 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     [SerializeField] private UnityFunc<Bool>  getBasicAttackInput;
     [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
     [SerializeField] private UnityFunc<Bool>  getSpecial2Input;
+    [SerializeField] private UnityFunc<Bool> getInteraction;
+
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
@@ -79,6 +81,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public Bool BasicAttackRequested => getBasicAttackInput.Invoke();
     public Bool  Special1Requested => getSpecial1Input.Invoke();
     public Bool Special2Requested => getSpecial2Input.Invoke();
+    public Bool InteractionRequested { get; internal set; }
 
     #endregion
 
@@ -155,8 +158,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     private void OnEnable()
     {
         // Assign to motor
-        //
-        
     }
 
     private void Start() 
