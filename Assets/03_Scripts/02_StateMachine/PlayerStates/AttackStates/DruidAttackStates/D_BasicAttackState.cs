@@ -56,7 +56,7 @@ public sealed class D_BasicAttackState : PlayerBaseState
         //if(Ctx.Anims.GetCurrentAnimatorClipInfo(layerIndex: 0))
         AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
 
-        Debug.Log($"Expected Hash = {Ctx.BasicAttackHash}, tag hash {__animStateInfo.tagHash}, short hash {__animStateInfo.shortNameHash}, long hash {__animStateInfo.fullPathHash}");
+        //Debug.Log($"Expected Hash = {Ctx.BasicAttackHash}, tag hash {__animStateInfo.tagHash}, short hash {__animStateInfo.shortNameHash}, long hash {__animStateInfo.fullPathHash}");
         // if (__animStateInfo.tagHash == Ctx.Special1Hash)
         //{
         F32 animPercentage = __animStateInfo.normalizedTime;
