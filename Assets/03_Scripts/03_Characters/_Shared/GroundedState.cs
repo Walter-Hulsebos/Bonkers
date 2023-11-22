@@ -51,8 +51,15 @@
 
         #region Enter/Exit
 
-        public override void OnEnter() { throw new NotImplementedException(); }
-        public override void OnExit()  { throw new NotImplementedException(); }
+        public override void OnEnter()
+        {
+            Debug.Log("Entering Grounded State");
+        }
+
+        public override void OnExit()
+        {
+            Debug.Log("Exiting Grounded State");
+        }
 
         #endregion
 

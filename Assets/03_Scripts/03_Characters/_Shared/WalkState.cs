@@ -69,9 +69,9 @@ namespace Bonkers.Characters.Shared
         
         #region Variables
 
-        [SerializeField] private F32 maxSpeed;
-        [SerializeField] private F32 moveSharpness;
-        [SerializeField] private F32 orientSharpness;
+        [SerializeField] private F32 maxSpeed        = 10;
+        [SerializeField] private F32 moveSharpness   = 15;
+        [SerializeField] private F32 orientSharpness = 20;
         
         //[SerializeField] private AnimationStateReference walkAnim;
 
