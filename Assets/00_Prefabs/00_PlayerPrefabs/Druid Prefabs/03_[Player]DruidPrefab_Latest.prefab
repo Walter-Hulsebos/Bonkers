@@ -477,7 +477,7 @@ Transform:
   m_GameObject: {fileID: 4590290661576390256}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.040328, y: 0.0000009536743, z: 6.637784}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1016,6 +1016,15 @@ MonoBehaviour:
   getSpecial2Input:
     _target: {fileID: 5222726675693362412}
     _methodName: get_Value
+    _args: []
+    _dynamic: 0
+    _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
+  getInteraction:
+    _target: {fileID: 0}
+    _methodName: 
     _args: []
     _dynamic: 0
     _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,

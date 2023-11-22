@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,10 +16,14 @@ namespace Bonkers
         public states state;
         private Timer attackCooldown;
 
+        private Rigidbody rb;
+        private float percentageDamage;
+        private float knockbackForce;
+
         public float distance = 10;
         public float angle = 30;
         public float height = 10.0f;
-        public Color meshColor = Color.red;
+        public UnityEngine.Color meshColor = UnityEngine.Color.red;
         public int scanFrequency = 30;
         public LayerMask layers;
         public LayerMask occlusionLayers;
@@ -35,14 +40,14 @@ namespace Bonkers
         private int posNumber;
         private GameObject nextPoint;
 
+        private RaycastHit rayHit;
 
         // Start is called before the first frame update
         public virtual void Start()
         {
+            rb = GetComponent<Rigidbody>();
             attackCooldown = new Timer();
             currentHealth = maxHealth;
-
-
             nextPoint = locations[0];
             state = states.Wandering;
             scanInterval = 1.0f / scanFrequency;
@@ -151,7 +156,7 @@ namespace Bonkers
             {
                 Gizmos.DrawWireSphere(colliders[i].transform.position, 1f);
             }
-            Gizmos.color = Color.green;
+            Gizmos.color = UnityEngine.Color.green;
             foreach (var obj in objects)
             {
                 Gizmos.DrawSphere(obj.transform.position, 1f);
@@ -220,6 +225,28 @@ namespace Bonkers
             }
         }
 
+
+        public void FixedUpdate()
+        {
+            if (Physics.Raycast(gameObject.transform.position, Vector3.down, out rayHit, 10f, LayerMask.NameToLayer("Ground"), QueryTriggerInteraction.Collide))
+            {
+                if (rayHit.transform.gameObject.layer != LayerMask.NameToLayer("Ground"))
+                {
+                    print(rayHit.transform.gameObject.layer + " | Layer");
+                    if (gameObject.GetComponent<Rigidbody>().isKinematic)
+                    {
+                        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+                        gameObject.GetComponent<Rigidbody>().useGravity = true;
+                        gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                    }
+                }
+            }
+
+
+
+
+        }
+
         public void MoveAI()
         {
             switch (state)
@@ -229,7 +256,7 @@ namespace Bonkers
                     enemyAgent.speed = 3f;
                     enemyAgent.SetDestination(nextPoint.transform.position);
 
-                    if (enemyAgent.transform.position.x == nextPoint.transform.position.x)
+                    if (enemyAgent.transform.position.x == nextPoint.transform.position.x && enemyAgent.transform.position.z == nextPoint.transform.position.z)
                     {
                         posNumber++;
 
@@ -255,7 +282,7 @@ namespace Bonkers
                                 {
                                     if (attackCooldown.isActive && attackCooldown.TimerDone())
                                     {
-                                        objects[i].transform.GetComponent<CampaignPlayer>().SetCurrentHealth(1, Operator.SUBSTRACT);
+                                        objects[i].transform.GetComponent<CampaignPlayer>().SetKnockBackPercentage(1f, gameObject.transform.position);
                                     }
                                 }
                             }
@@ -283,28 +310,32 @@ namespace Bonkers
 
         public void TakeDamage(float value)
         {
-            SetCurrentHealth(currentHealth -= value);
-            if (GetCurrentHealth() <= 0)
+            float calcValue = value * 0.1f;
+            percentageDamage += calcValue;
+            knockbackForce = percentageDamage;
+
+            if (rb != null)
             {
-                Die();
+                Vector3 direction = CampaignManager.instance.player.transform.position - transform.position;
+                rb.AddForce(direction * knockbackForce, ForceMode.VelocityChange);
             }
             print("Enemy took damage");
         }
 
-        public void Die() 
+        public void Die()
         {
             Destroy(gameObject);
         }
 
-        public void SetCurrentHealth(float value)
-        {
-            currentHealth = value;
-        }
+        //   public void SetCurrentHealth(float value)
+        //  {
+        //     currentHealth = value;
+        //  }
 
-        public float GetCurrentHealth()
-        {
-            return currentHealth;
-        }
+        //  public float GetCurrentHealth()
+        //{
+        //   return currentHealth;
+        //}
         public enum states
         {
             Wandering,

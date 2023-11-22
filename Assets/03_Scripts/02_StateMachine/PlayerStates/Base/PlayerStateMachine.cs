@@ -72,6 +72,8 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     [SerializeField] private UnityFunc<Bool>  getBasicAttackInput;
     [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
     [SerializeField] private UnityFunc<Bool>  getSpecial2Input;
+    [SerializeField] private UnityFunc<Bool> getInteraction;
+
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
@@ -79,6 +81,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public Bool BasicAttackRequested => getBasicAttackInput.Invoke();
     public Bool  Special1Requested => getSpecial1Input.Invoke();
     public Bool Special2Requested => getSpecial2Input.Invoke();
+    public Bool InteractionRequested { get; internal set; }
 
     #endregion
 
@@ -239,8 +242,20 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         //Debug.Log("UpdateVelocity");
         //currentState.UpdateStates(ref currentVelocity, deltaTime);
         CurrentState.UpdateVelocities(ref currentVelocity, deltaTime);
+        // Take into account additive velocity
+        if (_internalVelocityAdd.sqrMagnitude > 0f)
+        {
+            currentVelocity      += _internalVelocityAdd;
+            _internalVelocityAdd =  Vector3.zero;
+        }
     }
     
+        private Vector3 _internalVelocityAdd = Vector3.zero;
+    public void AddVelocity(Vector3 velocity)
+    {
+        _internalVelocityAdd += velocity;
+    }
+
     /// <summary>
     /// (Called by KinematicCharacterMotor during its update cycle)
     /// This is where you tell your character what its rotation should be right now. 
