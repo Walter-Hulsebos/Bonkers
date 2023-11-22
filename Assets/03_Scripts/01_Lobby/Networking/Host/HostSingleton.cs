@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
+
 using UnityEngine;
 
 public class HostSingleton : MonoBehaviour
 {
-    [SerializeField] private int maxConnections = 4;
+    [SerializeField] private Int32 maxConnections = 4;
 
     private static HostSingleton hostSingleton;
 
@@ -21,13 +23,13 @@ public class HostSingleton : MonoBehaviour
     {
         get
         {
-            if (hostSingleton != null) return hostSingleton;
+            if (hostSingleton != null) { return hostSingleton; }
 
             hostSingleton = FindObjectOfType<HostSingleton>();
 
             if (hostSingleton == null)
             {
-                Debug.LogError("No HostSingleton in scene, did you run this from the bootStrap scene?");
+                Debug.LogError(message: "No HostSingleton in scene, did you run this from the bootStrap scene?");
                 return null;
             }
 
@@ -35,110 +37,94 @@ public class HostSingleton : MonoBehaviour
         }
     }
 
-    public MatchplayNetworkServer NetworkServer { get; private set; }
-    public RelayHostData RelayHostData => relayHostData;
-    private RelayHostData relayHostData;
-    private string lobbyId;
+    public  MatchplayNetworkServer NetworkServer { get; private set; }
+    public  RelayHostData          RelayHostData => relayHostData;
+    private RelayHostData          relayHostData;
+    private String                 lobbyId;
 
-    private void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    private void Start() { DontDestroyOnLoad(target: gameObject); }
 
-    private void OnDestroy()
-    {
-        Shutdown();
-    }
+    private void OnDestroy() { Shutdown(); }
 
-    public async Task<bool> StartHostAsync()
+    public async Task<Boolean> StartHostAsync()
     {
         Allocation allocation = null;
 
         try
         {
             //Ask Unity Services to allocate a Relay server
-            allocation = await Relay.Instance.CreateAllocationAsync(maxConnections);
+            allocation = await Relay.Instance.CreateAllocationAsync(maxConnections: maxConnections);
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            Debug.Log(message: e);
             return false;
         }
 
         //Populate the hosting data
         relayHostData = new RelayHostData
         {
-            Key = allocation.Key,
-            Port = (ushort)allocation.RelayServer.Port,
-            AllocationID = allocation.AllocationId,
+            Key               = allocation.Key,
+            Port              = (UInt16)allocation.RelayServer.Port,
+            AllocationID      = allocation.AllocationId,
             AllocationIDBytes = allocation.AllocationIdBytes,
-            ConnectionData = allocation.ConnectionData,
-            IPv4Address = allocation.RelayServer.IpV4
+            ConnectionData    = allocation.ConnectionData,
+            IPv4Address       = allocation.RelayServer.IpV4,
         };
 
         try
         {
             //Retrieve the Relay join code for our clients to join our party
-            relayHostData.JoinCode = await Relay.Instance.GetJoinCodeAsync(RelayHostData.AllocationID);
+            relayHostData.JoinCode = await Relay.Instance.GetJoinCodeAsync(allocationId: RelayHostData.AllocationID);
 
-            Debug.Log(RelayHostData.JoinCode);
+            Debug.Log(message: RelayHostData.JoinCode);
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            Debug.Log(message: e);
             return false;
         }
 
         //Retrieve the Unity transport used by the NetworkManager
         UnityTransport transport = NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
 
-        transport.SetRelayServerData(RelayHostData.IPv4Address,
-            RelayHostData.Port,
-            RelayHostData.AllocationIDBytes,
-            RelayHostData.Key,
-            RelayHostData.ConnectionData);
+        transport.SetRelayServerData
+            (ipv4Address: RelayHostData.IPv4Address, port: RelayHostData.Port, allocationIdBytes: RelayHostData.AllocationIDBytes, keyBytes: RelayHostData.Key, connectionDataBytes: RelayHostData.ConnectionData);
 
         try
         {
-            var createLobbyOptions = new CreateLobbyOptions();
+            CreateLobbyOptions createLobbyOptions = new ();
             createLobbyOptions.IsPrivate = false;
-            createLobbyOptions.Data = new Dictionary<string, DataObject>()
+
+            createLobbyOptions.Data = new Dictionary<String, DataObject>()
             {
-                {
-                    "JoinCode", new DataObject(
-                        visibility: DataObject.VisibilityOptions.Member,
-                        value: RelayHostData.JoinCode
-                    )
-                }
+                { "JoinCode", new DataObject(visibility: DataObject.VisibilityOptions.Member, value: RelayHostData.JoinCode) },
             };
 
-            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("My Lobby", maxConnections, createLobbyOptions);
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(lobbyName: "My Lobby", maxPlayers: maxConnections, options: createLobbyOptions);
             lobbyId = lobby.Id;
-            StartCoroutine(HeartbeatLobbyCoroutine(15));
+            StartCoroutine(routine: HeartbeatLobbyCoroutine(waitTimeSeconds: 15));
         }
         catch (LobbyServiceException e)
         {
-            Debug.Log(e);
+            Debug.Log(message: e);
             return false;
         }
 
         UserData userData = ClientSingleton.Instance.Manager.User.Data;
 
-        string payload = JsonUtility.ToJson(userData);
-        byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
+        String payload      = JsonUtility.ToJson(obj: userData);
+        Byte[] payloadBytes = Encoding.UTF8.GetBytes(s: payload);
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
 
-        NetworkServer = new MatchplayNetworkServer(NetworkManager.Singleton);
+        NetworkServer = new MatchplayNetworkServer(networkManager: NetworkManager.Singleton);
 
         NetworkManager.Singleton.StartHost();
 
-#pragma warning disable 4014
-        await NetworkServer.ConfigureServer(new GameInfo
-        {
-            map = Map.Default
-        });
-#pragma warning restore 4014
+        #pragma warning disable 4014
+        await NetworkServer.ConfigureServer(startingGameInfo: new GameInfo { map = Map.Default, });
+        #pragma warning restore 4014
 
         ClientSingleton.Instance.Manager.NetworkClient.RegisterListeners();
 
@@ -147,44 +133,33 @@ public class HostSingleton : MonoBehaviour
         return true;
     }
 
-    private IEnumerator HeartbeatLobbyCoroutine(float waitTimeSeconds)
+    private IEnumerator HeartbeatLobbyCoroutine(Single waitTimeSeconds)
     {
-        var delay = new WaitForSecondsRealtime(waitTimeSeconds);
+        WaitForSecondsRealtime delay = new (time: waitTimeSeconds);
+
         while (true)
         {
-            Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
+            Lobbies.Instance.SendHeartbeatPingAsync(lobbyId: lobbyId);
             yield return delay;
         }
     }
 
-    private async void OnClientDisconnect(string authId)
+    private async void OnClientDisconnect(String authId)
     {
-        try
-        {
-            await LobbyService.Instance.RemovePlayerAsync(lobbyId, authId);
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
+        try { await LobbyService.Instance.RemovePlayerAsync(lobbyId: lobbyId, playerId: authId); }
+        catch (LobbyServiceException e) { Debug.Log(message: e); }
     }
 
     public async void Shutdown()
     {
-        StopCoroutine(nameof(HeartbeatLobbyCoroutine));
+        StopCoroutine(methodName: nameof(HeartbeatLobbyCoroutine));
 
-        if (string.IsNullOrEmpty(lobbyId)) { return; }
+        if (String.IsNullOrEmpty(value: lobbyId)) { return; }
 
-        try
-        {
-            await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
+        try { await Lobbies.Instance.DeleteLobbyAsync(lobbyId: lobbyId); }
+        catch (LobbyServiceException e) { Debug.Log(message: e); }
 
-        lobbyId = string.Empty;
+        lobbyId = String.Empty;
 
         NetworkServer.OnClientLeft -= OnClientDisconnect;
 
@@ -194,11 +169,11 @@ public class HostSingleton : MonoBehaviour
 
 public struct RelayHostData
 {
-    public string JoinCode;
-    public string IPv4Address;
-    public ushort Port;
-    public Guid AllocationID;
-    public byte[] AllocationIDBytes;
-    public byte[] ConnectionData;
-    public byte[] Key;
+    public String JoinCode;
+    public String IPv4Address;
+    public UInt16 Port;
+    public Guid   AllocationID;
+    public Byte[] AllocationIDBytes;
+    public Byte[] ConnectionData;
+    public Byte[] Key;
 }

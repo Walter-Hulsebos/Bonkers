@@ -3,11 +3,8 @@ using System;
 [Serializable]
 public class ClientData
 {
-    public ulong clientId;
-    public int characterId = -1;
+    public UInt64 clientId;
+    public Int32  characterId = -1;
 
-    public ClientData(ulong clientId)
-    {
-        this.clientId = clientId;
-    }
+    public ClientData(UInt64 clientId) => this.clientId = clientId;
 }

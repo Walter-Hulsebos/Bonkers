@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 
 public class DisconnectReason
@@ -6,14 +8,11 @@ public class DisconnectReason
 
     public void SetDisconnectReason(ConnectStatus reason)
     {
-        Debug.Assert(reason != ConnectStatus.Success);
+        Debug.Assert(condition: reason != ConnectStatus.Success);
         Reason = reason;
     }
 
-    public void Clear()
-    {
-        Reason = ConnectStatus.Undefined;
-    }
+    public void Clear() { Reason = ConnectStatus.Undefined; }
 
-    public bool HasTransitionReason => Reason != ConnectStatus.Undefined;
+    public Boolean HasTransitionReason => Reason != ConnectStatus.Undefined;
 }

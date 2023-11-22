@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+
 using UnityEngine;
 
 public class ClientSingleton : MonoBehaviour
@@ -11,13 +12,13 @@ public class ClientSingleton : MonoBehaviour
     {
         get
         {
-            if (clientSingleton != null) return clientSingleton;
+            if (clientSingleton != null) { return clientSingleton; }
 
             clientSingleton = FindObjectOfType<ClientSingleton>();
 
             if (clientSingleton == null)
             {
-                Debug.LogError("No ClientSingleton in scene, did you run this from the bootStrap scene?");
+                Debug.LogError(message: "No ClientSingleton in scene, did you run this from the bootStrap scene?");
                 return null;
             }
 
@@ -31,7 +32,7 @@ public class ClientSingleton : MonoBehaviour
         {
             if (gameManager == null)
             {
-                Debug.LogError($"ClientGameManager is missing, did you run StartClient()?", gameObject);
+                Debug.LogError(message: $"ClientGameManager is missing, did you run StartClient()?", context: gameObject);
                 return null;
             }
 
@@ -42,17 +43,11 @@ public class ClientSingleton : MonoBehaviour
     public async Task CreateClient()
     {
         gameManager = new ClientGameManager();
-        
+
         await gameManager.InitAsync();
     }
 
-    private void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    private void Start() { DontDestroyOnLoad(target: gameObject); }
 
-    private void OnDestroy()
-    {
-        gameManager?.Dispose();
-    }
+    private void OnDestroy() { gameManager?.Dispose(); }
 }

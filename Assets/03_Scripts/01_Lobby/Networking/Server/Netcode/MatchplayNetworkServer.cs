@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+using Object = UnityEngine.Object;
 
 public class MatchplayNetworkServer : IDisposable
 {
@@ -18,89 +22,86 @@ public class MatchplayNetworkServer : IDisposable
     public Action<UserData> OnPlayerLeft;
 
     private SynchedServerData synchedServerData;
-    private NetworkManager networkManager;
+    private NetworkManager    networkManager;
 
-    public Action<string> OnClientLeft;
+    public Action<String> OnClientLeft;
 
-    private const int MaxConnectionPayload = 1024;
+    private const Int32 MaxConnectionPayload = 1024;
 
-    private bool gameHasStarted;
+    private Boolean gameHasStarted;
 
-    public Dictionary<string, UserData> ClientData { get; private set; } = new Dictionary<string, UserData>();
-    public Dictionary<ulong, string> ClientIdToAuth { get; private set; } = new Dictionary<ulong, string>();
+    public Dictionary<String, UserData> ClientData     { get; private set; } = new ();
+    public Dictionary<UInt64, String>   ClientIdToAuth { get; private set; } = new ();
 
     public MatchplayNetworkServer(NetworkManager networkManager)
     {
         this.networkManager = networkManager;
 
         this.networkManager.ConnectionApprovalCallback += ApprovalCheck;
-        this.networkManager.OnServerStarted += OnNetworkReady;
+        this.networkManager.OnServerStarted            += OnNetworkReady;
 
         Instance = this;
     }
 
-    public bool OpenConnection(string ip, int port, GameInfo startingGameInfo)
+    public Boolean OpenConnection(String ip, Int32 port, GameInfo startingGameInfo)
     {
-        var unityTransport = networkManager.gameObject.GetComponent<UnityTransport>();
+        UnityTransport unityTransport = networkManager.gameObject.GetComponent<UnityTransport>();
         networkManager.NetworkConfig.NetworkTransport = unityTransport;
-        unityTransport.SetConnectionData(ip, (ushort)port);
-        Debug.Log($"Starting server at {ip}:{port}\nWith: {startingGameInfo}");
+        unityTransport.SetConnectionData(ipv4Address: ip, port: (UInt16)port);
+        Debug.Log(message: $"Starting server at {ip}:{port}\nWith: {startingGameInfo}");
 
         return networkManager.StartServer();
     }
 
     public async Task<SynchedServerData> ConfigureServer(GameInfo startingGameInfo)
     {
-        networkManager.SceneManager.LoadScene("CharacterSelect", LoadSceneMode.Single);
+        networkManager.SceneManager.LoadScene(sceneName: "CharacterSelect", loadSceneMode: LoadSceneMode.Single);
 
-        bool localNetworkedSceneLoaded = false;
+        Boolean localNetworkedSceneLoaded = false;
         networkManager.SceneManager.OnLoadComplete += CreateAndSetSynchedServerData;
 
-        void CreateAndSetSynchedServerData(ulong clientId, string sceneName, LoadSceneMode sceneMode)
+        void CreateAndSetSynchedServerData(UInt64 clientId, String sceneName, LoadSceneMode sceneMode)
         {
             if (clientId != networkManager.LocalClientId) { return; }
-            localNetworkedSceneLoaded = true;
+
+            localNetworkedSceneLoaded                  =  true;
             networkManager.SceneManager.OnLoadComplete -= CreateAndSetSynchedServerData;
         }
 
-        var waitTask = WaitUntilSceneLoaded();
+        Task waitTask = WaitUntilSceneLoaded();
 
         async Task WaitUntilSceneLoaded()
         {
-            while (!localNetworkedSceneLoaded)
-            {
-                await Task.Delay(50);
-            }
+            while (!localNetworkedSceneLoaded) { await Task.Delay(millisecondsDelay: 50); }
         }
 
-        if (await Task.WhenAny(waitTask, Task.Delay(5000)) != waitTask)
+        if (await Task.WhenAny(tasks: new[] { waitTask, Task.Delay(millisecondsDelay: 5000) }) != waitTask)
         {
-            Debug.LogWarning($"Timed out waiting for Server Scene Loading: Not able to Load Scene");
+            Debug.LogWarning(message: $"Timed out waiting for Server Scene Loading: Not able to Load Scene");
             return null;
         }
 
-        synchedServerData = GameObject.Instantiate(Resources.Load<SynchedServerData>("SynchedServerData"));
+        synchedServerData = Object.Instantiate(original: Resources.Load<SynchedServerData>(path: "SynchedServerData"));
         synchedServerData.GetComponent<NetworkObject>().Spawn();
 
-        synchedServerData.map.Value = startingGameInfo.map;
-        synchedServerData.gameMode.Value = startingGameInfo.gameMode;
+        synchedServerData.map.Value       = startingGameInfo.map;
+        synchedServerData.gameMode.Value  = startingGameInfo.gameMode;
         synchedServerData.gameQueue.Value = startingGameInfo.gameQueue;
 
-        Debug.Log(
-            $"Synched Server Values: {synchedServerData.map.Value} - {synchedServerData.gameMode.Value} - {synchedServerData.gameQueue.Value}",
-            synchedServerData.gameObject);
+        Debug.Log
+        (
+            message: $"Synched Server Values: {synchedServerData.map.Value} - {synchedServerData.gameMode.Value} - {synchedServerData.gameQueue.Value}",
+            context: synchedServerData.gameObject
+        );
 
         return synchedServerData;
     }
 
-    public void SetCharacter(ulong clientId, int characterId)
+    public void SetCharacter(UInt64 clientId, Int32 characterId)
     {
-        if (ClientIdToAuth.TryGetValue(clientId, out string auth))
+        if (ClientIdToAuth.TryGetValue(key: clientId, value: out String auth))
         {
-            if (ClientData.TryGetValue(auth, out UserData data))
-            {
-                data.characterId = characterId;
-            }
+            if (ClientData.TryGetValue(key: auth, value: out UserData data)) { data.characterId = characterId; }
         }
     }
 
@@ -108,123 +109,121 @@ public class MatchplayNetworkServer : IDisposable
     {
         gameHasStarted = true;
 
-        NetworkManager.Singleton.SceneManager.LoadScene("Gameplay", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(sceneName: "ImplementerTestScene", loadSceneMode: LoadSceneMode.Single);
     }
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
     {
         if (request.Payload.Length > MaxConnectionPayload || gameHasStarted)
         {
-            response.Approved = false;
+            response.Approved           = false;
             response.CreatePlayerObject = false;
-            response.Position = null;
-            response.Rotation = null;
-            response.Pending = false;
+            response.Position           = null;
+            response.Rotation           = null;
+            response.Pending            = false;
 
             return;
         }
 
-        string payload = System.Text.Encoding.UTF8.GetString(request.Payload);
-        UserData userData = JsonUtility.FromJson<UserData>(payload);
+        String   payload  = System.Text.Encoding.UTF8.GetString(bytes: request.Payload);
+        UserData userData = JsonUtility.FromJson<UserData>(json: payload);
         userData.clientId = request.ClientNetworkId;
-        Debug.Log($"Host ApprovalCheck: connecting client: ({request.ClientNetworkId}) - {userData}");
+        Debug.Log(message: $"Host ApprovalCheck: connecting client: ({request.ClientNetworkId}) - {userData}");
 
-        if (ClientData.ContainsKey(userData.userAuthId))
+        if (ClientData.ContainsKey(key: userData.userAuthId))
         {
-            ulong oldClientId = ClientData[userData.userAuthId].clientId;
-            Debug.Log($"Duplicate ID Found : {userData.userAuthId}, Disconnecting Old user");
+            UInt64 oldClientId = ClientData[key: userData.userAuthId].clientId;
+            Debug.Log(message: $"Duplicate ID Found : {userData.userAuthId}, Disconnecting Old user");
 
-            SendClientDisconnected(request.ClientNetworkId, ConnectStatus.LoggedInAgain);
-            WaitToDisconnect(oldClientId);
+            SendClientDisconnected(clientId: request.ClientNetworkId, status: ConnectStatus.LoggedInAgain);
+            WaitToDisconnect(clientId: oldClientId);
         }
 
-        SendClientConnected(request.ClientNetworkId, ConnectStatus.Success);
+        SendClientConnected(clientId: request.ClientNetworkId, status: ConnectStatus.Success);
 
-        ClientIdToAuth[request.ClientNetworkId] = userData.userAuthId;
-        ClientData[userData.userAuthId] = userData;
-        OnPlayerJoined?.Invoke(userData);
+        ClientIdToAuth[key: request.ClientNetworkId] = userData.userAuthId;
+        ClientData[key: userData.userAuthId]         = userData;
+        OnPlayerJoined?.Invoke(obj: userData);
 
-        response.Approved = true;
+        response.Approved           = true;
         response.CreatePlayerObject = true;
-        response.Rotation = Quaternion.identity;
-        response.Pending = false;
+        response.Rotation           = Quaternion.identity;
+        response.Pending            = false;
 
-        var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-        Task.Factory.StartNew(
-            async () => await SetupPlayerPrefab(request.ClientNetworkId),
-            System.Threading.CancellationToken.None,
-            TaskCreationOptions.None, scheduler
+        TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+
+        Task.Factory.StartNew
+        (
+            function: async () => await SetupPlayerPrefab(clientId: request.ClientNetworkId),
+            cancellationToken: System.Threading.CancellationToken.None,
+            creationOptions: TaskCreationOptions.None,
+            scheduler: scheduler
         );
     }
 
-    private void OnNetworkReady()
-    {
-        networkManager.OnClientDisconnectCallback += OnClientDisconnect;
-    }
+    private void OnNetworkReady() { networkManager.OnClientDisconnectCallback += OnClientDisconnect; }
 
-    private void OnClientDisconnect(ulong clientId)
+    private void OnClientDisconnect(UInt64 clientId)
     {
-        SendClientDisconnected(clientId, ConnectStatus.GenericDisconnect);
-        if (ClientIdToAuth.TryGetValue(clientId, out string authId))
+        SendClientDisconnected(clientId: clientId, status: ConnectStatus.GenericDisconnect);
+
+        if (ClientIdToAuth.TryGetValue(key: clientId, value: out String authId))
         {
-            ClientIdToAuth?.Remove(clientId);
-            OnPlayerLeft?.Invoke(ClientData[authId]);
+            ClientIdToAuth?.Remove(key: clientId);
+            OnPlayerLeft?.Invoke(obj: ClientData[key: authId]);
 
-            if (ClientData[authId].clientId == clientId)
+            if (ClientData[key: authId].clientId == clientId)
             {
-                ClientData.Remove(authId);
-                OnClientLeft?.Invoke(authId);
+                ClientData.Remove(key: authId);
+                OnClientLeft?.Invoke(obj: authId);
             }
         }
 
-        Matchplayer matchPlayerInstance = GetNetworkedMatchPlayer(clientId);
-        OnServerPlayerRemoved?.Invoke(matchPlayerInstance);
+        Matchplayer matchPlayerInstance = GetNetworkedMatchPlayer(clientId: clientId);
+        OnServerPlayerRemoved?.Invoke(obj: matchPlayerInstance);
     }
 
-    private void SendClientConnected(ulong clientId, ConnectStatus status)
+    private void SendClientConnected(UInt64 clientId, ConnectStatus status)
     {
-        var writer = new FastBufferWriter(sizeof(ConnectStatus), Allocator.Temp);
-        writer.WriteValueSafe(status);
-        Debug.Log($"Send Network Client Connected to : {clientId}");
-        MatchplayNetworkMessenger.SendMessageTo(NetworkMessage.LocalClientConnected, clientId, writer);
+        FastBufferWriter writer = new (size: sizeof(ConnectStatus), allocator: Allocator.Temp);
+        writer.WriteValueSafe(value: status);
+        Debug.Log(message: $"Send Network Client Connected to : {clientId}");
+        MatchplayNetworkMessenger.SendMessageTo(messageType: NetworkMessage.LocalClientConnected, clientId: clientId, writer: writer);
     }
 
-    private void SendClientDisconnected(ulong clientId, ConnectStatus status)
+    private void SendClientDisconnected(UInt64 clientId, ConnectStatus status)
     {
-        var writer = new FastBufferWriter(sizeof(ConnectStatus), Allocator.Temp);
-        writer.WriteValueSafe(status);
-        Debug.Log($"Send networkClient Disconnected to : {clientId}");
-        MatchplayNetworkMessenger.SendMessageTo(NetworkMessage.LocalClientDisconnected, clientId, writer);
+        FastBufferWriter writer = new (size: sizeof(ConnectStatus), allocator: Allocator.Temp);
+        writer.WriteValueSafe(value: status);
+        Debug.Log(message: $"Send networkClient Disconnected to : {clientId}");
+        MatchplayNetworkMessenger.SendMessageTo(messageType: NetworkMessage.LocalClientDisconnected, clientId: clientId, writer: writer);
     }
 
-    private async void WaitToDisconnect(ulong clientId)
+    private async void WaitToDisconnect(UInt64 clientId)
     {
-        await Task.Delay(500);
-        networkManager.DisconnectClient(clientId);
+        await Task.Delay(millisecondsDelay: 500);
+        networkManager.DisconnectClient(clientId: clientId);
     }
 
-    private async Task SetupPlayerPrefab(ulong clientId)
+    private async Task SetupPlayerPrefab(UInt64 clientId)
     {
         NetworkObject playerNetworkObject;
 
         do
         {
-            playerNetworkObject = networkManager.SpawnManager.GetPlayerNetworkObject(clientId);
-            await Task.Delay(100);
+            playerNetworkObject = networkManager.SpawnManager.GetPlayerNetworkObject(clientId: clientId);
+            await Task.Delay(millisecondsDelay: 100);
         }
         while (playerNetworkObject == null);
 
-        OnServerPlayerAdded?.Invoke(GetNetworkedMatchPlayer(clientId));
+        OnServerPlayerAdded?.Invoke(obj: GetNetworkedMatchPlayer(clientId: clientId));
     }
 
-    public UserData GetUserDataByClientId(ulong clientId)
+    public UserData GetUserDataByClientId(UInt64 clientId)
     {
-        if (ClientIdToAuth.TryGetValue(clientId, out string authId))
+        if (ClientIdToAuth.TryGetValue(key: clientId, value: out String authId))
         {
-            if (ClientData.TryGetValue(authId, out UserData data))
-            {
-                return data;
-            }
+            if (ClientData.TryGetValue(key: authId, value: out UserData data)) { return data; }
 
             return null;
         }
@@ -232,9 +231,9 @@ public class MatchplayNetworkServer : IDisposable
         return null;
     }
 
-    private Matchplayer GetNetworkedMatchPlayer(ulong clientId)
+    private Matchplayer GetNetworkedMatchPlayer(UInt64 clientId)
     {
-        NetworkObject playerObject = networkManager.SpawnManager.GetPlayerNetworkObject(clientId);
+        NetworkObject playerObject = networkManager.SpawnManager.GetPlayerNetworkObject(clientId: clientId);
         return playerObject.GetComponent<Matchplayer>();
     }
 
@@ -244,11 +243,8 @@ public class MatchplayNetworkServer : IDisposable
 
         networkManager.ConnectionApprovalCallback -= ApprovalCheck;
         networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
-        networkManager.OnServerStarted -= OnNetworkReady;
+        networkManager.OnServerStarted            -= OnNetworkReady;
 
-        if (networkManager.IsListening)
-        {
-            networkManager.Shutdown();
-        }
+        if (networkManager.IsListening) { networkManager.Shutdown(); }
     }
 }

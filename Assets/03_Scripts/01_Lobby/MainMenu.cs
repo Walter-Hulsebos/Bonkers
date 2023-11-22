@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,13 +10,11 @@ namespace Bonkers
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] private Image pressAnyButtonImage;
+        [SerializeField] private Image      pressAnyButtonImage;
         [SerializeField] private GameObject menu;
         [SerializeField] private GameObject LogoAndText;
-        public void Start()
-        {
-           
-        }
+        public                   void       Start() { }
+
         public void Update()
         {
 
@@ -27,29 +26,14 @@ namespace Bonkers
             }
         }
 
-        public void NewCampaign()
-        {
-            
-        }
+        public void NewCampaign() { }
 
-        public void OnlinePlay()
-        {
-            SceneManager.LoadSceneAsync("Bootstrap");
-        }
+        public void OnlinePlay() { SceneManager.LoadSceneAsync("Bootstrap"); }
 
-        public void OnfflinePlay() 
-        {
-            
-        }
+        public void OnfflinePlay() { }
 
-        public void Options()
-        {
+        public void Options() { }
 
-        }
-
-        public void Quit()
-        {
-            Application.Quit();
-        }
+        public void Quit() { Application.Quit(); }
     }
 }

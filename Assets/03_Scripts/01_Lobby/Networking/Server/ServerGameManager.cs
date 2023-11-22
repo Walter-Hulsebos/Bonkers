@@ -1,127 +1,115 @@
 using System;
 using System.Threading.Tasks;
+
 using Unity.Netcode;
 using Unity.Services.Matchmaker.Models;
+
 using UnityEngine;
 
 public class ServerGameManager : IDisposable
 {
     private MultiplayAllocationService multiplayAllocationService;
-    private SynchedServerData synchedServerData;
-    string ConnectionString => $"{serverIP}:{serverPort}";
-    private string serverIP = "0.0.0.0";
-    private int serverPort = 7777;
-    private int queryPort = 7787;
-    private string serverName = "Matchplay Server";
-    private bool startedServices;
+    private SynchedServerData          synchedServerData;
+    private String                     ConnectionString => $"{serverIP}:{serverPort}";
+    private String                     serverIP   = "0.0.0.0";
+    private Int32                      serverPort = 7777;
+    private Int32                      queryPort  = 7787;
+    private String                     serverName = "Matchplay Server";
+    private Boolean                    startedServices;
 
-    private int playerCount;
+    private Int32 playerCount;
 
     public MatchplayNetworkServer NetworkServer { get; private set; }
 
-    private const int MultiplayServiceTimeout = 20000;
+    private const Int32 MultiplayServiceTimeout = 20000;
 
-    public ServerGameManager(string serverIP, int serverPort, int serverQPort, NetworkManager manager)
+    public ServerGameManager(String serverIP, Int32 serverPort, Int32 serverQPort, NetworkManager manager)
     {
-        this.serverIP = serverIP;
-        this.serverPort = serverPort;
-        this.queryPort = serverQPort;
-        NetworkServer = new MatchplayNetworkServer(manager);
+        this.serverIP              = serverIP;
+        this.serverPort            = serverPort;
+        queryPort                  = serverQPort;
+        NetworkServer              = new MatchplayNetworkServer(networkManager: manager);
         multiplayAllocationService = new MultiplayAllocationService();
-        serverName = $"Server: {Guid.NewGuid()}";
+        serverName                 = $"Server: {Guid.NewGuid()}";
     }
 
     public async Task StartGameServerAsync(GameInfo startingGameInfo)
     {
-        Debug.Log($"Starting server with:{startingGameInfo}.");
+        Debug.Log(message: $"Starting server with:{startingGameInfo}.");
 
         await multiplayAllocationService.BeginServerCheck();
 
         try
         {
-            MatchmakingResults matchmakerPayload = await GetMatchmakerPayload(MultiplayServiceTimeout);
+            MatchmakingResults matchmakerPayload = await GetMatchmakerPayload(timeout: MultiplayServiceTimeout);
 
             if (matchmakerPayload != null)
             {
-                Debug.Log($"Got payload: {matchmakerPayload}");
-                startingGameInfo = PickGameInfo(matchmakerPayload);
+                Debug.Log(message: $"Got payload: {matchmakerPayload}");
+                startingGameInfo = PickGameInfo(mmAllocation: matchmakerPayload);
 
-                SetAllocationData(startingGameInfo);
+                SetAllocationData(startingGameInfo: startingGameInfo);
                 NetworkServer.OnPlayerJoined += UserJoinedServer;
-                NetworkServer.OnPlayerLeft += UserLeft;
-                startedServices = true;
+                NetworkServer.OnPlayerLeft   += UserLeft;
+                startedServices              =  true;
             }
-            else
-            {
-                Debug.LogWarning("Getting the Matchmaker Payload timed out, starting with defaults.");
-            }
+            else { Debug.LogWarning(message: "Getting the Matchmaker Payload timed out, starting with defaults."); }
         }
-        catch (Exception ex)
-        {
-            Debug.LogWarning($"Something went wrong trying to set up the Services:\n{ex} ");
-        }
+        catch (Exception ex) { Debug.LogWarning(message: $"Something went wrong trying to set up the Services:\n{ex} "); }
 
-        if (!NetworkServer.OpenConnection(serverIP, serverPort, startingGameInfo))
+        if (!NetworkServer.OpenConnection(ip: serverIP, port: serverPort, startingGameInfo: startingGameInfo))
         {
-            Debug.LogError("NetworkServer did not start as expected.");
+            Debug.LogError(message: "NetworkServer did not start as expected.");
             return;
         }
 
-        synchedServerData = await NetworkServer.ConfigureServer(startingGameInfo);
+        synchedServerData = await NetworkServer.ConfigureServer(startingGameInfo: startingGameInfo);
+
         if (synchedServerData == null)
         {
-            Debug.LogError("Could not find the synchedServerData.");
+            Debug.LogError(message: "Could not find the synchedServerData.");
             return;
         }
 
         synchedServerData.serverId.Value = serverName;
 
-        synchedServerData.map.OnValueChanged += OnServerChangedMap;
+        synchedServerData.map.OnValueChanged      += OnServerChangedMap;
         synchedServerData.gameMode.OnValueChanged += OnServerChangedMode;
     }
 
-    private async Task<MatchmakingResults> GetMatchmakerPayload(int timeout)
+    private async Task<MatchmakingResults> GetMatchmakerPayload(Int32 timeout)
     {
         if (multiplayAllocationService == null) { return null; }
 
-        var matchmakerPayloadTask = multiplayAllocationService.SubscribeAndAwaitMatchmakerAllocation();
+        Task<MatchmakingResults> matchmakerPayloadTask = multiplayAllocationService.SubscribeAndAwaitMatchmakerAllocation();
 
-        if (await Task.WhenAny(matchmakerPayloadTask, Task.Delay(timeout)) == matchmakerPayloadTask)
-        {
-            return matchmakerPayloadTask.Result;
-        }
+        if (await Task.WhenAny(tasks: new[] { matchmakerPayloadTask, Task.Delay(millisecondsDelay: timeout) }) == matchmakerPayloadTask) { return matchmakerPayloadTask.Result; }
 
         return null;
     }
 
     private void SetAllocationData(GameInfo startingGameInfo)
     {
-        multiplayAllocationService.SetServerName(serverName);
-        multiplayAllocationService.SetMaxPlayers(4);
-        multiplayAllocationService.SetBuildID("0");
-        multiplayAllocationService.SetMap(startingGameInfo.map.ToString());
-        multiplayAllocationService.SetMode(startingGameInfo.gameMode.ToString());
+        multiplayAllocationService.SetServerName(name: serverName);
+        multiplayAllocationService.SetMaxPlayers(players: 4);
+        multiplayAllocationService.SetBuildID(id: "0");
+        multiplayAllocationService.SetMap(newMap: startingGameInfo.map.ToString());
+        multiplayAllocationService.SetMode(mode: startingGameInfo.gameMode.ToString());
     }
 
     public static GameInfo PickGameInfo(MatchmakingResults mmAllocation)
     {
-        GameQueue queue = GameInfo.ToGameQueue(mmAllocation.QueueName);
-        return new GameInfo { map = Map.Default, gameMode = GameMode.Default, gameQueue = queue };
+        GameQueue queue = GameInfo.ToGameQueue(multiplayQueue: mmAllocation.QueueName);
+        return new GameInfo { map = Map.Default, gameMode = GameMode.Default, gameQueue = queue, };
     }
 
-    private void OnServerChangedMap(Map oldMap, Map newMap)
-    {
-        multiplayAllocationService.SetMap(newMap.ToString());
-    }
+    private void OnServerChangedMap(Map oldMap, Map newMap) { multiplayAllocationService.SetMap(newMap: newMap.ToString()); }
 
-    private void OnServerChangedMode(GameMode oldMode, GameMode newMode)
-    {
-        multiplayAllocationService.SetMode(newMode.ToString());
-    }
+    private void OnServerChangedMode(GameMode oldMode, GameMode newMode) { multiplayAllocationService.SetMode(mode: newMode.ToString()); }
 
     private void UserJoinedServer(UserData joinedUser)
     {
-        Debug.Log($"{joinedUser} joined the game");
+        Debug.Log(message: $"{joinedUser} joined the game");
         multiplayAllocationService.AddPlayer();
         playerCount++;
     }
@@ -138,7 +126,7 @@ public class ServerGameManager : IDisposable
 
     private void CloseServer()
     {
-        Debug.Log("Closing Server");
+        Debug.Log(message: "Closing Server");
         Dispose();
         Application.Quit();
     }
@@ -147,16 +135,16 @@ public class ServerGameManager : IDisposable
     {
         if (startedServices)
         {
-            if (NetworkServer.OnPlayerJoined != null) NetworkServer.OnPlayerJoined -= UserJoinedServer;
-            if (NetworkServer.OnPlayerLeft != null) NetworkServer.OnPlayerLeft -= UserLeft;
+            if (NetworkServer.OnPlayerJoined != null) { NetworkServer.OnPlayerJoined -= UserJoinedServer; }
+
+            if (NetworkServer.OnPlayerLeft != null) { NetworkServer.OnPlayerLeft -= UserLeft; }
         }
 
         if (synchedServerData != null)
         {
-            if (synchedServerData.map.OnValueChanged != null)
-                synchedServerData.map.OnValueChanged -= OnServerChangedMap;
-            if (synchedServerData.gameMode.OnValueChanged != null)
-                synchedServerData.gameMode.OnValueChanged -= OnServerChangedMode;
+            if (synchedServerData.map.OnValueChanged != null) { synchedServerData.map.OnValueChanged -= OnServerChangedMap; }
+
+            if (synchedServerData.gameMode.OnValueChanged != null) { synchedServerData.gameMode.OnValueChanged -= OnServerChangedMode; }
         }
 
         multiplayAllocationService?.Dispose();

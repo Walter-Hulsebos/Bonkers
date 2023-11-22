@@ -1,52 +1,49 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 using UnityEngine;
 
 public enum Map
 {
-    Default
+    Default,
 }
 
 public enum GameMode
 {
-    Default
+    Default,
 }
 
 public enum GameQueue
 {
     Casual,
-    Competitive
+    Competitive,
 }
 
 public class MatchplayUser
 {
     public UserData Data { get; }
 
-    public Action<string> OnNameChanged;
+    public Action<String> OnNameChanged;
 
     public MatchplayUser()
     {
-        string tempId = Guid.NewGuid().ToString();
+        String tempId = Guid.NewGuid().ToString();
 
-        Data = new UserData(
-            "Player",
-            tempId,
-            0,
-            new GameInfo());
+        Data = new UserData(userName: "Player", userAuthId: tempId, clientId: 0, userGamePreferences: new GameInfo());
     }
 
-    public string Name
+    public String Name
     {
         get => Data.userName;
         set
         {
             Data.userName = value;
-            OnNameChanged?.Invoke(Data.userName);
+            OnNameChanged?.Invoke(obj: Data.userName);
         }
     }
 
-    public string AuthId
+    public String AuthId
     {
         get => Data.userAuthId;
         set => Data.userAuthId = value;
@@ -55,7 +52,7 @@ public class MatchplayUser
     public Map MapPreferences
     {
         get => Data.userGamePreferences.map;
-        set { Data.userGamePreferences.map = value; }
+        set => Data.userGamePreferences.map = value;
     }
 
     public GameMode GameModePreferences
@@ -70,10 +67,10 @@ public class MatchplayUser
         set => Data.userGamePreferences.gameQueue = value;
     }
 
-    public override string ToString()
+    public override String ToString()
     {
-        var userData = new StringBuilder("MatchplayUser: ");
-        userData.AppendLine($"- {Data}");
+        StringBuilder userData = new (value: "MatchplayUser: ");
+        userData.AppendLine(value: $"- {Data}");
         return userData.ToString();
     }
 }
@@ -81,18 +78,18 @@ public class MatchplayUser
 [Serializable]
 public class UserData
 {
-    public string userName;
-    public string userAuthId;
-    public ulong clientId;
+    public String   userName;
+    public String   userAuthId;
+    public UInt64   clientId;
     public GameInfo userGamePreferences;
-    
-    public int characterId = -1;
 
-    public UserData(string userName, string userAuthId, ulong clientId, GameInfo userGamePreferences)
+    public Int32 characterId = -1;
+
+    public UserData(String userName, String userAuthId, UInt64 clientId, GameInfo userGamePreferences)
     {
-        this.userName = userName;
-        this.userAuthId = userAuthId;
-        this.clientId = clientId;
+        this.userName            = userName;
+        this.userAuthId          = userAuthId;
+        this.clientId            = clientId;
         this.userGamePreferences = userGamePreferences;
     }
 }
@@ -100,61 +97,61 @@ public class UserData
 [Serializable]
 public class GameInfo
 {
-    public Map map;
-    public GameMode gameMode;
+    public Map       map;
+    public GameMode  gameMode;
     public GameQueue gameQueue;
 
-    public int MaxUsers = 20;
-    public string ToSceneName => ConvertToScene(map);
+    public Int32  MaxUsers = 20;
+    public String ToSceneName => ConvertToScene(map: map);
 
-    private const string multiplayCasualQueue = "casual-queue";
-    private const string multiplayCompetitiveQueue = "competitive-queue";
-    private static readonly Dictionary<string, GameQueue> multiplayToLocalQueueNames = new Dictionary<string, GameQueue>
+    private const String multiplayCasualQueue      = "casual-queue";
+    private const String multiplayCompetitiveQueue = "competitive-queue";
+
+    private static readonly Dictionary<String, GameQueue> multiplayToLocalQueueNames = new()
     {
-        { multiplayCasualQueue, GameQueue.Casual },
-        { multiplayCompetitiveQueue, GameQueue.Competitive }
+        { multiplayCasualQueue, GameQueue.Casual }, { multiplayCompetitiveQueue, GameQueue.Competitive },
     };
 
-    public override string ToString()
+    public override String ToString()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.AppendLine("GameInfo: ");
-        sb.AppendLine($"- map:        {map}");
-        sb.AppendLine($"- gameMode:   {gameMode}");
-        sb.AppendLine($"- gameQueue:  {gameQueue}");
+        StringBuilder sb = new ();
+        sb.AppendLine(value: "GameInfo: ");
+        sb.AppendLine(value: $"- map:        {map}");
+        sb.AppendLine(value: $"- gameMode:   {gameMode}");
+        sb.AppendLine(value: $"- gameQueue:  {gameQueue}");
         return sb.ToString();
     }
 
-    public static string ConvertToScene(Map map)
+    public static String ConvertToScene(Map map)
     {
         switch (map)
         {
-            case Map.Default:
-                return "Gameplay";
+            case Map.Default: return "Gameplay";
+
             default:
-                Debug.LogWarning($"{map} - is not supported.");
+                Debug.LogWarning(message: $"{map} - is not supported.");
                 return "";
         }
     }
 
-    public string ToMultiplayQueue()
+    public String ToMultiplayQueue()
     {
         return gameQueue switch
         {
-            GameQueue.Casual => multiplayCasualQueue,
+            GameQueue.Casual      => multiplayCasualQueue,
             GameQueue.Competitive => multiplayCompetitiveQueue,
-            _ => multiplayCasualQueue
+            _                     => multiplayCasualQueue,
         };
     }
 
-    public static GameQueue ToGameQueue(string multiplayQueue)
+    public static GameQueue ToGameQueue(String multiplayQueue)
     {
-        if (!multiplayToLocalQueueNames.ContainsKey(multiplayQueue))
+        if (!multiplayToLocalQueueNames.ContainsKey(key: multiplayQueue))
         {
-            Debug.LogWarning($"No QueuePreference that maps to {multiplayQueue}");
+            Debug.LogWarning(message: $"No QueuePreference that maps to {multiplayQueue}");
             return GameQueue.Casual;
         }
 
-        return multiplayToLocalQueueNames[multiplayQueue];
+        return multiplayToLocalQueueNames[key: multiplayQueue];
     }
 }

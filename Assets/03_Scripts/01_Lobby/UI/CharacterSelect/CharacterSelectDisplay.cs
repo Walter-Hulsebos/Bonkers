@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
+
 using TMPro;
+
 using Unity.Netcode;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,23 +12,21 @@ public class CharacterSelectDisplay : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private CharacterDatabase characterDatabase;
-    [SerializeField] private Transform charactersHolder;
-    [SerializeField] private CharacterSelectButton selectButtonPrefab;
-    [SerializeField] private PlayerCard[] playerCards;
-    [SerializeField] private GameObject characterInfoPanel;
-    [SerializeField] private TMP_Text characterNameText;
-    [SerializeField] private Transform introSpawnPoint;
-    [SerializeField] private TMP_Text joinCodeText;
-    [SerializeField] private Button lockInButton;
 
-    private GameObject introInstance;
-    private List<CharacterSelectButton> characterButtons = new List<CharacterSelectButton>();
+    [SerializeField] private Transform             charactersHolder;
+    [SerializeField] private CharacterSelectButton selectButtonPrefab;
+    [SerializeField] private PlayerCard[]          playerCards;
+    [SerializeField] private GameObject            characterInfoPanel;
+    [SerializeField] private TMP_Text              characterNameText;
+    [SerializeField] private Transform             introSpawnPoint;
+    [SerializeField] private TMP_Text              joinCodeText;
+    [SerializeField] private Button                lockInButton;
+
+    private GameObject                        introInstance;
+    private List<CharacterSelectButton>       characterButtons = new ();
     private NetworkList<CharacterSelectState> players;
 
-    private void Awake()
-    {
-        players = new NetworkList<CharacterSelectState>();
-    }
+    private void Awake() { players = new NetworkList<CharacterSelectState>(); }
 
     public override void OnNetworkSpawn()
     {
@@ -32,9 +34,9 @@ public class CharacterSelectDisplay : NetworkBehaviour
         {
             Character[] allCharacters = characterDatabase.GetAllCharacters();
 
-            foreach (var character in allCharacters)
+            foreach (Character character in allCharacters)
             {
-                var selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
+                CharacterSelectButton selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
                 selectbuttonInstance.SetCharacter(this, character);
                 characterButtons.Add(selectbuttonInstance);
             }
@@ -44,43 +46,31 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
         if (IsServer)
         {
-            NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
+            NetworkManager.Singleton.OnClientConnectedCallback  += HandleClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
 
-            foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
-            {
-                HandleClientConnected(client.ClientId);
-            }
+            foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList) { HandleClientConnected(client.ClientId); }
         }
 
-        if (IsHost)
-        {
-            joinCodeText.text = HostSingleton.Instance.RelayHostData.JoinCode;
-        }
+        if (IsHost) { joinCodeText.text = HostSingleton.Instance.RelayHostData.JoinCode; }
     }
 
     public override void OnNetworkDespawn()
     {
-        if (IsClient)
-        {
-            players.OnListChanged -= HandlePlayersStateChanged;
-        }
+        if (IsClient) { players.OnListChanged -= HandlePlayersStateChanged; }
 
         if (IsServer)
         {
-            NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnected;
+            NetworkManager.Singleton.OnClientConnectedCallback  -= HandleClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnected;
         }
     }
 
-    private void HandleClientConnected(ulong clientId)
-    {
-        players.Add(new CharacterSelectState(clientId));
-    }
+    private void HandleClientConnected(UInt64 clientId) { players.Add(new CharacterSelectState(clientId)); }
 
-    private void HandleClientDisconnected(ulong clientId)
+    private void HandleClientDisconnected(UInt64 clientId)
     {
-        for (int i = 0; i < players.Count; i++)
+        for (Int32 i = 0; i < players.Count; i++)
         {
             if (players[i].ClientId != clientId) { continue; }
 
@@ -91,7 +81,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
     public void Select(Character character)
     {
-        for (int i = 0; i < players.Count; i++)
+        for (Int32 i = 0; i < players.Count; i++)
         {
             if (players[i].ClientId != NetworkManager.Singleton.LocalClientId) { continue; }
 
@@ -106,10 +96,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
         characterInfoPanel.SetActive(true);
 
-        if (introInstance != null)
-        {
-            Destroy(introInstance);
-        }
+        if (introInstance != null) { Destroy(introInstance); }
 
         introInstance = Instantiate(character.IntroPrefab, introSpawnPoint);
 
@@ -117,9 +104,9 @@ public class CharacterSelectDisplay : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SelectServerRpc(int characterId, ServerRpcParams serverRpcParams = default)
+    private void SelectServerRpc(Int32 characterId, ServerRpcParams serverRpcParams = default)
     {
-        for (int i = 0; i < players.Count; i++)
+        for (Int32 i = 0; i < players.Count; i++)
         {
             if (players[i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
 
@@ -127,23 +114,16 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
             if (IsCharacterTaken(characterId, true)) { return; }
 
-            players[i] = new CharacterSelectState(
-                players[i].ClientId,
-                characterId,
-                players[i].IsLockedIn
-            );
+            players[i] = new CharacterSelectState(players[i].ClientId, characterId, players[i].IsLockedIn);
         }
     }
 
-    public void LockIn()
-    {
-        LockInServerRpc();
-    }
+    public void LockIn() { LockInServerRpc(); }
 
     [ServerRpc(RequireOwnership = false)]
     private void LockInServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        for (int i = 0; i < players.Count; i++)
+        for (Int32 i = 0; i < players.Count; i++)
         {
             if (players[i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
 
@@ -151,51 +131,35 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
             if (IsCharacterTaken(players[i].CharacterId, true)) { return; }
 
-            players[i] = new CharacterSelectState(
-                players[i].ClientId,
-                players[i].CharacterId,
-                true
-            );
+            players[i] = new CharacterSelectState(players[i].ClientId, players[i].CharacterId, true);
         }
 
-        foreach (var player in players)
+        foreach (CharacterSelectState player in players)
         {
             if (!player.IsLockedIn) { return; }
         }
 
-        foreach (var player in players)
-        {
-            MatchplayNetworkServer.Instance.SetCharacter(player.ClientId, player.CharacterId);
-        }
+        foreach (CharacterSelectState player in players) { MatchplayNetworkServer.Instance.SetCharacter(player.ClientId, player.CharacterId); }
 
         MatchplayNetworkServer.Instance.StartGame();
     }
 
     private void HandlePlayersStateChanged(NetworkListEvent<CharacterSelectState> changeEvent)
     {
-        for (int i = 0; i < playerCards.Length; i++)
+        for (Int32 i = 0; i < playerCards.Length; i++)
         {
-            if (players.Count > i)
-            {
-                playerCards[i].UpdateDisplay(players[i]);
-            }
-            else
-            {
-                playerCards[i].DisableDisplay();
-            }
+            if (players.Count > i) { playerCards[i].UpdateDisplay(players[i]); }
+            else { playerCards[i].DisableDisplay(); }
         }
 
-        foreach (var button in characterButtons)
+        foreach (CharacterSelectButton button in characterButtons)
         {
             if (button.IsDisabled) { continue; }
 
-            if (IsCharacterTaken(button.Character.Id, false))
-            {
-                button.SetDisabled();
-            }
+            if (IsCharacterTaken(button.Character.Id, false)) { button.SetDisabled(); }
         }
 
-        foreach (var player in players)
+        foreach (CharacterSelectState player in players)
         {
             if (player.ClientId != NetworkManager.Singleton.LocalClientId) { continue; }
 
@@ -217,19 +181,16 @@ public class CharacterSelectDisplay : NetworkBehaviour
         }
     }
 
-    private bool IsCharacterTaken(int characterId, bool checkAll)
+    private Boolean IsCharacterTaken(Int32 characterId, Boolean checkAll)
     {
-        for (int i = 0; i < players.Count; i++)
+        for (Int32 i = 0; i < players.Count; i++)
         {
             if (!checkAll)
             {
                 if (players[i].ClientId == NetworkManager.Singleton.LocalClientId) { continue; }
             }
 
-            if (players[i].IsLockedIn && players[i].CharacterId == characterId)
-            {
-                return true;
-            }
+            if (players[i].IsLockedIn && players[i].CharacterId == characterId) { return true; }
         }
 
         return false;

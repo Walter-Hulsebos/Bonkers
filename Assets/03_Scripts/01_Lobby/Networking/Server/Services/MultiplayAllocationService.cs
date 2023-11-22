@@ -1,69 +1,69 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Newtonsoft.Json;
+
 using Unity.Services.Matchmaker.Models;
 using Unity.Services.Multiplay;
+
 using UnityEngine;
 
 public class MultiplayAllocationService : IDisposable
 {
-    private IMultiplayService multiplayService;
+    private IMultiplayService       multiplayService;
     private MultiplayEventCallbacks serverCallbacks;
-    private IServerQueryHandler serverCheckManager;
-    private IServerEvents serverEvents;
+    private IServerQueryHandler     serverCheckManager;
+    private IServerEvents           serverEvents;
     private CancellationTokenSource serverCheckCancel;
-    string allocationId;
+    private String                  allocationId;
 
     public MultiplayAllocationService()
     {
         try
         {
-            multiplayService = MultiplayService.Instance;
+            multiplayService  = MultiplayService.Instance;
             serverCheckCancel = new CancellationTokenSource();
         }
-        catch (Exception ex)
-        {
-            Debug.LogWarning($"Error creating Multiplay allocation service.\n{ex}");
-        }
+        catch (Exception ex) { Debug.LogWarning(message: $"Error creating Multiplay allocation service.\n{ex}"); }
     }
 
     public async Task<MatchmakingResults> SubscribeAndAwaitMatchmakerAllocation()
     {
         if (multiplayService == null) { return null; }
 
-        allocationId = null;
-        serverCallbacks = new MultiplayEventCallbacks();
+        allocationId             =  null;
+        serverCallbacks          =  new MultiplayEventCallbacks();
         serverCallbacks.Allocate += OnMultiplayAllocation;
-        serverEvents = await multiplayService.SubscribeToServerEventsAsync(serverCallbacks);
+        serverEvents             =  await multiplayService.SubscribeToServerEventsAsync(callbacks: serverCallbacks);
 
-        string allocationID = await AwaitAllocationID();
+        String             allocationID       = await AwaitAllocationID();
         MatchmakingResults matchmakingPayload = await GetMatchmakerAllocationPayloadAsync();
 
         return matchmakingPayload;
     }
 
-    private async Task<string> AwaitAllocationID()
+    private async Task<String> AwaitAllocationID()
     {
-        var config = multiplayService.ServerConfig;
-        Debug.Log($"Awaiting Allocation. Server Config is:\n" +
-            $"-ServerID: {config.ServerId}\n" +
-            $"-AllocationID: {config.AllocationId}\n" +
-            $"-Port: {config.Port}\n" +
-            $"-QPort: {config.QueryPort}\n" +
-            $"-logs: {config.ServerLogDirectory}");
+        ServerConfig config = multiplayService.ServerConfig;
 
-        while (string.IsNullOrEmpty(allocationId))
+        Debug.Log
+        (
+            message: $"Awaiting Allocation. Server Config is:\n" + $"-ServerID: {config.ServerId}\n" + $"-AllocationID: {config.AllocationId}\n" +
+                     $"-Port: {config.Port}\n"                   + $"-QPort: {config.QueryPort}\n"   + $"-logs: {config.ServerLogDirectory}"
+        );
+
+        while (String.IsNullOrEmpty(value: allocationId))
         {
-            var configID = config.AllocationId;
+            String configID = config.AllocationId;
 
-            if (!string.IsNullOrEmpty(configID) && string.IsNullOrEmpty(allocationId))
+            if (!String.IsNullOrEmpty(value: configID) && String.IsNullOrEmpty(value: allocationId))
             {
-                Debug.Log($"Config had AllocationID: {configID}");
+                Debug.Log(message: $"Config had AllocationID: {configID}");
                 allocationId = configID;
             }
 
-            await Task.Delay(100);
+            await Task.Delay(millisecondsDelay: 100);
         }
 
         return allocationId;
@@ -71,17 +71,17 @@ public class MultiplayAllocationService : IDisposable
 
     private async Task<MatchmakingResults> GetMatchmakerAllocationPayloadAsync()
     {
-        var payloadAllocation = await MultiplayService.Instance.GetPayloadAllocationFromJsonAs<MatchmakingResults>();
-        string modelAsJson = JsonConvert.SerializeObject(payloadAllocation, Formatting.Indented);
-        Debug.Log(nameof(GetMatchmakerAllocationPayloadAsync) + ":" + Environment.NewLine + modelAsJson);
+        MatchmakingResults payloadAllocation = await MultiplayService.Instance.GetPayloadAllocationFromJsonAs<MatchmakingResults>();
+        String             modelAsJson       = JsonConvert.SerializeObject(value: payloadAllocation, formatting: Formatting.Indented);
+        Debug.Log(message: nameof(GetMatchmakerAllocationPayloadAsync) + ":" + Environment.NewLine + modelAsJson);
         return payloadAllocation;
     }
 
     private void OnMultiplayAllocation(MultiplayAllocation allocation)
     {
-        Debug.Log($"OnAllocation: {allocation.AllocationId}");
+        Debug.Log(message: $"OnAllocation: {allocation.AllocationId}");
 
-        if (string.IsNullOrEmpty(allocation.AllocationId)) { return; }
+        if (String.IsNullOrEmpty(value: allocation.AllocationId)) { return; }
 
         allocationId = allocation.AllocationId;
     }
@@ -90,80 +90,52 @@ public class MultiplayAllocationService : IDisposable
     {
         if (multiplayService == null) { return; }
 
-        serverCheckManager = await multiplayService.StartServerQueryHandlerAsync((ushort)20, "", "", "0", "");
+        serverCheckManager = await multiplayService.StartServerQueryHandlerAsync(maxPlayers: (UInt16)20, serverName: "", gameType: "", buildId: "0", map: "");
 
-#pragma warning disable 4014
-        ServerCheckLoop(serverCheckCancel.Token);
-#pragma warning restore 4014
-    }
-
-    public void SetServerName(string name)
-    {
-        serverCheckManager.ServerName = name;
-    }
-    public void SetBuildID(string id)
-    {
-        serverCheckManager.BuildId = id;
+        #pragma warning disable 4014
+        ServerCheckLoop(cancellationToken: serverCheckCancel.Token);
+        #pragma warning restore 4014
     }
 
-    public void SetMaxPlayers(ushort players)
-    {
-        serverCheckManager.MaxPlayers = players;
-    }
+    public void SetServerName(String name) { serverCheckManager.ServerName = name; }
+    public void SetBuildID(String    id)   { serverCheckManager.BuildId    = id; }
 
-    public void AddPlayer()
-    {
-        serverCheckManager.CurrentPlayers++;
-    }
+    public void SetMaxPlayers(UInt16 players) { serverCheckManager.MaxPlayers = players; }
 
-    public void RemovePlayer()
-    {
-        serverCheckManager.CurrentPlayers--;
-    }
+    public void AddPlayer() { serverCheckManager.CurrentPlayers++; }
 
-    public void SetMap(string newMap)
-    {
-        serverCheckManager.Map = newMap;
-    }
+    public void RemovePlayer() { serverCheckManager.CurrentPlayers--; }
 
-    public void SetMode(string mode)
-    {
-        serverCheckManager.GameType = mode;
-    }
+    public void SetMap(String newMap) { serverCheckManager.Map = newMap; }
+
+    public void SetMode(String mode) { serverCheckManager.GameType = mode; }
 
     private async Task ServerCheckLoop(CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
             serverCheckManager.UpdateServerCheck();
-            await Task.Delay(100);
+            await Task.Delay(millisecondsDelay: 100);
         }
     }
 
     private void OnMultiplayDeAllocation(MultiplayDeallocation deallocation)
     {
-        Debug.Log(
-                $"Multiplay Deallocated : ID: {deallocation.AllocationId}\nEvent: {deallocation.EventId}\nServer{deallocation.ServerId}");
+        Debug.Log(message: $"Multiplay Deallocated : ID: {deallocation.AllocationId}\nEvent: {deallocation.EventId}\nServer{deallocation.ServerId}");
     }
 
-    private void OnMultiplayError(MultiplayError error)
-    {
-        Debug.Log($"MultiplayError : {error.Reason}\n{error.Detail}");
-    }
+    private void OnMultiplayError(MultiplayError error) { Debug.Log(message: $"MultiplayError : {error.Reason}\n{error.Detail}"); }
 
     public void Dispose()
     {
         if (serverCallbacks != null)
         {
-            serverCallbacks.Allocate -= OnMultiplayAllocation;
+            serverCallbacks.Allocate   -= OnMultiplayAllocation;
             serverCallbacks.Deallocate -= OnMultiplayDeAllocation;
-            serverCallbacks.Error -= OnMultiplayError;
+            serverCallbacks.Error      -= OnMultiplayError;
         }
 
-        if (serverCheckCancel != null)
-        {
-            serverCheckCancel.Cancel();
-        }
+        if (serverCheckCancel != null) { serverCheckCancel.Cancel(); }
 
         serverEvents?.UnsubscribeAsync();
     }

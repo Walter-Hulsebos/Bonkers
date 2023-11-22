@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
+
 using Unity.Netcode;
 using Unity.Services.Core;
+
 using UnityEngine;
 
 public class ServerSingleton : MonoBehaviour
@@ -19,7 +21,7 @@ public class ServerSingleton : MonoBehaviour
 
             if (serverSingleton == null)
             {
-                Debug.LogError("No ServerSingleton in scene, did you run this from the bootStrap scene?");
+                Debug.LogError(message: "No ServerSingleton in scene, did you run this from the bootStrap scene?");
                 return null;
             }
 
@@ -33,7 +35,7 @@ public class ServerSingleton : MonoBehaviour
         {
             if (gameManager == null)
             {
-                Debug.LogError($"Server Manager is missing, did you run OpenConnection?");
+                Debug.LogError(message: $"Server Manager is missing, did you run OpenConnection?");
                 return null;
             }
 
@@ -45,20 +47,10 @@ public class ServerSingleton : MonoBehaviour
     {
         await UnityServices.InitializeAsync();
 
-        gameManager = new ServerGameManager(
-            ApplicationData.IP(),
-            ApplicationData.Port(),
-            ApplicationData.QPort(),
-            NetworkManager.Singleton);
+        gameManager = new ServerGameManager(serverIP: ApplicationData.IP(), serverPort: ApplicationData.Port(), serverQPort: ApplicationData.QPort(), manager: NetworkManager.Singleton);
     }
 
-    private void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    private void Start() { DontDestroyOnLoad(target: gameObject); }
 
-    private void OnDestroy()
-    {
-        gameManager?.Dispose();
-    }
+    private void OnDestroy() { gameManager?.Dispose(); }
 }

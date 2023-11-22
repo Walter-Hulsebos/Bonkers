@@ -1,6 +1,9 @@
+using System;
 using System.Threading.Tasks;
+
 using Unity.Services.Authentication;
 using Unity.Services.Core;
+
 using UnityEngine;
 
 public enum AuthState
@@ -9,55 +12,47 @@ public enum AuthState
     Authenticating,
     Authenticated,
     Error,
-    TimedOut
+    TimedOut,
 }
 
 public static class AuthenticationWrapper
 {
     public static AuthState AuthorizationState { get; private set; } = AuthState.NotAuthenticated;
 
-    public static async Task<AuthState> DoAuth(int tries = 5)
+    public static async Task<AuthState> DoAuth(Int32 tries = 5)
     {
         //If we are already authenticated, just return Auth
-        if (AuthorizationState == AuthState.Authenticated)
-        {
-            return AuthorizationState;
-        }
+        if (AuthorizationState == AuthState.Authenticated) { return AuthorizationState; }
 
         if (AuthorizationState == AuthState.Authenticating)
         {
-            Debug.LogWarning("Cant Authenticate if we are authenticating or authenticated");
+            Debug.LogWarning(message: "Cant Authenticate if we are authenticating or authenticated");
             await Authenticating();
             return AuthorizationState;
         }
 
-        await SignInAnonymouslyAsync(tries);
-        Debug.Log($"Auth attempts Finished : {AuthorizationState.ToString()}");
+        await SignInAnonymouslyAsync(maxRetries: tries);
+        Debug.Log(message: $"Auth attempts Finished : {AuthorizationState.ToString()}");
 
         return AuthorizationState;
     }
 
     //Awaitable task that will pass the clientID once authentication is done.
-    public static string PlayerID()
-    {
-        return AuthenticationService.Instance.PlayerId;
-    }
+    public static String PlayerID() => AuthenticationService.Instance.PlayerId;
 
     //Awaitable task that will pass once authentication is done.
     public static async Task<AuthState> Authenticating()
     {
-        while (AuthorizationState == AuthState.Authenticating || AuthorizationState == AuthState.NotAuthenticated)
-        {
-            await Task.Delay(200);
-        }
+        while (AuthorizationState == AuthState.Authenticating || AuthorizationState == AuthState.NotAuthenticated) { await Task.Delay(millisecondsDelay: 200); }
 
         return AuthorizationState;
     }
 
-    static async Task SignInAnonymouslyAsync(int maxRetries)
+    private static async Task SignInAnonymouslyAsync(Int32 maxRetries)
     {
         AuthorizationState = AuthState.Authenticating;
-        var tries = 0;
+        Int32 tries = 0;
+
         while (AuthorizationState == AuthState.Authenticating && tries < maxRetries)
         {
             try
@@ -75,31 +70,31 @@ public static class AuthenticationWrapper
             {
                 // Compare error code to AuthenticationErrorCodes
                 // Notify the player with the proper error message
-                Debug.LogError(ex);
+                Debug.LogError(message: ex);
                 AuthorizationState = AuthState.Error;
             }
             catch (RequestFailedException exception)
             {
                 // Compare error code to CommonErrorCodes
                 // Notify the player with the proper error message
-                Debug.LogError(exception);
+                Debug.LogError(message: exception);
                 AuthorizationState = AuthState.Error;
             }
 
             tries++;
-            await Task.Delay(1000);
+            await Task.Delay(millisecondsDelay: 1000);
         }
 
         if (AuthorizationState != AuthState.Authenticated)
         {
-            Debug.LogWarning($"Player was not signed in successfully after {tries} attempts");
+            Debug.LogWarning(message: $"Player was not signed in successfully after {tries} attempts");
             AuthorizationState = AuthState.TimedOut;
         }
     }
 
     public static void SignOut()
     {
-        AuthenticationService.Instance.SignOut(false);
+        AuthenticationService.Instance.SignOut(clearCredentials: false);
         AuthorizationState = AuthState.NotAuthenticated;
     }
 }

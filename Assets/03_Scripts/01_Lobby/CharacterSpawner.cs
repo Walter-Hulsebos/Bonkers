@@ -1,7 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using Unity.Netcode;
+
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class CharacterSpawner : NetworkBehaviour
 {
@@ -12,13 +17,14 @@ public class CharacterSpawner : NetworkBehaviour
     {
         if (!IsServer) { return; }
 
-        foreach (var client in MatchplayNetworkServer.Instance.ClientData)
+        foreach (KeyValuePair<String, UserData> client in MatchplayNetworkServer.Instance.ClientData)
         {
-            var character = characterDatabase.GetCharacterById(client.Value.characterId);
+            Character character = characterDatabase.GetCharacterById(client.Value.characterId);
+
             if (character != null)
             {
-                var spawnPos = new Vector3(Random.Range(-3f, 3f), 0f, Random.Range(-3f, 3f));
-                var characterInstance = Instantiate(character.GameplayPrefab, spawnPos, Quaternion.identity);
+                Vector3       spawnPos          = new (Random.Range(-3f, 3f), 0f, Random.Range(-3f, 3f));
+                NetworkObject characterInstance = Instantiate(character.GameplayPrefab, spawnPos, Quaternion.identity);
                 characterInstance.SpawnAsPlayerObject(client.Value.clientId);
             }
         }

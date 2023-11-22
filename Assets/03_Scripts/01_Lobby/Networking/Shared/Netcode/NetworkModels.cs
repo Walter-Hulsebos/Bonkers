@@ -6,5 +6,5 @@ public enum ConnectStatus
     LoggedInAgain,
     UserRequestedDisconnect,
     GenericDisconnect,
-    Timeout
+    Timeout,
 }

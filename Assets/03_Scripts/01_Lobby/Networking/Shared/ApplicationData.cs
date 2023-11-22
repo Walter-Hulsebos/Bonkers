@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 using UnityEngine;
 
 /// <summary>
@@ -12,109 +13,86 @@ public class ApplicationData
     /// Commands Dictionary
     /// Supports flags and single variable args (eg. '-argument', '-variableArg variable')
     /// </summary>
-    Dictionary<string, Action<string>> m_CommandDictionary = new Dictionary<string, Action<string>>();
+    private Dictionary<String, Action<String>> m_CommandDictionary = new ();
 
-    const string k_IPCmd = "ip";
-    const string k_PortCmd = "port";
-    const string k_QueryPortCmd = "queryPort";
+    private const String k_IPCmd        = "ip";
+    private const String k_PortCmd      = "port";
+    private const String k_QueryPortCmd = "queryPort";
 
-    public static string IP()
-    {
-        return PlayerPrefs.GetString(k_IPCmd);
-    }
+    public static String IP() => PlayerPrefs.GetString(key: k_IPCmd);
 
-    public static int Port()
-    {
-        return PlayerPrefs.GetInt(k_PortCmd);
-    }
+    public static Int32 Port() => PlayerPrefs.GetInt(key: k_PortCmd);
 
-    public static int QPort()
-    {
-        return PlayerPrefs.GetInt(k_QueryPortCmd);
-    }
+    public static Int32 QPort() => PlayerPrefs.GetInt(key: k_QueryPortCmd);
 
     //Ensure this gets instantiated Early on
     public ApplicationData()
     {
-        SetIP("127.0.0.1");
-        SetPort("7777");
-        SetQueryPort("7787");
-        m_CommandDictionary["-" + k_IPCmd] = SetIP;
-        m_CommandDictionary["-" + k_PortCmd] = SetPort;
-        m_CommandDictionary["-" + k_QueryPortCmd] = SetQueryPort;
-        ProcessCommandLinearguments(Environment.GetCommandLineArgs());
+        SetIP(ipArgument: "127.0.0.1");
+        SetPort(portArgument: "7777");
+        SetQueryPort(qPortArgument: "7787");
+        m_CommandDictionary[key: "-" + k_IPCmd]        = SetIP;
+        m_CommandDictionary[key: "-" + k_PortCmd]      = SetPort;
+        m_CommandDictionary[key: "-" + k_QueryPortCmd] = SetQueryPort;
+        ProcessCommandLinearguments(args: Environment.GetCommandLineArgs());
     }
 
-    void ProcessCommandLinearguments(string[] args)
+    private void ProcessCommandLinearguments(String[] args)
     {
-        StringBuilder sb = new StringBuilder();
-        sb.AppendLine("Launch Args: ");
-        for (var i = 0; i < args.Length; i++)
-        {
-            var arg = args[i];
-            var nextArg = "";
-            if (i + 1 < args.Length) // if we are evaluating the last item in the array, it must be a flag
-                nextArg = args[i + 1];
+        StringBuilder sb = new ();
+        sb.AppendLine(value: "Launch Args: ");
 
-            if (EvaluatedArgs(arg, nextArg))
+        for (Int32 i = 0; i < args.Length; i++)
+        {
+            String arg     = args[i];
+            String nextArg = "";
+
+            if (i + 1 < args.Length) // if we are evaluating the last item in the array, it must be a flag
             {
-                sb.Append(arg);
-                sb.Append(" : ");
-                sb.AppendLine(nextArg);
+                nextArg = args[i + 1];
+            }
+
+            if (EvaluatedArgs(arg: arg, nextArg: nextArg))
+            {
+                sb.Append(value: arg);
+                sb.Append(value: " : ");
+                sb.AppendLine(value: nextArg);
                 i++;
             }
         }
 
-        Debug.Log(sb);
+        Debug.Log(message: sb);
     }
 
     /// <summary>
     /// Commands and values come in the args array in pairs, so we
     /// </summary>
-    bool EvaluatedArgs(string arg, string nextArg)
+    private Boolean EvaluatedArgs(String arg, String nextArg)
     {
-        if (!IsCommand(arg))
-            return false;
-        if (IsCommand(nextArg)) // If you have need for flags, make a separate dict for those.
+        if (!IsCommand(arg: arg)) { return false; }
+
+        if (IsCommand(arg: nextArg)) // If you have need for flags, make a separate dict for those.
         {
             return false;
         }
 
-        m_CommandDictionary[arg].Invoke(nextArg);
+        m_CommandDictionary[key: arg].Invoke(obj: nextArg);
         return true;
     }
 
-    void SetIP(string ipArgument)
+    private void SetIP(String ipArgument) { PlayerPrefs.SetString(key: k_IPCmd, value: ipArgument); }
+
+    private void SetPort(String portArgument)
     {
-        PlayerPrefs.SetString(k_IPCmd, ipArgument);
+        if (Int32.TryParse(s: portArgument, result: out Int32 parsedPort)) { PlayerPrefs.SetInt(key: k_PortCmd, value: parsedPort); }
+        else { Debug.LogError(message: $"{portArgument} does not contain a parseable port!"); }
     }
 
-    void SetPort(string portArgument)
+    private void SetQueryPort(String qPortArgument)
     {
-        if (int.TryParse(portArgument, out int parsedPort))
-        {
-            PlayerPrefs.SetInt(k_PortCmd, parsedPort);
-        }
-        else
-        {
-            Debug.LogError($"{portArgument} does not contain a parseable port!");
-        }
+        if (Int32.TryParse(s: qPortArgument, result: out Int32 parsedQPort)) { PlayerPrefs.SetInt(key: k_QueryPortCmd, value: parsedQPort); }
+        else { Debug.LogError(message: $"{qPortArgument} does not contain a parseable query port!"); }
     }
 
-    void SetQueryPort(string qPortArgument)
-    {
-        if (int.TryParse(qPortArgument, out int parsedQPort))
-        {
-            PlayerPrefs.SetInt(k_QueryPortCmd, parsedQPort);
-        }
-        else
-        {
-            Debug.LogError($"{qPortArgument} does not contain a parseable query port!");
-        }
-    }
-
-    bool IsCommand(string arg)
-    {
-        return !string.IsNullOrEmpty(arg) && m_CommandDictionary.ContainsKey(arg) && arg.StartsWith("-");
-    }
+    private Boolean IsCommand(String arg) => !String.IsNullOrEmpty(value: arg) && m_CommandDictionary.ContainsKey(key: arg) && arg.StartsWith(value: "-");
 }
