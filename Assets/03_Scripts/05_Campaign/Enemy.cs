@@ -232,6 +232,7 @@ namespace Bonkers
             {
                 if (rayHit.transform.gameObject.layer != LayerMask.NameToLayer("Ground"))
                 {
+                    print(rayHit.transform.gameObject.layer + " | Layer");
                     if (gameObject.GetComponent<Rigidbody>().isKinematic)
                     {
                         gameObject.GetComponent<Rigidbody>().isKinematic = false;
@@ -326,15 +327,15 @@ namespace Bonkers
             Destroy(gameObject);
         }
 
-        public void SetCurrentHealth(float value)
-        {
-            currentHealth = value;
-        }
+        //   public void SetCurrentHealth(float value)
+        //  {
+        //     currentHealth = value;
+        //  }
 
-        public float GetCurrentHealth()
-        {
-            return currentHealth;
-        }
+        //  public float GetCurrentHealth()
+        //{
+        //   return currentHealth;
+        //}
         public enum states
         {
             Wandering,

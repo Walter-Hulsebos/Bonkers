@@ -12,8 +12,7 @@ namespace Bonkers
         private Timer mechanicTimer = new Timer();
         private float range;
         private int phase;
-
-
+        private bool startedBossFight = false;
         public int interpolationFramesCount = 45;
         int elapsedFrames = 0;
 
@@ -22,7 +21,7 @@ namespace Bonkers
         // Start is called before the first frame update
         public void Start()
         {
-           
+
             patterns[0] = new int[3] { 0, 1, 2 };
             patterns[1] = new int[4] { 0, 1, 4, 2 };
             patterns[2] = new int[5] { 0, 1, 4, 4, 2 };
@@ -39,17 +38,19 @@ namespace Bonkers
         {
             //Normal Mechanics in here
             //Knockback check in here
-
-            if (knockbackPercentage >= 50)
+            if (startedBossFight)
             {
-                pattern = 3;
-            }
+                if (knockbackPercentage >= 50)
+                {
+                    pattern = 3;
+                }
 
 
-            if (mechanicTimer.isActive && mechanicTimer.TimerDone())
-            {
-                mechanicTimer.StopTimer();
-                ExecuteMechanic(GetPatternNumber(pattern, rotationNumber));
+                if (mechanicTimer.isActive && mechanicTimer.TimerDone())
+                {
+                    mechanicTimer.StopTimer();
+                    ExecuteMechanic(GetPatternNumber(pattern, rotationNumber));
+                }
             }
         }
 

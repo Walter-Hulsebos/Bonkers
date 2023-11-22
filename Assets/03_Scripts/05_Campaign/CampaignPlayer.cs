@@ -37,7 +37,7 @@ namespace Bonkers
             if (rb != null)
             {
                 Vector3 direction = fromObject - gameObject.transform.position;
-                rb.AddForce(direction.normalized * knockbackPercentage, ForceMode.Impulse);
+                rb.AddForce(direction * knockbackPercentage, ForceMode.Impulse);
             }
         }
     }

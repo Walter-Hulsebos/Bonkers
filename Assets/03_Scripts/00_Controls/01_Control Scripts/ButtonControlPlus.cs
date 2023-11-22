@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+
 namespace Bonkers.Controls
 {
     using JetBrains.Annotations;
@@ -24,10 +26,10 @@ namespace Bonkers.Controls
 
     [AddComponentMenu("Bonkers/Controls/Button Control +")]
     public sealed class ButtonControlPlus : MonoBehaviour,
-                                        ISettableControl<ButtonState>
+                                            ISettableControl<ButtonState>
     {
 #if ODIN_INSPECTOR
-        [field: LabelText("Action")]
+        [field:LabelText("Action")]
 #endif
         [field: SerializeField]
         public InputActionReference Action { get; [UsedImplicitly] private set; }
@@ -48,16 +50,15 @@ namespace Bonkers.Controls
         {
             //Mark as dirty so that Prefab auto-save will save the changes
             UnityEditor.Undo.RecordObject(this, name: "Change Show Player Input");
-
+            
             showPlayerInput = !showPlayerInput;
-
+            
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(targetObject: this);
         }
 #endif
 
 #if ODIN_INSPECTOR
-        [field: ReadOnly]
-        [ShowInInspector]
+        [ShowInInspector, ReadOnly]
 #endif
         public ButtonState Value { get; internal set; } = Released;
 
@@ -66,18 +67,17 @@ namespace Bonkers.Controls
 #endif
         public Bool IsPressed => Value == Pressed;
 #if ODIN_INSPECTOR
-        [ShowInInspector]
+        [ShowInInspector]                   
 #endif
         public Bool IsReleased => Value == Released;
 #if ODIN_INSPECTOR
-        [ShowInInspector]
+        [ShowInInspector]                   
 #endif
         public Bool WasPressedThisFrame => Value == PressedThisFrame;
 #if ODIN_INSPECTOR
-        [ShowInInspector]
+        [ShowInInspector]                   
 #endif
         public Bool WasReleasedThisFrame => Value == ReleasedThisFrame;
-
 
 #if UNITY_EDITOR
         private void Reset()
@@ -96,6 +96,8 @@ namespace Bonkers.Controls
 
         private void OnEnable()
         {
+            Debug.Log(message: $"Button {gameObject.name} OnEnable ({Time.frameCount})", context: this);
+
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
 
             playerInput.onActionTriggered += OnAnyInputCallback;
@@ -106,11 +108,17 @@ namespace Bonkers.Controls
             playerInput.onActionTriggered -= OnAnyInputCallback;
         }
 
-        public void OnAnyInputCallback(InputAction.CallbackContext callbackContext)
+        public async void OnAnyInputCallback(InputAction.CallbackContext callbackContext)
         {
-            if (Action.action == null)
+            if (Action ==  null)
             {
                 Debug.Log(message: $"[Warning] {nameof(Action)} is null.", context: this);
+                return;
+            }
+
+            if (Action.action == null)
+            {
+                Debug.Log(message: $"[Warning] {nameof(Action.action)} is null.", context: this);
                 return;
             }
 
@@ -121,19 +129,32 @@ namespace Bonkers.Controls
                 if (callbackContext.action.WasPressedThisFrame())
                 {
                     Value = PressedThisFrame;
+                    Debug.Log(message: $"Button {gameObject.name} WasPressedThisFrame ({Time.frameCount})", context: this);
+
+                    //I don't understand why, but we need two yields here.
+                    await UniTask.Yield();
+                    await UniTask.Yield();
+
+                    Value = Pressed;
+                    Debug.Log(message: $"Button {gameObject.name} Pressed ({Time.frameCount})", context: this);
                 }
                 else if (callbackContext.action.WasReleasedThisFrame())
                 {
                     Value = ReleasedThisFrame;
+                    Debug.Log(message: $"Button {gameObject.name} WasReleasedThisFrame ({Time.frameCount})", context: this);
+
+                    //I don't understand why, but we need two yields here.
+                    await UniTask.Yield();
+                    await UniTask.Yield();
+
+                    Value = Released;
+                    Debug.Log(message: $"Button {gameObject.name} Released ({Time.frameCount})", context: this);
                 }
-                else
-                {
-                    Value = callbackContext.action.IsPressed() ? Pressed : Released;
-                }
+                //NOTE: [Walter] Can't have checks for Pressed and Released here, because playerInput.onActionTriggered only happens on changes (WasPressedThisFrame and WasReleasedThisFrame for Buttons) .
             }
             else
             {
-                Debug.Log(message: $"[Warning] {nameof(Action)}'s expected control type is not <b>Axis</b>, it's {callbackContext.action.expectedControlType}", context: this);
+                Debug.Log(message: $"[Warning] {nameof(Action)}'s expected control type is not <b>Button</b>, it's {callbackContext.action.expectedControlType}", context: this);
             }
         }
     }

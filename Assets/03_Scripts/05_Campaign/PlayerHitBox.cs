@@ -7,8 +7,8 @@ namespace Bonkers
 {
     public class PlayerHitBox : MonoBehaviour
     {
-        private GameObject hitObject;
-        private bool canTrigger;
+       [SerializeField] private GameObject hitObject;
+       [SerializeField] private bool canTrigger;
 
         private void Awake()
         {
@@ -46,7 +46,6 @@ namespace Bonkers
             {
                 if (hitObject != null)
                 {
-                   
                     switch (hitObject.tag)
                     {
                         case "Enemy":
