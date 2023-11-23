@@ -6,9 +6,9 @@
     using Unity.Netcode;
 
     using UnityEngine;
-    
+
     using JetBrains.Annotations;
-    
+
     using U64 = System.UInt64;
 
     [PublicAPI]
@@ -28,7 +28,7 @@
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            
+
             ConfigureCameraChannelsRemotePlayers();
         }
 
@@ -37,13 +37,12 @@
             //ulong __ownerClientId = NetworkManager.Singleton.LocalClientId;
 
             U64 __ownerClientId = OwnerClientId;
-            
+
             Debug.Log($"Owner client ID: {__ownerClientId}");
-            
+
             // Get owner index
-            
-            
-            
+
+
             // Shift one bit per player count.
             // OutputChannels __outputChannels = (OutputChannels)(1 << __remoteClients);
             //
@@ -56,12 +55,12 @@
         public void ConfigureCameraChannelsLocalPlayers()
         {
             // Shift one bit per player count.
-            OutputChannels __outputChannels = (OutputChannels)(1 << Players.LocalCount);
-            
-            Debug.Log($"Initializing cameras for {Players.LocalCount} players, shifting to {__outputChannels} output channel(s).");
-            
-            cinemachineBrain.ChannelMask    = __outputChannels;
-            cinemachineCamera.OutputChannel = __outputChannels;
+            // OutputChannels __outputChannels = (OutputChannels)(1 << Players.LocalCount);
+            //
+            // Debug.Log($"Initializing cameras for {Players.LocalCount} players, shifting to {__outputChannels} output channel(s).");
+            //
+            // cinemachineBrain.ChannelMask    = __outputChannels;
+            // cinemachineCamera.OutputChannel = __outputChannels;
         }
     }
 }
