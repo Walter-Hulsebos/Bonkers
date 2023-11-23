@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 //using Bonkers.Controls;
@@ -18,15 +19,15 @@ namespace Bonkers.Lobby
         //private Dictionary<int, GameObject> connectedPlayers = new Dictionary<int, GameObject>();
 
         // called first
-        void OnEnable()
+        private void OnEnable()
         {
             Debug.Log("OnEnable called");
             SceneManager.sceneLoaded += OnSceneLoaded;
-            GameObject.DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this);
         }
 
         // called second
-        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             //foreach (var index in connectedPlayers)
             //{
@@ -39,11 +40,10 @@ namespace Bonkers.Lobby
             // }
 
 
-
         }
 
         // called when the game is terminated
-        void OnDisable()
+        private void OnDisable()
         {
             Debug.Log("OnDisable");
             SceneManager.sceneLoaded -= OnSceneLoaded;
