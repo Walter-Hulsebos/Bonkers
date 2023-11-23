@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SingularityGroup.HotReload.DTO;
-using SingularityGroup.HotReload.RuntimeDependencies;
 
 namespace SingularityGroup.HotReload {
     internal class SymbolResolver {
@@ -15,7 +14,7 @@ namespace SingularityGroup.HotReload {
         }
         
         public void AddAssembly(Assembly asm) {
-            var asmName = asm.GetNameSafe();
+            var asmName = asm.GetName().Name;
             List<Assembly> assemblies;
             if(!assembliesByName.TryGetValue(asmName, out assemblies)) {
                 assembliesByName.Add(asmName, assemblies = new List<Assembly>());

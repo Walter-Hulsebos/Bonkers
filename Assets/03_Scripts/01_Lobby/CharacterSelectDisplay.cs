@@ -1,15 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
-
 using Unity.Netcode;
-
 using UnityEngine.UI;
-
 using System;
-
 using TMPro;
+
 
 
 namespace Bonkers.Lobby
@@ -31,17 +27,19 @@ namespace Bonkers.Lobby
 
         private NetworkList<CharacterSelectState> players;
 
-        private void Awake() { players = new NetworkList<CharacterSelectState>(); }
-
+        private void Awake()
+        {
+            players = new NetworkList<CharacterSelectState>();
+        }
         public override void OnNetworkSpawn()
         {
-            if (IsClient)
+            if(IsClient)
             {
                 Character[] allCharacters = characterDatabase.GetAllCharacters();
 
-                foreach (Character character in allCharacters)
+                foreach(var character in allCharacters)
                 {
-                    CharacterSelectButton selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
+                    var selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
                     selectbuttonInstance.SetCharacter(this, character);
                 }
 
@@ -50,33 +48,42 @@ namespace Bonkers.Lobby
 
             if (IsServer)
             {
-
+                
                 //Make sure everyone who is connected after that poit to be added
-                NetworkManager.Singleton.OnClientConnectedCallback  += HandleClientConnected;
+                NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
                 NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
 
                 //Make sure everyone who is already connected is added(Fixing Host problems)
-                foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList) { HandleClientConnected(client.ClientId); }
+                foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList)
+                {
+                    HandleClientConnected(client.ClientId);
+                }
             }
-
+            
         }
 
         public override void OnNetworkDespawn()
         {
-            if (IsClient) { players.OnListChanged -= HandlePlayersStateChanged; }
+            if (IsClient)
+            {
+                players.OnListChanged -= HandlePlayersStateChanged;
+            }
 
             if (IsServer)
             {
-                NetworkManager.Singleton.OnClientConnectedCallback  -= HandleClientConnected;
+                NetworkManager.Singleton.OnClientConnectedCallback -= HandleClientConnected;
                 NetworkManager.Singleton.OnClientDisconnectCallback -= HandleClientDisconnected;
             }
         }
 
-        private void HandleClientConnected( UInt64 cliendtId) { players.Add(new CharacterSelectState(cliendtId)); }
-
-        private void HandleClientDisconnected(UInt64 cliendtId)
+        private void HandleClientConnected( ulong cliendtId)
         {
-            for (Int32 i = 0; i < players.Count; i++)
+            players.Add(new CharacterSelectState(cliendtId));
+        }
+
+        private void HandleClientDisconnected(ulong cliendtId)
+        {
+            for (int i = 0; i < players.Count; i++)
             {
                 if (players[i].ClientId == cliendtId)
                 {
@@ -95,26 +102,38 @@ namespace Bonkers.Lobby
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SelectServerRpc(Int32 characterId, ServerRpcParams serverRpcParams = default)
+        private void SelectServerRpc(int characterId, ServerRpcParams serverRpcParams = default)
         {
-            for (Int32 i = 0; i < players.Count; i++)
+            for(int i = 0;i < players.Count;i++)
             {
                 if (players[i].ClientId == serverRpcParams.Receive.SenderClientId)
                 {
-                    players[i] = new CharacterSelectState(players[i].ClientId, characterId);
+                    players[i] = new CharacterSelectState(
+                        players[i].ClientId,
+                         characterId
+                        );
                 }
             }
         }
 
         private void HandlePlayersStateChanged(NetworkListEvent<CharacterSelectState> changeEvent)
         {
-            for (Int32 i = 0; i < playerCards.Length; i++)
+            for (int i = 0; i < playerCards.Length; i++)
             {
-                if (players.Count > i) { playerCards[i].UpdateDisplay(players[i]); }
-                else { playerCards[i].DisableDisplay(); }
+                if(players.Count > i)
+                {
+                    playerCards[i].UpdateDisplay(players[i]);
+                }
+                else
+                {
+                    playerCards[i].DisableDisplay();
+                }
             }
         }
     }
 
+    
 
+
+    
 }

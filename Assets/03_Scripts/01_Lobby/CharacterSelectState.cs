@@ -1,19 +1,17 @@
 using System;
-
 using Unity.Netcode;
 
 namespace Bonkers.Lobby
 {
-    public struct CharacterSelectState : INetworkSerializable,
-                                         IEquatable<CharacterSelectState>
+    public struct CharacterSelectState : INetworkSerializable, IEquatable<CharacterSelectState>
     {
-        public UInt64 ClientId;
-        public Int32  CharacterId;
+        public ulong ClientId;
+        public int CharacterId;
 
-        public CharacterSelectState(UInt64 clientId, Int32 characterId = -1)
+        public CharacterSelectState(ulong clientId, int characterId = -1)
         {
-            ClientId    = clientId;
-            CharacterId = characterId;
+               ClientId = clientId;
+               CharacterId = characterId;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -22,6 +20,10 @@ namespace Bonkers.Lobby
             serializer.SerializeValue(ref CharacterId);
         }
 
-        public Boolean Equals(CharacterSelectState other) => ClientId == other.ClientId && CharacterId == other.CharacterId;
+        public bool Equals(CharacterSelectState other)
+        {
+            return ClientId == other.ClientId && 
+                CharacterId == other.CharacterId;
+        }
     }
 }

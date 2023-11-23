@@ -1,22 +1,23 @@
+
 using UnityEngine;
 
 namespace Bonkers.Lobby
 {
-    using System;
-
     [CreateAssetMenu(fileName = "New Character Database", menuName = "Characters/Database")]
     public class CharacterDatabase : ScriptableObject
     {
         [SerializeField] private Character[] characters = new Character[0];
-        public                   Character[] GetAllCharacters() => characters;
+        public Character[] GetAllCharacters() => characters;
 
-        public Character GetCharacterById(Int32 id)
+        public Character GetCharacterById(int id)
         {
-            foreach (Character character in characters)
+            foreach(var character in characters)
             {
-                if (character.Id == id) { return character; }
+                if(character.Id == id)
+                {
+                    return character;
+                }
             }
-
             return null;
         }
     }

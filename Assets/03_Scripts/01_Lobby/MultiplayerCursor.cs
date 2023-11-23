@@ -20,30 +20,30 @@ namespace Bonkers.Lobby
     using UnityEngine.InputSystem.LowLevel;
 
     using static UnityEngine.Mathf;
-
     using static Unity.Mathematics.math;
 
     using F32   = System.Single;
     using F32x2 = Unity.Mathematics.float2;
     using F64   = System.Double;
+    
     using Bool  = System.Boolean;
 
     public sealed class MultiplayerCursor : MonoBehaviour
     {
         #if ODIN_INSPECTOR
-        [BoxGroup("Cursor", false)]
+        [BoxGroup(@group: "Cursor", showLabel: false)]
         #endif
         [SerializeField] private Canvas canvas;
-
+        
         #if ODIN_INSPECTOR
-        [BoxGroup("Cursor", false)]
+        [BoxGroup(@group: "Cursor", showLabel: false)]
         #endif
         [SerializeField] private RectTransform cursorTransform;
 
         [SerializeField] private UnityFunc<F32x2> pointInput;
         [SerializeField] private UnityFunc<Bool>  clickInput;
 
-
+        
         #if UNITY_EDITOR
         private void Reset()
         {
@@ -55,16 +55,22 @@ namespace Bonkers.Lobby
 
         private void Start()
         {
-            if (canvas == null) { canvas = FindObjectOfType<Canvas>(); }
+            if (canvas == null)
+            {
+                canvas = FindObjectOfType<Canvas>(); 
+            }
         }
 
         private void Update()
         {
             //OnMoveStick(stickValue: new Vector2(x: StickX.Value, y: StickY.Value));
+            
+            OnPoint(pointValue: pointInput.Invoke());
 
-            OnPoint(pointInput.Invoke());
-
-            if (clickInput.Invoke()) { OnClick(); }
+            if (clickInput.Invoke())
+            {
+                OnClick();   
+            }
         }
 
         // [PublicAPI]
@@ -72,9 +78,9 @@ namespace Bonkers.Lobby
         // {
         //     cursorTransform.anchoredPosition = (context.ReadValue<F32x2>() * cursorSpeed * Time.deltaTime);
         // }
-
+        
         [PublicAPI]
-        [SuppressMessage("ReSharper", "RedundantCast")]
+        [SuppressMessage(category: "ReSharper", checkId: "RedundantCast")]
         public void OnPoint(F32x2 pointValue)
         {
             //Debug.Log(message: $"Point value: {pointValue}");
@@ -83,12 +89,12 @@ namespace Bonkers.Lobby
 
             __anchoredPosition += pointValue;
 
-            Rect  __pixelRect  = canvas.pixelRect;
-            F32x2 __lowerBound = (F32x2)(__pixelRect.min - __pixelRect.size * 0.5f);
-            F32x2 __upperBound = (F32x2)(__pixelRect.max - __pixelRect.size * 0.5f);
-
-            __anchoredPosition = clamp(__anchoredPosition, __lowerBound, __upperBound);
-
+            Rect __pixelRect = canvas.pixelRect;
+            F32x2 __lowerBound = (F32x2)(__pixelRect.min - (__pixelRect.size * 0.5f));
+            F32x2 __upperBound = (F32x2)(__pixelRect.max - (__pixelRect.size * 0.5f));
+            
+            __anchoredPosition = clamp(valueToClamp: __anchoredPosition, lowerBound: __lowerBound, upperBound: __upperBound);
+            
             cursorTransform.anchoredPosition = (Vector2)__anchoredPosition;
         }
 
@@ -230,7 +236,7 @@ namespace Bonkers.Lobby
         //         //m_SystemMouse?.WarpCursorPosition(__newPosition);
         //     //}
         // }
-
+        
         // [PublicAPI]
         // public void OnClick(InputAction.CallbackContext context)
         // {
