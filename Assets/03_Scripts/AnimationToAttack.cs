@@ -6,7 +6,15 @@ namespace Bonkers
 {
     public class AnimationToAttack : MonoBehaviour
     {
-        private void TriggerAttack(){}
-        private void FinishAttack(){}
+        PlayerKnockback knockback;
+
+        public void TriggerAttack()
+        {
+            Debug.Log("Hit");
+        }
+        public void FinishAttack()
+        {
+            Debug.Log("Hit");
+        }
     }
 }
