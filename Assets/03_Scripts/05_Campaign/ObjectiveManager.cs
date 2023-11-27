@@ -26,7 +26,7 @@ namespace Bonkers
         {
             currentObjective = GetObjectiveByOrder(order);
 
-            if (!currentObjective)
+            if (currentObjective == null)
             {
                 CompletedAllObjectives();
                 return;
