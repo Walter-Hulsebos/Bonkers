@@ -24,32 +24,22 @@ namespace Bonkers
         #region Custom Editor
 
         #if UNITY_EDITOR
-        // [UnityEditor.CustomEditor(typeof(Team))]
-        // private sealed class TeamEditor : UnityEditor.Editor
-        // {
-        //     public override void OnInspectorGUI()
-        //     {
-        //         base.OnInspectorGUI();
-        //         
-        //         //Draw an overlay of the team instance icons in the Project Window, draw an icon tinted in the color chosen for this team.
-        //         //Use EditorApplication.projectWindowItemOnGUI to draw the overlayed icons.
-        //         //Use EditorGUIUtility.FindTexture to find the icons for the team instances.
-        //
-        //         Texture2D __teamIcon = EditorGUIUtility.FindTexture(name: "TeamIcon");
-        //         
-        //         //EditorApplication.projectWindowItemOnGUI
-        //         //EditorApplication.projectWindowItemInstanceOnGUI
-        //         //EditorApplication.ProjectWindowItemCallback
-        //         //EditorApplication.ProjectWindowItemInstanceCallback
-        //
-        //     }
-        // }
         [InitializeOnLoad]
         private sealed class TeamProjectWindowIcons
         {
             private static Color32
                 _proColor   = new(r: 51,  g: 51,  b: 51,  a: 255),
                 _scrubColor = new(r: 190, g: 190, b: 190, a: 255);
+            
+            // private const float PADDING            = 8f;
+            // private const float SPACING            = 1f;
+            // private const float LINE_HEIGHT        = 18f;
+            // private const float LABELS_WIDTH       = 100f;
+            // private const float PREVIEW_SIZE_SMALL = 16f;
+            // private const float PREVIEW_SIZE_LARGE = 64f;        
+            // private const float PROPERTY_HEIGHT    = 136f;
+
+            private const float TEXT_PADDING_PRIMANTISSA = 0.08f;
             
             [PublicAPI]
             public static ref Color32 BackgroundColor => ref EditorGUIUtility.isProSkin ? ref _proColor : ref _scrubColor;
@@ -87,23 +77,35 @@ namespace Bonkers
                 return team != null;
             }
             
-            private static void DrawBackgroundRect(Rect rect) => EditorGUI.DrawRect(rect: rect, color: BackgroundColor);
+            private static void DrawBackgroundRect(Rect rect) => EditorGUI.DrawRect(rect: CalculateIconRect(rect), color: BackgroundColor);
 
             [PublicAPI]
             private static void DrawTeamIcon(Rect rect, Team team)
             {
-                //EditorGUI.DrawPreviewTexture();
-                
                 Color __oldColor = GUI.color;
                 GUI.color = team.Color;
-
-                Vector2 __pos  = rect.position;
-                Vector2 __size = new(x: rect.height, y: rect.height);
-			
-                GUI.DrawTexture(position: new Rect(position: __pos, size: __size), image: _teamIcon);
-                //GUI.DrawTexture(position: rect, image: _teamIcon);
-                
+                GUI.DrawTexture(position: CalculateIconRect(rect), image: _teamIcon);
                 GUI.color = __oldColor;
+            }
+            
+            private static Rect CalculateIconRect(Rect rect)
+            {
+                float __textPaddingPixels = rect.height * TEXT_PADDING_PRIMANTISSA;
+                
+                rect.x     =  rect.x;
+                rect.y     -= __textPaddingPixels;
+                rect.width =  rect.height -= __textPaddingPixels;
+                
+                return rect;
+                
+                
+                
+                
+                
+                // Vector2 __pos  = rect.position;
+                // Vector2 __size = new(x: rect.height, y: rect.height);
+                //
+                // return new Rect(position: __pos, size: __size);
             }
         }
         #endif
