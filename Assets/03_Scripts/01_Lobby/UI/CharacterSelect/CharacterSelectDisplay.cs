@@ -52,7 +52,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
             foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList) { HandleClientConnected(client.ClientId); }
         }
 
-        if (IsHost) { joinCodeText.text = HostSingleton.Instance.RelayHostData.JoinCode; }
+        if (IsHost) { joinCodeText.text = HostSingleton.Instance.HostRelayData.JoinCode; }
     }
 
     public override void OnNetworkDespawn()
