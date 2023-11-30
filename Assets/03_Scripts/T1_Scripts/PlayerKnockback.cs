@@ -21,7 +21,7 @@ namespace Bonkers
         private bool allowKnockback;    //Whether knockback will be applied
         private float timeElapsed;      //Time elapsed since start of knockback
 
-        private void StartKnockback()
+        public void StartKnockback()
         {
             attackTargetPos = playerStateMachine.transform.position;    //Getting receiving players position
             knockDirection = attackTargetPos - attackOriginPos;         //Calculating knockback direction
@@ -32,9 +32,10 @@ namespace Bonkers
             allowKnockback = true;  //Allowing knockback behaviour
         }
 
-        private void EndKnockback()
+        public void EndKnockback()
         {
             allowKnockback = false; //Deniying knockback behaviour
+
         }
 
         private void FixedUpdate()

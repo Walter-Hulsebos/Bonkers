@@ -5,60 +5,36 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/02_Scenes/CharacterPlayground.unity
-    guid: 49c21577d8fcba049bf2f94ab33e2dc2
-  - enabled: 0
-    path: Assets/02_Scenes/01_Campaign/T7_Campaign.unity
-    guid: b3cd7326bc478664b83e8e7928328491
-  - enabled: 0
-    path: Assets/02_Scenes/Campaign_02.unity
-    guid: d6cbb15c9c3a56f46bae87ed92486a35
-  - enabled: 0
-    path: Assets/02_Scenes/01_Lobby.unity
-    guid: 92df5b71179442d4392a8a7532385994
-  - enabled: 0
-    path: Assets/02_Scenes/02_ArenaScene/T3_Richard ArenaScene.unity
-    guid: 0fa4ceb5f12e3e64693697b3a89170e4
-  - enabled: 0
-    path: Assets/02_Scenes/01_Campaign/T7_CampaignMansion01Noah.unity
-    guid: 1b305e5727b195c4795476957da91ce5
-  - enabled: 0
-    path: Assets/02_Scenes/00_Menus/T2_CharacterSelection.unity
-    guid: 0ba5eea129af4b0418c3b1d890d6d94f
-  - enabled: 0
-    path: Assets/02_Scenes/02_ArenaScene/T3_Ivo's Arena.unity
-    guid: 3610a6c8a4aaeb546a95a9e8c3ffb81b
-  - enabled: 0
-    path: Assets/02_Scenes/Lobby.unity
-    guid: 466a89e2522a83a46ae759b44bca7071
-  - enabled: 0
-    path: Assets/02_Scenes/02_ArenaScene/T3_Luuk Arena Scene.unity
-    guid: 53599d8246d8f3a4ea17b8fc3b2f4d4f
-  - enabled: 0
-    path: Assets/02_Scenes/00_Menus/T2_MainMenu.unity
-    guid: 840ad2c10005d714c987b0f636f62ee7
-  - enabled: 0
-    path: Assets/02_Scenes/02_ArenaScene/T3_ArenaScene2.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/02_Scenes/03_Test and Shaders/T1_Milan Shaders Test.unity
-    guid: 56d31823d34916848bca1e73302c8d37
-  - enabled: 0
-    path: Assets/02_Scenes/Smith/Smith_Tech_Test.unity
-    guid: 0999eddb5a6fe13478694ed8870926f7
-  - enabled: 0
-    path: Assets/02_Scenes/Test/StateMachineTest.unity
-    guid: b9085436c2306a24db38bf482da93038
-  - enabled: 0
-    path: Assets/02_Scenes/00_Menus/T2_Lobby.unity
-    guid: e233581f212321642855f7c772bcf3a9
   - enabled: 1
-    path: Assets/02_Scenes/00_Menus/T1_Start UI Menu.unity
-    guid: 44bc3791ec62e124f8efdcfd8b49c922
+    path: Assets/02_Scenes/00_Menus/T2_StartMenu.unity
+    guid: edd633d596a64fb4ea407afc55eec331
+  - enabled: 1
+    path: Assets/02_Scenes/00_Menus/Bootstrap.unity
+    guid: c3104e4de2136cf4fb908e1e6177baa0
+  - enabled: 1
+    path: Assets/02_Scenes/00_Menus/MainMenu.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/02_Scenes/00_Menus/CharacterSelect.unity
+    guid: b7544d5a30d9eed449267cef7699537b
   - enabled: 1
     path: Assets/02_Scenes/02_ArenaScene/T3_Final.unity
     guid: 10403c2623d95ea47aa498c03759c0e4
+  - enabled: 0
+    path: Assets/02_Scenes/00_Menus/Gameplay.unity
+    guid: fd944f928e3cdc84686a7562695b5c1d
+  - enabled: 1
+    path: Assets/00_ImplementerTestEnvironment/ImplementerTestScene.unity
+    guid: 31284a7152029a547b85d00ed37e62b6
+  - enabled: 1
+    path: Assets/02_Scenes/01_Campaign/T7_Campaign.unity
+    guid: b3cd7326bc478664b83e8e7928328491
+  - enabled: 1
+    path: Assets/02_Scenes/01_Campaign/T8_CampaignPart2.unity
+    guid: f86b960eb29f29d419e84ebf3142e3c3
+  - enabled: 1
+    path: Assets/02_Scenes/01_Campaign/Campaign2_FabianFeatures.unity
+    guid: 9f169a87e0e99c94db0b51906de7d19f
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: c69460d4d842d32438d664a201b38588, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 14543d3bb97c3c647a30c0bb76137f09, type: 2}
