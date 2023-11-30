@@ -10,10 +10,10 @@ namespace Bonkers
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] private Image      pressAnyButtonImage;
+        [SerializeField] private Image pressAnyButtonImage;
         [SerializeField] private GameObject menu;
         [SerializeField] private GameObject LogoAndText;
-        public                   void       Start() { }
+        public void Start() { }
 
         public void Update()
         {
@@ -26,7 +26,10 @@ namespace Bonkers
             }
         }
 
-        public void NewCampaign() { }
+        public void NewCampaign()
+        {
+            SceneManager.LoadSceneAsync("T7_Campaign");
+        }
 
         public void OnlinePlay() { SceneManager.LoadSceneAsync("Bootstrap"); }
 
