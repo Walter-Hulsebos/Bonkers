@@ -319,6 +319,14 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
         CurrentState.UpdateOnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
+
+         if (hitCollider.CompareTag("Player"))
+    {
+        Debug.Log("Player hit!");
+
+        // Transition to the knockback state
+        TransitionToKnockbackState();
+    }
     }
 
     public void ProcessHitStabilityReport
@@ -333,6 +341,18 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public void OnDiscreteCollisionDetected(Collider hitCollider)
     {
         // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
+    }
+
+    private void TransitionToKnockbackState()
+    {
+        // Check if the knockback state is not already active to avoid unnecessary transitions
+        if (!(CurrentState is PlayerKnockbackState))
+        {
+            // Transition to the knockback state
+            CurrentState.ExitState(); // Exit the current state
+            CurrentState = _states.KnockBack(); // Transition to the knockback state
+            CurrentState.EnterState(); // Enter the knockback state
+        }
     }
 
 }
