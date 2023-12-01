@@ -1,5 +1,8 @@
 ﻿using System;
 
+//For Double Jump Controlls
+using UnityEngine.InputSystem;
+
 //using Bonkers.Characters;
 
 using CGTK.Utils.Extensions.Math.Math;
@@ -15,10 +18,10 @@ using static ProjectDawn.Mathematics.math2;
 
 using F32   = System.Single;
 using F32x3 = Unity.Mathematics.float3;
+using Bonkers.Controls;
 
 public sealed class PlayerAirState : PlayerBaseState
 {
-
     #region Variables
     
     [SerializeField] private F32 maxSpeed        = 10f;
@@ -29,6 +32,11 @@ public sealed class PlayerAirState : PlayerBaseState
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
 
+    //Double Jump Requirements
+    public Controls playerControls;
+    public InputAction doubleJumpAction;
+
+    private bool DoubleJumpAvailable;
     #endregion
 
     #region Constructor
@@ -48,12 +56,18 @@ public sealed class PlayerAirState : PlayerBaseState
     
     public override void EnterState() 
     {
+        //set input actions
+        playerControls = new Controls();
+
+        doubleJumpAction = playerControls.Gameplay.Jump;
+        doubleJumpAction.Enable();
         //Debug.Log("Entering Air State");
     }
 
     public override void ExitState()
     {
         //Debug.Log("Exiting Air State");
+        doubleJumpAction.Disable();
     }
 
     #endregion
@@ -137,11 +151,16 @@ public sealed class PlayerAirState : PlayerBaseState
             {
                 SwitchSubState(_subStateRising);
             }
-            
-            if (Ctx.JumpRequested)
+
+            //Initiating double jump
+            doubleJumpAction.started += Button =>
             {
-                //Double Jump
-            }
+                if (Ctx.DoubleJumpAvailable == true)
+                {
+                    Ctx.DoubleJumpAvailable = false;
+                    SwitchState(Factory.ExtraJump());
+                }
+            };
         }
     }
     

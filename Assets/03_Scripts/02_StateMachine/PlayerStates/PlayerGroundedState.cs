@@ -87,6 +87,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
     public override void EnterState()
     {
         //Debug.Log("Entering Grounded State");
+        Ctx.DoubleJumpAvailable = true;
     }
 
     public override void ExitState()

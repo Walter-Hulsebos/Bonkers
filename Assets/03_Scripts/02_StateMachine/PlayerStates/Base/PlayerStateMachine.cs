@@ -31,6 +31,7 @@ using I32x3 = Unity.Mathematics.int3;
 using Bool  = System.Boolean;
 using Rotor = Unity.Mathematics.quaternion;
 using JetBrains.Annotations;
+using Bonkers.Controls;
 
 public class PlayerStateMachine : MonoBehaviour, ICharacterController
 {
@@ -73,7 +74,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
     [SerializeField] private UnityFunc<Bool>  getSpecial2Input;
     [SerializeField] private UnityFunc<Bool> getInteraction;
-
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
@@ -122,6 +122,8 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32  TimeSinceJumpRequested  { get; internal set; } = Infinity;
     public F32  TimeSinceLastAbleToJump { get; internal set; } = 0f;
 
+    public bool DoubleJumpAvailable;
+
     public Bool CanJumpAgain => (TimeSinceLastAbleToJump <= JumpPostGroundingGraceTime);
 
     public F32 Gravity { get ; set; }
@@ -157,6 +159,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     private void OnEnable()
     {
+
         // Assign to motor
     }
 
@@ -164,7 +167,8 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     { 
         CurrentState = _states.Grounded();
         CurrentState.EnterState();
-     }
+                
+    }
 
     // Update is called once per frame
     protected virtual void Update()
