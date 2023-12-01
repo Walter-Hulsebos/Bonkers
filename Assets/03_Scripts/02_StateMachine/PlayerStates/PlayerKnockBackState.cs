@@ -67,10 +67,10 @@ public sealed class PlayerKnockbackState : PlayerBaseState
             __knockbackDirection = Ctx.Motor.GroundingStatus.GroundNormal;
         }
 
-        if (_knockbackTimer < 1.0f)
+        if (_knockbackTimer < knockbackDuration)
         {
             currentVelocity += (Vector3)(__knockbackDirection * knockbackForce * deltaTime);
-            currentVelocity += Vector3.up * upwardForce * deltaTime;
+            currentVelocity += Vector3.up + Vector3.back * upwardForce * deltaTime;
             _knockbackTimer += deltaTime;
             _hasKnockedback = true;
         }
@@ -95,7 +95,7 @@ public sealed class PlayerKnockbackState : PlayerBaseState
     {
         if(_hasKnockedback)
         {
-            SwitchState(Factory.Falling());
+            SwitchState(Factory.Air());
         }
     }
 
