@@ -345,13 +345,11 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     private void TransitionToKnockbackState()
     {
-        // Check if the knockback state is not already active to avoid unnecessary transitions
         if (!(CurrentState is PlayerKnockbackState))
         {
-            // Transition to the knockback state
-            CurrentState.ExitState(); // Exit the current state
-            CurrentState = _states.KnockBack(); // Transition to the knockback state
-            CurrentState.EnterState(); // Enter the knockback state
+            CurrentState.ExitState();
+            CurrentState = _states.KnockBack();
+            CurrentState.EnterState(); 
         }
     }
 

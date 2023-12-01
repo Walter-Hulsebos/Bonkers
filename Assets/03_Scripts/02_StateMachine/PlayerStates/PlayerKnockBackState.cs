@@ -56,17 +56,28 @@ public sealed class PlayerKnockbackState : PlayerBaseState
 
     protected override void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
     {
-        // Apply knockbackfor a certain duration
+        F32x3 __knockbackDirection = Ctx.Motor.CharacterUp;
+
+        if (Ctx.Motor.GroundingStatus is
+            {
+                FoundAnyGround:   true, 
+                IsStableOnGround: false,
+            })
+        {
+            __knockbackDirection = Ctx.Motor.GroundingStatus.GroundNormal;
+        }
+
         if (_knockbackTimer < 1.0f)
         {
-            currentVelocity += (Vector3)(_knockbackDirection * knockbackForce * deltaTime);
-            currentVelocity += Vector3.up * upwardForce * deltaTime; // Add upward force
+            currentVelocity += (Vector3)(__knockbackDirection * knockbackForce * deltaTime);
+            currentVelocity += Vector3.up * upwardForce * deltaTime;
             _knockbackTimer += deltaTime;
             _hasKnockedback = true;
         }
         else
         {
             // Exit knockback state when the duration is over
+            Ctx.Motor.ForceUnground();
             
         }
     }
@@ -84,7 +95,7 @@ public sealed class PlayerKnockbackState : PlayerBaseState
     {
         if(_hasKnockedback)
         {
-            SwitchState(Factory.Air());
+            SwitchState(Factory.Falling());
         }
     }
 
