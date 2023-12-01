@@ -21,6 +21,7 @@ public sealed class PlayerKnockbackState : PlayerBaseState
 
     private F32x3 _knockbackDirection;
     private F32   _knockbackTimer;
+    private Bool _hasKnockedback = false;
 
     #endregion
 
@@ -40,11 +41,13 @@ public sealed class PlayerKnockbackState : PlayerBaseState
         //  knockback animation or trigger other effects here
         _knockbackDirection = CalculateKnockbackDirection(); 
         _knockbackTimer = 0.0f;
+        _hasKnockedback = false;
+        Debug.Log("Has entered Knockback");
     }
 
     public override void ExitState()
     {
-
+        _hasKnockedback = false;
     }
 
     #endregion
@@ -59,7 +62,7 @@ public sealed class PlayerKnockbackState : PlayerBaseState
             currentVelocity += (Vector3)(_knockbackDirection * knockbackForce * deltaTime);
             currentVelocity += Vector3.up * upwardForce * deltaTime; // Add upward force
             _knockbackTimer += deltaTime;
-            SwitchState(Factory.Air());
+            _hasKnockedback = true;
         }
         else
         {
@@ -79,7 +82,10 @@ public sealed class PlayerKnockbackState : PlayerBaseState
 
     public override void CheckSwitchStates()
     {
-        
+        if(_hasKnockedback)
+        {
+            SwitchState(Factory.Air());
+        }
     }
 
     #endregion

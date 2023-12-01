@@ -26,6 +26,7 @@ public sealed class PlayerRisingState : PlayerBaseState
     {
         //Debug.Log("Entering Rising State");
         _currentYVelocity = Ctx.Motor.BaseVelocity.y; //Should be 0 when entering falling state but just in case
+        Debug.Log("I am rising papi");
     }
     public override void ExitState()
     {

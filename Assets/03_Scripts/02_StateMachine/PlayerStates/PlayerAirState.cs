@@ -28,6 +28,7 @@ public sealed class PlayerAirState : PlayerBaseState
     
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
+    private PlayerBaseState _subStateKnockback;
 
     #endregion
 
@@ -49,11 +50,13 @@ public sealed class PlayerAirState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("Entering Air State");
+        Debug.Log("Has entered into Air state");
     }
 
     public override void ExitState()
     {
         //Debug.Log("Exiting Air State");
+        Debug.Log("Exiting Air State");
     }
 
     #endregion
@@ -136,7 +139,7 @@ public sealed class PlayerAirState : PlayerBaseState
             else if (Ctx.IsRising)
             {
                 SwitchSubState(_subStateRising);
-            }
+            }    
             
             if (Ctx.JumpRequested)
             {
