@@ -4,7 +4,12 @@ using UnityEngine.UI;
 
 public class SelectButtonFirst : MonoBehaviour
 {
-    [SerializeField] private GameObject firstSelectedButton;
+    [SerializeField] 
+    private GameObject firstSelectedButton;
+    [SerializeField]
+    private GameObject backButton;
+    [SerializeField]
+    private GameObject optionsButton;
 
     void Start()
     {
@@ -35,5 +40,15 @@ public class SelectButtonFirst : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void SetSelectedBack()
+    {
+        EventSystem.current.SetSelectedGameObject(backButton);
+    }
+
+    public void SetSelectedOptions() 
+    {
+        EventSystem.current.SetSelectedGameObject(optionsButton);
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using NobleConnect.Ice;
 
 namespace Bonkers
 {
@@ -17,15 +18,12 @@ namespace Bonkers
 
         public void Update()
         {
-
-            if (Keyboard.current.anyKey.isPressed)
+            if (Input.anyKey)
             {
                 LogoAndText.SetActive(false);
                 pressAnyButtonImage.enabled = false;
                 menu.SetActive(true);
             }
-
-            
         }
 
         public void NewCampaign()
