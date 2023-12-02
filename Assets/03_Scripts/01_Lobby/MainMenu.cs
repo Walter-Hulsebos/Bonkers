@@ -24,6 +24,8 @@ namespace Bonkers
                 pressAnyButtonImage.enabled = false;
                 menu.SetActive(true);
             }
+
+            
         }
 
         public void NewCampaign()
