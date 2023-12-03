@@ -13,16 +13,19 @@ namespace Bonkers
     {
         [SerializeField] private Image pressAnyButtonImage;
         [SerializeField] private GameObject menu;
-        [SerializeField] private GameObject LogoAndText;
+        [SerializeField] private GameObject Logo;
+        [SerializeField] private GameObject Text;
+
+        private bool inIntro = true;
         public void Start() { }
 
         public void Update()
         {
-            if (Input.anyKey)
+            if (Input.anyKey && inIntro)
             {
-                LogoAndText.SetActive(false);
-                pressAnyButtonImage.enabled = false;
-                menu.SetActive(true);
+                inIntro = false;
+                Text.SetActive(false);
+                StartCoroutine(FadeofLogo());
             }
         }
 
@@ -38,5 +41,15 @@ namespace Bonkers
         public void Options() { }
 
         public void Quit() { Application.Quit(); }
+
+        IEnumerator FadeofLogo()
+        {
+            Logo.GetComponent<Animator>().enabled = true;
+            yield return new WaitForSecondsRealtime(0.55f);
+            Logo.SetActive(false);
+            yield return new WaitForSecondsRealtime(0.05f);
+            pressAnyButtonImage.enabled = false;
+            menu.SetActive(true);
+        }
     }
 }
