@@ -11,10 +11,13 @@ public class SelectButtonFirst : MonoBehaviour
     [SerializeField]
     private GameObject optionsButton;
 
+    [SerializeField]
+    private GameObject StartingScreen;
+
     void Start()
     {
         // Check if a button is specified as the first selected button
-        if (firstSelectedButton != null)
+        if (firstSelectedButton != null && !StartingScreen)
         {
             // Set the specified button as the first selected
             EventSystem.current.SetSelectedGameObject(firstSelectedButton);
@@ -41,7 +44,7 @@ public class SelectButtonFirst : MonoBehaviour
 
         return null;
     }
-
+    
     public void SetSelectedBack()
     {
         EventSystem.current.SetSelectedGameObject(backButton);
