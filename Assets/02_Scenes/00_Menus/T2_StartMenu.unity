@@ -1458,7 +1458,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 385809395}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1008267043}
+        m_TargetAssemblyTypeName: Bonkers.MainMenu, Assembly-CSharp
+        m_MethodName: IncreaseMasterVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0.1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &385809395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2590,7 +2602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &669728603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3326,7 +3338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &844372852
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3862,6 +3874,7 @@ MonoBehaviour:
   Logo: {fileID: 1676323277}
   Text: {fileID: 1407046973}
   selectButtonFirstScript: {fileID: 0}
+  audioMixer: {fileID: 24100000, guid: 46b5d9a5532e1414fa17cdd0bc4f5119, type: 2}
 --- !u!4 &1008267044
 Transform:
   m_ObjectHideFlags: 0
@@ -4240,7 +4253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1039586520
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11698,7 +11711,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1383994849}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1008267043}
+        m_TargetAssemblyTypeName: Bonkers.MainMenu, Assembly-CSharp
+        m_MethodName: DecreaseMasterVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!1 &1407046973
 GameObject:
   m_ObjectHideFlags: 0
@@ -11960,7 +11985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1499012478
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13406,7 +13431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1799975002
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14584,7 +14609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2095679954
 Transform:
   m_ObjectHideFlags: 0

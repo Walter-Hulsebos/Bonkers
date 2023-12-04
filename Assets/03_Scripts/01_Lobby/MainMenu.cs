@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using NobleConnect.Ice;
+using UnityEngine.Audio;
+using System.Security.Cryptography;
+using ProjectDawn.Geometry2D;
 
 namespace Bonkers
 {
@@ -16,8 +19,8 @@ namespace Bonkers
         [SerializeField] private GameObject Logo;
         [SerializeField] private GameObject Text;
         [SerializeField] private SelectButtonFirst selectButtonFirstScript;
-
-
+        [SerializeField] private AudioMixer audioMixer;
+        
         private bool inIntro = true;
         public void Start() 
         { 
@@ -56,6 +59,25 @@ namespace Bonkers
             pressAnyButtonImage.enabled = false;
             menu.SetActive(true);
             selectButtonFirstScript.SetSelectedFirst();
+        }
+        public void IncreaseMasterVolume()
+        {
+            // Get the current volume
+            audioMixer.GetFloat("volume", out float currentVolume);
+
+            // Increase the volume (adjust the increment value as needed)
+            float newVolume = Mathf.Clamp01(Mathf.Pow(10, (currentVolume + 5) / 10.0f));
+            audioMixer.SetFloat("volume", Mathf.Log10(newVolume) * 10);
+        }
+
+        public void DecreaseMasterVolume()
+        {
+            // Get the current volume
+            audioMixer.GetFloat("volume", out float currentVolume);
+
+            // Decrease the volume (adjust the increment value as needed)
+            float newVolume = Mathf.Clamp01(Mathf.Pow(10, (currentVolume - 5) / 10.0f));
+            audioMixer.SetFloat("volume", Mathf.Log10(newVolume) * 10);
         }
     }
 }
