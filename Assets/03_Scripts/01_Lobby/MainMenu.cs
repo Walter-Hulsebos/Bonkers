@@ -15,9 +15,14 @@ namespace Bonkers
         [SerializeField] private GameObject menu;
         [SerializeField] private GameObject Logo;
         [SerializeField] private GameObject Text;
+        [SerializeField] private SelectButtonFirst selectButtonFirstScript;
+
 
         private bool inIntro = true;
-        public void Start() { }
+        public void Start() 
+        { 
+            selectButtonFirstScript = this.gameObject.GetComponent<SelectButtonFirst>();
+        }
 
         public void Update()
         {
@@ -50,6 +55,7 @@ namespace Bonkers
             yield return new WaitForSecondsRealtime(0.05f);
             pressAnyButtonImage.enabled = false;
             menu.SetActive(true);
+            selectButtonFirstScript.SetSelectedFirst();
         }
     }
 }
