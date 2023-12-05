@@ -2257,7 +2257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &618370998
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2602,7 +2602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &669728603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3234,8 +3234,8 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 453571138}
     m_SelectOnDown: {fileID: 979397823}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 618370999}
+    m_SelectOnLeft: {fileID: 797844691}
+    m_SelectOnRight: {fileID: 1919436957}
   m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3276,6 +3276,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1008267045}
         m_TargetAssemblyTypeName: SelectButtonFirst, Assembly-CSharp
         m_MethodName: SetSelectedBack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1008267043}
+        m_TargetAssemblyTypeName: Bonkers.MainMenu, Assembly-CSharp
+        m_MethodName: SwitchOptionsOn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3338,7 +3350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &844372852
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3875,6 +3887,9 @@ MonoBehaviour:
   Text: {fileID: 1407046973}
   selectButtonFirstScript: {fileID: 0}
   audioMixer: {fileID: 24100000, guid: 46b5d9a5532e1414fa17cdd0bc4f5119, type: 2}
+  Optionstab: {fileID: 1799975001}
+  MainMenutab: {fileID: 1039586519}
+  inOptions: 0
 --- !u!4 &1008267044
 Transform:
   m_ObjectHideFlags: 0
@@ -3903,7 +3918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstSelectedButton: {fileID: 1655998263}
-  backButton: {fileID: 618370997}
+  backButton: {fileID: 1919436955}
   optionsButton: {fileID: 797844685}
   StartingScreen: {fileID: 669728602}
 --- !u!1 &1018275962
@@ -4253,7 +4268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1039586520
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11985,7 +12000,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1499012478
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13278,7 +13293,7 @@ MonoBehaviour:
     m_SelectOnUp: {fileID: 2140197416}
     m_SelectOnDown: {fileID: 1383994851}
     m_SelectOnLeft: {fileID: 2024343158}
-    m_SelectOnRight: {fileID: 618370999}
+    m_SelectOnRight: {fileID: 1919436957}
   m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -13431,7 +13446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1799975002
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13826,7 +13841,7 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 1919436957}
     m_SelectOnDown: {fileID: 1919436957}
-    m_SelectOnLeft: {fileID: 618370999}
+    m_SelectOnLeft: {fileID: 1780912221}
     m_SelectOnRight: {fileID: 2024343158}
   m_Transition: 2
   m_Colors:
@@ -14609,7 +14624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2095679954
 Transform:
   m_ObjectHideFlags: 0

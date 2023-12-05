@@ -1,14 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
-using NobleConnect.Ice;
 using UnityEngine.Audio;
-using System.Security.Cryptography;
-using ProjectDawn.Geometry2D;
+using UnityEngine.Events;
 
 namespace Bonkers
 {
@@ -20,8 +15,14 @@ namespace Bonkers
         [SerializeField] private GameObject Text;
         [SerializeField] private SelectButtonFirst selectButtonFirstScript;
         [SerializeField] private AudioMixer audioMixer;
-        
-        private bool inIntro = true;
+
+        [SerializeField] private GameObject Optionstab;
+        [SerializeField] private GameObject MainMenutab;
+
+
+    private bool inIntro = true;
+        public bool inOptions = false;
+
         public void Start() 
         { 
             selectButtonFirstScript = this.gameObject.GetComponent<SelectButtonFirst>();
@@ -34,6 +35,14 @@ namespace Bonkers
                 inIntro = false;
                 Text.SetActive(false);
                 StartCoroutine(FadeofLogo());
+            }
+
+            // use of escape direct get only for testing
+            if(Input.GetKeyDown(KeyCode.Escape) && inOptions)
+            {
+                SwitchOptionsOn();
+                selectButtonFirstScript.SetSelectedOptions();
+                SwithToMainMenu();
             }
         }
 
@@ -60,6 +69,29 @@ namespace Bonkers
             menu.SetActive(true);
             selectButtonFirstScript.SetSelectedFirst();
         }
+
+        public void SwitchOptionsOn()
+        {
+            if(inOptions)
+            {
+                inOptions = false;
+            }
+            else
+            {
+                inOptions = true;
+            }
+        }
+
+        //  used to switch from the options menu (in the starting menu) to the main menu use of escape button
+        private void SwithToMainMenu()
+        {
+            if(Optionstab && MainMenutab)
+            {
+                MainMenutab.SetActive(true);
+                Optionstab.SetActive(false);
+            }
+        }
+
         public void IncreaseMasterVolume()
         {
             // Get the current volume
