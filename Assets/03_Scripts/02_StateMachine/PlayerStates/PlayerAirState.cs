@@ -21,13 +21,14 @@ public sealed class PlayerAirState : PlayerBaseState
 
     #region Variables
     
-    [SerializeField] private F32 maxSpeed        = 10f;
-    [SerializeField] private F32 accSpeed        = 15f;
-    [SerializeField] private F32 drag            = 0.1f;
-    [SerializeField] private F32 orientSharpness = 20f;
+    [SerializeField] private F32 maxSpeedForInputs = 10f;
+    [SerializeField] private F32 accSpeed          = 15f;
+    [SerializeField] private F32 drag              = 0.1f;
+    [SerializeField] private F32 orientSharpness   = 20f;
     
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
+    private PlayerBaseState _subStateKnockback;
 
     #endregion
 
@@ -49,11 +50,13 @@ public sealed class PlayerAirState : PlayerBaseState
     public override void EnterState() 
     {
         //Debug.Log("Entering Air State");
+        Debug.Log("Has entered into Air state");
     }
 
     public override void ExitState()
     {
         //Debug.Log("Exiting Air State");
+        Debug.Log("Exiting Air State");
     }
 
     #endregion
@@ -70,13 +73,13 @@ public sealed class PlayerAirState : PlayerBaseState
 
         F32x3 __currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(vector: currentVelocity, planeNormal: Ctx.Motor.CharacterUp);
 
-        // Limit air velocity from inputs
-        if (length(__currentVelocityOnInputsPlane) < maxSpeed)
-        {
-            // clamp addedVel to make total vel not exceed max vel on inputs plane
-            F32x3 __newTotal = Vector3.ClampMagnitude(vector: __currentVelocityOnInputsPlane + __addedVelocity, maxLength: maxSpeed);
-            __addedVelocity = __newTotal - __currentVelocityOnInputsPlane;
-        }
+         // Limit air velocity from inputs
+         if (length(__currentVelocityOnInputsPlane) < maxSpeedForInputs)
+         {
+             // clamp addedVel to make total vel not exceed max vel on inputs plane
+             F32x3 __newTotal = Vector3.ClampMagnitude(vector: __currentVelocityOnInputsPlane + __addedVelocity, maxLength: maxSpeedForInputs);
+             __addedVelocity = __newTotal - __currentVelocityOnInputsPlane;
+         }
         else
         {
             // Make sure added vel doesn't go in the direction of the already-exceeding velocity
@@ -97,6 +100,9 @@ public sealed class PlayerAirState : PlayerBaseState
                 __addedVelocity = Vector3.ProjectOnPlane(vector: __addedVelocity, planeNormal: __perpenticularObstructionNormal);
             }
         }
+        
+        // Apply drag
+        __addedVelocity *= 1f / (1f + (drag * deltaTime));
 
         // Apply added velocity
         currentVelocity += (Vector3)__addedVelocity;
@@ -137,6 +143,7 @@ public sealed class PlayerAirState : PlayerBaseState
             {
                 SwitchSubState(_subStateRising);
             }
+            
             
             if (Ctx.JumpRequested)
             {
