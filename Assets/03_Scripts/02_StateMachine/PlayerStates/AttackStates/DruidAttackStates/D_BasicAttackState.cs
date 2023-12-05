@@ -58,7 +58,7 @@ public sealed class D_BasicAttackState : PlayerBaseState
         inBasic = InBasicAttack.Basic;
         if (_isPlayerenemyInTrigger)
         {
-            //enemy damage here
+            
         }
     }
 
