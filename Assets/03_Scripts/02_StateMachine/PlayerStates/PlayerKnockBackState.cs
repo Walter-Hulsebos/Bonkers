@@ -14,7 +14,7 @@ public sealed class PlayerKnockbackState : PlayerBaseState
 {
     #region Variables
 
-    [SerializeField] private F32   knockbackForce    = 1000.0f;
+    [SerializeField] private F32   knockbackForce    = 100.0f;
     [SerializeField] private F32x3 knockbackVector   = new(x: 0.0f, y: 1.0f, z: -1.0f);
     [SerializeField] private F32   knockbackDuration = 1.0f;
 
