@@ -13,16 +13,30 @@ using static ProjectDawn.Mathematics.math2;
 using F32 = System.Single;
 using F32x3 = Unity.Mathematics.float3;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 
 [Serializable]
 public sealed class D_BasicAttackState : PlayerBaseState
     {
     #region Enums
     private InBasicAttack inBasic;
+    private bool _isPlayerenemyInTrigger = false;
+    private GameObject _enemyCharacter;
     #endregion
 
     #region Constructor
-    public D_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
+    public D_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) {
+        currentContext.OnTriggerEnterEvent += OnTriggerEnter;
+        currentContext.OnTriggerStayEvent += OnTriggerStay;
+        currentContext.OnTriggerExitEvent += OnTriggerExit;
+    }
+
+    ~D_BasicAttackState()
+    {
+        Ctx.OnTriggerEnterEvent -= OnTriggerEnter;
+        Ctx.OnTriggerStayEvent -= OnTriggerStay;
+        Ctx.OnTriggerExitEvent -= OnTriggerExit;
+    }
     #endregion 
 
     private enum InBasicAttack
@@ -42,7 +56,33 @@ public sealed class D_BasicAttackState : PlayerBaseState
     void HandleDruidBasicAttack()
     {
         inBasic = InBasicAttack.Basic;
-        //put in your basic attack here
+        if (_isPlayerenemyInTrigger)
+        {
+            //enemy damage here
+        }
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+
+    }
+
+    void OnTriggerStay(Collider collider)
+    {
+        if (collider.gameObject.tag == "Player")
+        {
+            _isPlayerenemyInTrigger = true;
+            _enemyCharacter = collider.gameObject;
+        }
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.tag == "Player")
+        {
+            _isPlayerenemyInTrigger = false;
+            _enemyCharacter = null;
+        }
     }
 
     #region Updates
