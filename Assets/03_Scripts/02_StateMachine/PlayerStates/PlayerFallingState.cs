@@ -27,6 +27,7 @@ public sealed class PlayerFallingState : PlayerBaseState
     {
         //Debug.Log("Entering Falling State");
         _currentYVelocity = Ctx.Motor.BaseVelocity.y; //Should be 0 when entering falling state but just in case
+        Debug.Log("I am falling");
     }
 
     public override void ExitState()
