@@ -20,8 +20,8 @@ namespace Bonkers
         [SerializeField] private GameObject MainMenutab;
 
 
-    private bool inIntro = true;
-        public bool inOptions = false;
+        private bool inIntro = true;
+        private bool inOptions = false;
 
         public void Start() 
         { 
@@ -111,5 +111,8 @@ namespace Bonkers
             float newVolume = Mathf.Clamp01(Mathf.Pow(10, (currentVolume - 5) / 10.0f));
             audioMixer.SetFloat("volume", Mathf.Log10(newVolume) * 10);
         }
+
+
+        public void ShowOffScene() { SceneManager.LoadSceneAsync("ShowOffScene"); }
     }
 }
