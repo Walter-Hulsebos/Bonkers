@@ -556,6 +556,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956752452}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1218647820 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4866541415681823093, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
+  m_PrefabInstance: {fileID: 2040731576}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1240617818
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,6 +844,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1341568957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8721327945519638137, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
+  m_PrefabInstance: {fileID: 2040731576}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1505133370
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,9 +1143,29 @@ PrefabInstance:
       value: 2431446909
       objectReference: {fileID: 0}
     - target: {fileID: 8298145251555141669, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
+      propertyPath: character
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298145251555141669, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
+      propertyPath: getSpecial1Input._target
+      value: 
+      objectReference: {fileID: 1218647820}
+    - target: {fileID: 8298145251555141669, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
+      propertyPath: getSpecial2Input._target
+      value: 
+      objectReference: {fileID: 1341568957}
+    - target: {fileID: 8298145251555141669, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
       propertyPath: getBasicAttackInput._target
       value: 
       objectReference: {fileID: 549944729}
+    - target: {fileID: 8298145251555141669, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
+      propertyPath: getSpecial1Input._methodName
+      value: get_Value
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298145251555141669, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
+      propertyPath: getSpecial2Input._methodName
+      value: get_Value
+      objectReference: {fileID: 0}
     - target: {fileID: 8298145251555141669, guid: 159ea7c0c139dec438c3eb8dcf9aafee, type: 3}
       propertyPath: getBasicAttackInput._methodName
       value: get_Value
