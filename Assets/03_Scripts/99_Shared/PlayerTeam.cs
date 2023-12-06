@@ -1,14 +1,15 @@
-using UnityEngine;
-
 namespace Bonkers.Shared
 {
+    using UnityEngine;
+    using JetBrains.Annotations;
+
     public sealed class PlayerTeam : MonoBehaviour
     {
-        [SerializeField] private Team team;
+        [field:SerializeField] public Team Team { get; [UsedImplicitly] private set; }
         
         #region Custom Operators
         
-        public static implicit operator Team(PlayerTeam playerTeam) => playerTeam.team;
+        public static implicit operator Team(PlayerTeam playerTeam) => playerTeam.Team;
         
         #endregion
     }

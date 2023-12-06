@@ -16,7 +16,7 @@ namespace Bonkers
     using Sirenix.OdinInspector;
     #endif
     
-    public sealed class SpawnPoint : Multiton<SpawnPoint>
+    public sealed class Spawn : Multiton<Spawn>
     {
         #if ODIN_INSPECTOR
         [BoxGroup]
@@ -34,7 +34,7 @@ namespace Bonkers
         private static void CreateSpawnPoint(MenuCommand menuCommand)
         {
             GameObject __spawnPoint = new (name: "Spawn Point");
-            __spawnPoint.AddComponent<SpawnPoint>();
+            __spawnPoint.AddComponent<Spawn>();
             
             GameObjectUtility.SetParentAndAlign(child: __spawnPoint, parent: menuCommand.context as GameObject);
             Undo.RegisterCreatedObjectUndo(objectToUndo: __spawnPoint, name: "Create " + __spawnPoint.name);
@@ -60,7 +60,7 @@ namespace Bonkers
         {
             DrawDisc();
             DrawSpawnDebug();
-            DrawScalingKnob();
+            //DrawScalingKnob();
         }
 
         private void DrawDisc()
