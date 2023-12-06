@@ -18,12 +18,14 @@ public class CharacterSpawner : NetworkBehaviour
 
     private void OnDrawGizmos()
     {
+#if UNITY_EDITOR
         UnityEditor.Handles.color = new Color(r: 1, g: 0, b: 0, a: 0.2f);
         UnityEditor.Handles.DrawSolidDisc(transform.position, Vector3.up, radius);
 
         UnityEditor.Handles.color = Color.black;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, radius, 5);
-    }
+#endif
+    } 
 
     public override void OnNetworkSpawn()
     {

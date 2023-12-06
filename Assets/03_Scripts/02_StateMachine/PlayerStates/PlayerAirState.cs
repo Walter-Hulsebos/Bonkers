@@ -28,7 +28,6 @@ public sealed class PlayerAirState : PlayerBaseState
     
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
-    private PlayerBaseState _subStateKnockback;
 
     #endregion
 
