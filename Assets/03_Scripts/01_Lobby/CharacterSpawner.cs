@@ -35,12 +35,14 @@ public class CharacterSpawner : NetworkBehaviour
         {
             Character character = characterDatabase.GetCharacterById(client.Value.characterId);
 
+
             if (character != null)
             {
                 Vector2 random = Random.insideUnitCircle * radius;
                 Vector3 spawnPos = transform.position + new Vector3 (random.x,0, random.y);
                 NetworkObject characterInstance = Instantiate(character.GameplayPrefab, spawnPos, Quaternion.identity);
                 characterInstance.SpawnAsPlayerObject(client.Value.clientId);
+
             }
         }
     }
