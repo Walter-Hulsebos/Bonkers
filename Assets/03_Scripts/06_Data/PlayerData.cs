@@ -5,6 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="newPlayerData", menuName ="Data/Player Data")]
 public class PlayerData : ScriptableObject
 {
+    [Header("Character counts")]
+    public float Health;
+    public float BasicAttackDamage;
+
     [Header("Move State")]
     public float PlayerMaxSpeed = 10f;
     public float MoveSharpness = 15f;
