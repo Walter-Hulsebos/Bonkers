@@ -1,11 +1,16 @@
 namespace Bonkers
 {
-    using System;
     using System.Collections.Generic;
 
-    using UnityEngine;
-    
     using JetBrains.Annotations;
+
+    #if ODIN_INSPECTOR
+    using Sirenix.OdinInspector;
+    using Sirenix.Serialization;
+    using MonoBehaviour = Sirenix.OdinInspector.SerializedMonoBehaviour;
+    #else
+    using MonoBehaviour = UnityEngine.MonoBehaviour;
+    #endif
 
     /// <summary>
     /// CRTP (Curiously Recurring Template Pattern) Multiton
@@ -14,9 +19,11 @@ namespace Bonkers
     public abstract class Multiton<T> : MonoBehaviour where T : Multiton<T>
     {
         //TODO: Once Unity officially supports serialization of HashSet, use that instead of list.
-        [field:SerializeField, HideInInspector]
-        public List<T> Instances { get; [UsedImplicitly] private set; } = new ();
-
+        #if ODIN_INSPECTOR
+        //[OdinSerialize]
+        [ShowInInspector] [ReadOnly] [PropertyOrder(order: -1)]
+        #endif
+        public static List<T> Instances { get; [UsedImplicitly] private set; } = new();
         
         private void Initialize()
         {
@@ -47,21 +54,20 @@ namespace Bonkers
         {
             Instances.Remove(item: (T)this);
         }
-        
 
         #if UNITY_EDITOR
-        private void Reset() 
+        protected virtual void Reset() 
         {
             Initialize();
         }
         #endif
 
-        private void Awake()
+        protected virtual void Awake()
         {
             Initialize();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             DeInitialize();
         }
