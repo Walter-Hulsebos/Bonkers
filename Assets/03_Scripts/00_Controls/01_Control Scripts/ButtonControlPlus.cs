@@ -17,10 +17,10 @@ namespace Bonkers.Controls
 
     public enum ButtonState
     {
-        Released = 0,
-        Pressed = 1,
+        Released  = 0,
+        Pressed   = 1,
         ThisFrame = 2,
-        PressedThisFrame = Pressed | ThisFrame,
+        PressedThisFrame  = Pressed  | ThisFrame,
         ReleasedThisFrame = Released | ThisFrame,
     }
 
