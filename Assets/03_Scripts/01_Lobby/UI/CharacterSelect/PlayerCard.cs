@@ -1,3 +1,9 @@
+using Bonkers.Shared;
+
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
+
 using TMPro;
 
 using UnityEngine;
@@ -6,6 +12,11 @@ using UnityEngine.UI;
 public class PlayerCard : MonoBehaviour
 {
     [SerializeField] private CharacterDatabase characterDatabase;
+    
+    #if ODIN_INSPECTOR
+    [InlineEditor]
+    #endif
+    [SerializeField] private Team              team;
     [SerializeField] private GameObject        visuals;
     [SerializeField] private Image             characterIconImage;
     [SerializeField] private TMP_Text          playerNameText;
