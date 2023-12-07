@@ -14,17 +14,19 @@ using static ProjectDawn.Mathematics.math2;
 using F32 = System.Single;
 using F32x3 = Unity.Mathematics.float3;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 
 [Serializable]
 public sealed class C_BasicAttackState : PlayerBaseState
     {
     #region Enums
     private InBasicAttack inBasic;
+   
     #endregion
 
     #region Constructor
-    public C_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
-    #endregion 
+    public C_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory){}
+    #endregion
 
     private enum InBasicAttack
     {
@@ -42,8 +44,8 @@ public sealed class C_BasicAttackState : PlayerBaseState
     void HandleCatWomanBasicAttack()
     {
         inBasic = InBasicAttack.Basic;
-        //put in your basic attack here
     }
+
 
     #region Updates
 

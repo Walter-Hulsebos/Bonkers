@@ -57,6 +57,7 @@ public sealed class PlayerJumpState : PlayerBaseState
         //Ctx.Animator.SetBool(Ctx.IsJumpingHash, false);
         
         _hasJumped = false;
+        Debug.Log("I am not jumping anymore");
     }
 
     #endregion

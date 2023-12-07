@@ -37,9 +37,9 @@ public class HostSingleton : MonoBehaviour
         }
     }
 
-    public  MatchplayNetworkServer NetworkServer { get; private set; }
-    public  RelayHostData          RelayHostData => relayHostData;
-    private RelayHostData          relayHostData;
+    public  MatchplayNetworkServer NetworkServer { get;                               private set; }
+    public  RelayHostData          HostRelayData { get => _hostRelayDataBackingField; private set => _hostRelayDataBackingField = value; }
+    private RelayHostData          _hostRelayDataBackingField;
     private String                 lobbyId;
 
     private void Start() { DontDestroyOnLoad(target: gameObject); }
@@ -62,7 +62,7 @@ public class HostSingleton : MonoBehaviour
         }
 
         //Populate the hosting data
-        relayHostData = new RelayHostData
+        HostRelayData = new RelayHostData
         {
             Key               = allocation.Key,
             Port              = (UInt16)allocation.RelayServer.Port,
@@ -75,9 +75,9 @@ public class HostSingleton : MonoBehaviour
         try
         {
             //Retrieve the Relay join code for our clients to join our party
-            relayHostData.JoinCode = await Relay.Instance.GetJoinCodeAsync(allocationId: RelayHostData.AllocationID);
+            _hostRelayDataBackingField.JoinCode = await Relay.Instance.GetJoinCodeAsync(allocationId: HostRelayData.AllocationID);
 
-            Debug.Log(message: RelayHostData.JoinCode);
+            Debug.Log(message: HostRelayData.JoinCode);
         }
         catch (Exception e)
         {
@@ -89,7 +89,7 @@ public class HostSingleton : MonoBehaviour
         UnityTransport transport = NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
 
         transport.SetRelayServerData
-            (ipv4Address: RelayHostData.IPv4Address, port: RelayHostData.Port, allocationIdBytes: RelayHostData.AllocationIDBytes, keyBytes: RelayHostData.Key, connectionDataBytes: RelayHostData.ConnectionData);
+            (ipv4Address: HostRelayData.IPv4Address, port: HostRelayData.Port, allocationIdBytes: HostRelayData.AllocationIDBytes, keyBytes: HostRelayData.Key, connectionDataBytes: HostRelayData.ConnectionData);
 
         try
         {
@@ -98,7 +98,7 @@ public class HostSingleton : MonoBehaviour
 
             createLobbyOptions.Data = new Dictionary<String, DataObject>()
             {
-                { "JoinCode", new DataObject(visibility: DataObject.VisibilityOptions.Member, value: RelayHostData.JoinCode) },
+                { "JoinCode", new DataObject(visibility: DataObject.VisibilityOptions.Member, value: HostRelayData.JoinCode) },
             };
 
             Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(lobbyName: "My Lobby", maxPlayers: maxConnections, options: createLobbyOptions);
@@ -170,6 +170,7 @@ public class HostSingleton : MonoBehaviour
 public struct RelayHostData
 {
     public String JoinCode;
+    // ReSharper disable once InconsistentNaming
     public String IPv4Address;
     public UInt16 Port;
     public Guid   AllocationID;
