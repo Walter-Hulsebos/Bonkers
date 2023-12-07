@@ -19,16 +19,18 @@ namespace Bonkers
     
     using I32  = System.Int32;
     using Bool = System.Boolean;
+    using Cysharp.Threading.Tasks;
 
     /// <summary>
     /// Server side script to do some movements that can only be done server side with Netcode.
     /// In charge of spawning (which happens server side in Netcode)
     /// </summary>
     [DefaultExecutionOrder(0)] // before client component
-    public sealed class CharacterSpawner : NetworkBehaviour
+    public sealed class ServerAuthSpawn : NetworkBehaviour
     {
         [SerializeField] private KinematicCharacterMotor _motor;
         [SerializeField] private PlayerTeam              _team;
+        [SerializeField] private NetworkTransformClientAuthoritative _transformClientAuth;
         #if ODIN_INSPECTOR
         [ChildGameObjectsOnly]
         #endif
@@ -36,18 +38,19 @@ namespace Bonkers
 
         private void Reset()
         {
-            _motor        = GetComponent<KinematicCharacterMotor>();
-            _team         = GetComponent<PlayerTeam>();
-            _cameraTarget = transform.Find("CharacterCameraTarget").transform;
+            _motor        = GetComponentInChildren<KinematicCharacterMotor>();
+            _team         = GetComponentInChildren<PlayerTeam>();
+            _cameraTarget = transform.FindChildWithTag("CameraTarget");
+            _transformClientAuth = GetComponentInChildren<NetworkTransformClientAuthoritative>();
         }
 
         public override void OnNetworkSpawn()
         {
-            if (!IsServer)
+/*            if (!IsServer)
             {
                 enabled = false;
                 return;
-            }
+            }*/
 
             OnServerSpawnPlayer();
 
@@ -57,8 +60,10 @@ namespace Bonkers
         private void OnServerSpawnPlayer()
         {
             // this is done server side, so we have a single source of truth for our spawn point list
-            _motor.SetPosition(position: transform.position, bypassInterpolation: true);
-            
+
+            SpawnHelpers.SpawnPlayer(team: _team, motor: _motor, cameraTarget: _cameraTarget);
+            Debug.Log("spawned player", context: this);
+
             // A note specific to owner authority:
             // Side Note:  Specific to Owner Authoritative
             // Setting the position works as and can be set in OnNetworkSpawn server-side unless there is a
@@ -69,58 +74,9 @@ namespace Bonkers
             // transform after synchronization with the initial position, thus overwriting the synchronized position.
         }
 
-        private void OnSpawnPlayer()
-        {
-            Vector3 __spawnPoint = RandomSpawnPoint(_team.Team);
-            Vector3 __delta      = (transform.position - __spawnPoint);
-            
-            
-            
-            _motor.SetPosition(position: __spawnPoint, bypassInterpolation: true);
-            CinemachineCore.OnTargetObjectWarped(target: transform, positionDelta: __delta);
-        }
 
-        private static Vector3 RandomSpawnPoint(Team team) => RandomSpawn(team: team).RandomPointOnSpawnCircle();
 
-        private static Spawn RandomSpawn(Team team)
-        {
-            List<Spawn> __spawnPointsForTeam = SpawnsForTeam(team);
-
-            if (__spawnPointsForTeam.Count == 0)
-            {
-                Debug.LogError($"No spawn points for team {team}");
-                return null;
-            }
-
-            I32 __randomIndex = UnityEngine.Random.Range(0, __spawnPointsForTeam.Count);
-            
-            //TODO: Do Check if spawn point is occupied first, otherwise, repeat function.
-
-            return __spawnPointsForTeam[__randomIndex];
-        }
         
-        private static List<Spawn> SpawnsForTeam(Team team)
-        {
-            List<Spawn> __allSpawnPoints = Spawn.Instances;
-            
-            List<Spawn> __spawnPointsForTeam = new();
-            
-            foreach (Spawn __spawnPoint in __allSpawnPoints)
-            {
-                if (__spawnPoint.Team == team)
-                {
-                    __spawnPointsForTeam.Add(__spawnPoint);
-                }
-            }
-            
-            if (__spawnPointsForTeam.Count == 0)
-            {
-                Debug.LogError($"No spawn points for team {team}");
-                return null;
-            }
-
-            return __spawnPointsForTeam;
-        }
         
         
     }

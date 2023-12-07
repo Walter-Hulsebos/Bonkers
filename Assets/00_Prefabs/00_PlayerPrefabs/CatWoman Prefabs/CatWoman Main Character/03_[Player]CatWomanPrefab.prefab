@@ -178,8 +178,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3035714450035493016}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20090763, y: 0.00064815476, z: 0.00013292968, w: 0.97961}
-  m_LocalPosition: {x: -0.0011634827, y: 2.053522, z: -0.8792343}
+  m_LocalRotation: {x: -0.1860726, y: -2.946504e-11, z: -5.5800885e-12, w: 0.982536}
+  m_LocalPosition: {x: 0, y: 1.4555823, z: -2.4803839}
   m_LocalScale: {x: 1.7499995, y: 1.75, z: 1.7499998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -461,6 +461,8 @@ GameObject:
   - component: {fileID: 5120774191332082142}
   - component: {fileID: 2615959239904827441}
   - component: {fileID: 1818910966665248303}
+  - component: {fileID: 6800531154145111025}
+  - component: {fileID: -1954575979938313299}
   m_Layer: 7
   m_Name: 03_[Player]CatWomanPrefab
   m_TagString: Player
@@ -686,6 +688,35 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6800531154145111025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590290661576390256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c1d079b4b03140438597c3eccd4abce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Team>k__BackingField: {fileID: 11400000, guid: b95bec2e172cd3a44981a4399e8adae0, type: 2}
+--- !u!114 &-1954575979938313299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590290661576390256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd054d51e2466d45b3a3638124f15db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _motor: {fileID: 4955946100730849031}
+  _team: {fileID: 6800531154145111025}
+  _transformClientAuth: {fileID: 8210392348485836337}
+  _cameraTarget: {fileID: 4764607748966825413}
 --- !u!1 &4622328599489753176
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,7 +809,7 @@ GameObject:
   - component: {fileID: 4764607748966825413}
   m_Layer: 7
   m_Name: CharacterCameraTarget
-  m_TagString: Untagged
+  m_TagString: CameraTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1190,8 +1221,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7777285763492782020}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20090763, y: 0.00064815476, z: 0.00013292968, w: 0.97961}
-  m_LocalPosition: {x: 0, y: 1.4555836, z: -2.4803848}
+  m_LocalRotation: {x: -0.1860726, y: -2.946504e-11, z: -5.5800885e-12, w: 0.982536}
+  m_LocalPosition: {x: 0, y: 1.4555823, z: -2.4803839}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

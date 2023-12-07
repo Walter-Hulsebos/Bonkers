@@ -1084,6 +1084,8 @@ GameObject:
   - component: {fileID: 3363332278736624219}
   - component: {fileID: 5985982781809089022}
   - component: {fileID: 7142269343624364718}
+  - component: {fileID: -3855771259408694165}
+  - component: {fileID: -7446485945851307810}
   m_Layer: 7
   m_Name: 00_[Player] SmithPrefab
   m_TagString: Untagged
@@ -1213,6 +1215,35 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-3855771259408694165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481464821839094794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c1d079b4b03140438597c3eccd4abce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Team>k__BackingField: {fileID: 11400000, guid: 96d6826d756a9c34696baa818c9a7a30, type: 2}
+--- !u!114 &-7446485945851307810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481464821839094794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd054d51e2466d45b3a3638124f15db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _motor: {fileID: 3228510569062686795}
+  _team: {fileID: -3855771259408694165}
+  _transformClientAuth: {fileID: 7185513504263419762}
+  _cameraTarget: {fileID: 5349364791541233044}
 --- !u!1 &4523027140949224070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1224,7 +1255,7 @@ GameObject:
   - component: {fileID: 5349364791541233044}
   m_Layer: 7
   m_Name: CharacterCameraTarget
-  m_TagString: Untagged
+  m_TagString: CameraTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
