@@ -37,7 +37,9 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: f1122347c983a5d48902bfc0cca18949, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _FRESNEL
+  - _SPECULAR
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -126,6 +128,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _FRESNEL: 1
     - _Falloff_Amount: 0.075
     - _Fresnel_Size: 0.25
     - _GlossMapScale: 1
@@ -138,6 +141,7 @@ Material:
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SPECULAR: 1
     - _Smoothness: 250
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
