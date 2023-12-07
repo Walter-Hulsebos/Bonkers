@@ -62,7 +62,8 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -4235836171622692312}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -205,6 +206,37 @@ AnimatorStateMachine:
   m_ExitPosition: {x: 430, y: 390, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -8248385408750039854}
+--- !u!114 &-4235836171622692312
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60eee49f38e3b14e965f7072e3941d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  register: 0
+  registerEveryXFrames: 1
+  registerEveryXSeconds: 1
+  shape: 0
+  hitBoxCheckTime: {x: 0.295, y: 0.61}
+  startPosition:
+    x: 0
+    y: 0
+    z: 0
+  endPosition:
+    x: 0
+    y: 0
+    z: 0
+  <OnHit>k__BackingField:
+    _PersistentCalls: []
+  <OnCheckStart>k__BackingField:
+    _PersistentCalls: []
+  <OnCheckEnd>k__BackingField:
+    _PersistentCalls: []
 --- !u!1102 &-4038266308495168171
 AnimatorState:
   serializedVersion: 6

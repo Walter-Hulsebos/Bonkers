@@ -12,7 +12,7 @@ namespace Bonkers
     
     using Unity.Mathematics;
     
-    #if UNITY_EDITOR
+    #if ODIN_INSPECTOR
     using Sirenix.OdinInspector;
     #endif
 
@@ -31,7 +31,7 @@ namespace Bonkers
             Frames,
             Seconds,
             #if ODIN_INSPECTOR
-            [LabelText("Primant")]
+            [LabelText(text: "Primant")]
             #endif
             PrimantOfAnimation,
         }
@@ -45,18 +45,18 @@ namespace Bonkers
         
         private enum RegisterMode
         {
-            [Tooltip("Register a hit only on the first moment of contact")]
+            [Tooltip(tooltip: "Register a hit only on the first moment of contact")]
             Initial,
-            [Tooltip("Register a hit every frame of the animation (if there is contact)")]
+            [Tooltip(tooltip: "Register a hit every frame of the animation (if there is contact)")]
             EveryFrame,
-            [Tooltip("Register a hit every X frames of the animation (if there is contact)")]
+            [Tooltip(tooltip: "Register a hit every X frames of the animation (if there is contact)")]
             #if ODIN_INSPECTOR
-            [LabelText("Every X Frames")]
+            [LabelText(text: "Every X Frames")]
             #endif
             EveryXFrames,
-            [Tooltip("Register a hit every X seconds of the animation (if there is contact)")]
+            [Tooltip(tooltip: "Register a hit every X seconds of the animation (if there is contact)")]
             #if ODIN_INSPECTOR
-            [LabelText("Every X Seconds")]
+            [LabelText(text: "Every X Seconds")]
             #endif
             EveryXSeconds,
         }
@@ -66,19 +66,19 @@ namespace Bonkers
         #if ODIN_INSPECTOR
         //[EnumToggleButtons]
         [EnumPaging]
-        [BoxGroup("Register", showLabel: false)] [LabelWidth(120)]                             
+        [BoxGroup(@group: "Register", showLabel: false)] [LabelWidth(width: 120)]                             
         #endif                                                                                 
         [SerializeField] private RegisterMode register = RegisterMode.Initial;                 
                                                                                                
         #if ODIN_INSPECTOR                                                                                                                                          
         [ShowIf(condition: nameof(RegisterEveryXFrames))]                                      
-        [BoxGroup("Register", showLabel: false)] [LabelText(text: "Frames")]  [LabelWidth(120)]
+        [BoxGroup(@group: "Register", showLabel: false)] [LabelText(text: "Frames")]  [LabelWidth(width: 120)]
         [SerializeField] private U16 registerEveryXFrames = 1;                                 
         #endif                                                                                 
                                                                                                
         #if ODIN_INSPECTOR                                                                     
         [ShowIf(condition: nameof(RegisterEveryXSeconds))]                                     
-        [BoxGroup("Register", showLabel: false)] [LabelText(text: "Seconds")] [LabelWidth(120)]
+        [BoxGroup(@group: "Register", showLabel: false)] [LabelText(text: "Seconds")] [LabelWidth(width: 120)]
         [SerializeField] private F32 registerEveryXSeconds = 1.0f;                             
         #endif
         
@@ -91,8 +91,8 @@ namespace Bonkers
         #region Check
         
         #if ODIN_INSPECTOR
-        [FoldoutGroup("Check")]
-        [LabelWidth(120)]
+        [FoldoutGroup(groupName: "Check")]
+        [LabelWidth(width: 120)]
         #endif
         [SerializeField] private Shape shape = Shape.Sphere;
         
@@ -101,11 +101,26 @@ namespace Bonkers
         //TODO: Add begin and end of check position, and begin/end size and possibly direction of check. Curve for each. (OR ANIMATION!!!)
         
         #if ODIN_INSPECTOR
-        [FoldoutGroup("Check")]
-        [LabelWidth(120)]
+        [FoldoutGroup(groupName: "Check")]
+        [LabelWidth(width: 120)]
         [MinMaxSlider(minValue: 0, maxValue: 1, showFields: true)]
         #endif
         [SerializeField] private Vector2 hitBoxCheckTime = new(x: 0.0f, y: 1.0f);
+        
+        private F32 CheckBeginPrimant => hitBoxCheckTime.x;
+        private F32 CheckEndPrimant   => hitBoxCheckTime.y;
+        
+        #if ODIN_INSPECTOR
+        [FoldoutGroup(groupName: "Check")]
+        [LabelWidth(width: 120)]
+        #endif
+        [SerializeField] private F32x3 startPosition = F32x3.zero;
+        
+        #if ODIN_INSPECTOR
+        [FoldoutGroup(groupName: "Check")]
+        [LabelWidth(width: 120)]
+        #endif
+        [SerializeField] private F32x3 endPosition   = F32x3.zero;
         
         // #if ODIN_INSPECTOR
         // [FoldoutGroup("Check")]
@@ -178,74 +193,74 @@ namespace Bonkers
         
         #endregion
         
-        #if ODIN_INSPECTOR
-        [FoldoutGroup("Knockback")]
-        [LabelWidth(120)]
-        #endif
-        [SerializeField] private F32x3 knockback       = Vector3.zero;
-        
-        // [Min(min: 0.0f)]
-        // [SerializeField] private F32   hitStunDuration = 0.0f;
-
-        #region Hit Stun
-        
-        #if ODIN_INSPECTOR
-        [FoldoutGroup("Knockback")] [LabelText(text: "Stun Duration")] [LabelWidth(120)]
-        [SuffixLabel(label: "seconds", overlay: true)] [MinValue(minValue: 0.00f)]
-        #endif
-        [SerializeField] private F32 hitStunDurationSeconds = 0f;
-
         // #if ODIN_INSPECTOR
-        // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.6f)] [LabelText(text: "Stun Duration")] [LabelWidth(120)]
-        // [SerializeField] private TimingMode hitStunDurationMode = TimingMode.Seconds;
+        // [FoldoutGroup("Knockback")]
+        // [LabelWidth(120)]
         // #endif
+        // [SerializeField] private F32x3 knockback       = Vector3.zero;
+        //
+        // // [Min(min: 0.0f)]
+        // // [SerializeField] private F32   hitStunDuration = 0.0f;
+        //
+        // #region Hit Stun
         //
         // #if ODIN_INSPECTOR
-        // [ShowIf(condition: nameof(HitStunDurationModeIsFrames))]
-        // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.4f)] [HideLabel]
-        // [SuffixLabel(label: "frames", overlay: true)]
-        // #endif
-        // [SerializeField] private U16 hitStunDurationFrames = 0;
-        //
-        // #if ODIN_INSPECTOR
-        // [ShowIf(condition: nameof(HitStunDurationModeIsSeconds))]
-        // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.4f)] [HideLabel]
+        // [FoldoutGroup("Knockback")] [LabelText(text: "Stun Duration")] [LabelWidth(120)]
         // [SuffixLabel(label: "seconds", overlay: true)] [MinValue(minValue: 0.00f)]
         // #endif
         // [SerializeField] private F32 hitStunDurationSeconds = 0f;
         //
-        // #if ODIN_INSPECTOR
-        // [ShowIf(condition: nameof(HitStunDurationModeIsPrimant))]
-        // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.4f)] [HideLabel]
-        // //[SuffixLabel(label: "primant", overlay: true)] 
-        // #endif
-        // [Range(min: 0, max: 1)]
-        // [SerializeField] private F32 hitStunDurationPrimant = 0f;
+        // // #if ODIN_INSPECTOR
+        // // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.6f)] [LabelText(text: "Stun Duration")] [LabelWidth(120)]
+        // // [SerializeField] private TimingMode hitStunDurationMode = TimingMode.Seconds;
+        // // #endif
+        // //
+        // // #if ODIN_INSPECTOR
+        // // [ShowIf(condition: nameof(HitStunDurationModeIsFrames))]
+        // // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.4f)] [HideLabel]
+        // // [SuffixLabel(label: "frames", overlay: true)]
+        // // #endif
+        // // [SerializeField] private U16 hitStunDurationFrames = 0;
+        // //
+        // // #if ODIN_INSPECTOR
+        // // [ShowIf(condition: nameof(HitStunDurationModeIsSeconds))]
+        // // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.4f)] [HideLabel]
+        // // [SuffixLabel(label: "seconds", overlay: true)] [MinValue(minValue: 0.00f)]
+        // // #endif
+        // // [SerializeField] private F32 hitStunDurationSeconds = 0f;
+        // //
+        // // #if ODIN_INSPECTOR
+        // // [ShowIf(condition: nameof(HitStunDurationModeIsPrimant))]
+        // // [HorizontalGroup(@group: "Knockback/HitStunDuration", width: 0.4f)] [HideLabel]
+        // // //[SuffixLabel(label: "primant", overlay: true)] 
+        // // #endif
+        // // [Range(min: 0, max: 1)]
+        // // [SerializeField] private F32 hitStunDurationPrimant = 0f;
+        // //
+        // // private Bool HitStunDurationModeIsFrames  => hitStunDurationMode == TimingMode.Frames;
+        // // private Bool HitStunDurationModeIsSeconds => hitStunDurationMode == TimingMode.Seconds;
+        // // private Bool HitStunDurationModeIsPrimant => hitStunDurationMode == TimingMode.PrimantOfAnimation;
         //
-        // private Bool HitStunDurationModeIsFrames  => hitStunDurationMode == TimingMode.Frames;
-        // private Bool HitStunDurationModeIsSeconds => hitStunDurationMode == TimingMode.Seconds;
-        // private Bool HitStunDurationModeIsPrimant => hitStunDurationMode == TimingMode.PrimantOfAnimation;
-
-        #endregion
+        // #endregion
 
         #region Callbacks
         
         #if ODIN_INSPECTOR
-        [field:FoldoutGroup("Callbacks")]
+        [field:FoldoutGroup(groupName: "Callbacks")]
         #endif
-        [field:Tooltip("Collider[] is the array of colliders that were hit. F32x3 is the position of the hit.")]
+        [field:Tooltip(tooltip: "Collider[] is the array of colliders that were hit. F32x3 is the position of the hit.")]
         [field:SerializeField] public UltEvent<Collider[], F32x3> OnHit { get; private set; } = null;
         
         #if ODIN_INSPECTOR
-        [field:FoldoutGroup("Callbacks")]
+        [field:FoldoutGroup(groupName: "Callbacks")]
         #endif
-        [field:Tooltip("Collider[] is the array of colliders that were hit. F32x3 is the position of the hit.")]
+        [field:Tooltip(tooltip: "Collider[] is the array of colliders that were hit. F32x3 is the position of the hit.")]
         [field:SerializeField] public UltEvent<Animator, AnimatorStateInfo> OnCheckStart { get; private set; } = null;
         
         #if ODIN_INSPECTOR
-        [field:FoldoutGroup("Callbacks")]
+        [field:FoldoutGroup(groupName: "Callbacks")]
         #endif
-        [field:Tooltip("Collider[] is the array of colliders that were hit. F32x3 is the position of the hit.")]
+        [field:Tooltip(tooltip: "Collider[] is the array of colliders that were hit. F32x3 is the position of the hit.")]
         [field:SerializeField] public UltEvent<Animator, AnimatorStateInfo> OnCheckEnd   { get; private set; } = null;
 
         #endregion
@@ -279,9 +294,9 @@ namespace Bonkers
             
             
             //Make sure the hitstun duration is at least 0 frame long, or 0.01 seconds long for seconds and primant.
-            //hitStunDurationFrames  = (U16)math.max(x: 0,  y: hitStunDurationFrames);
-            hitStunDurationSeconds = (F32)math.max(x: 0f, y: hitStunDurationSeconds);
-            //hitStunDurationPrimant = (F32)math.clamp(valueToClamp: hitStunDurationPrimant, lowerBound: 0f, upperBound: 1f);
+            // hitStunDurationFrames  = (U16)math.max(x: 0,  y: hitStunDurationFrames);
+            // hitStunDurationSeconds = (F32)math.max(x: 0f, y: hitStunDurationSeconds);
+            // hitStunDurationPrimant = (F32)math.clamp(valueToClamp: hitStunDurationPrimant, lowerBound: 0f, upperBound: 1f);
             
             //TODO: Make max clamped to the end of the animation.
             
@@ -294,11 +309,11 @@ namespace Bonkers
             
             if(hitBoxCheckTime != _hitBoxCheckTimeOld)
             {
-                if(!Mathf.Approximately(hitBoxCheckTime.x, _hitBoxCheckTimeOld.x))
+                if(!Mathf.Approximately(a: hitBoxCheckTime.x, b: _hitBoxCheckTimeOld.x))
                 {
                     AnimationExtensions.Scrub(stateMachineBehaviour: this, animTimePrimantissa: hitBoxCheckTime.x);
                 }
-                else if(!Mathf.Approximately(hitBoxCheckTime.y, _hitBoxCheckTimeOld.y))
+                else if(!Mathf.Approximately(a: hitBoxCheckTime.y, b: _hitBoxCheckTimeOld.y))
                 {
                     AnimationExtensions.Scrub(stateMachineBehaviour: this, animTimePrimantissa: hitBoxCheckTime.y);
                 }
@@ -338,10 +353,32 @@ namespace Bonkers
 
             
         }
+        
+        private Bool _isChecking = false;
 
         /// <summary> OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks </summary>
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
+            F32 __normalizedTime     = stateInfo.normalizedTime;
+            F32 __currentAnimPrimant = __normalizedTime % 1.0f;
+            
+            if ((__normalizedTime >= CheckEndPrimant)   && _isChecking == false)
+            {
+                _isChecking = true;
+                OnCheckStart.Invoke(parameter0: animator, parameter1: stateInfo);
+            }
+            if ((__normalizedTime >= CheckBeginPrimant) && _isChecking == true)
+            {
+                _isChecking = false;
+                OnCheckEnd.Invoke(parameter0: animator, parameter1: stateInfo);
+            }
+
+            if (_isChecking)
+            {
+                F32 __checkPrimant = math.remap(srcStart: CheckBeginPrimant, srcEnd: CheckEndPrimant, dstStart: 0.0f, dstEnd: 1.0f, x: __currentAnimPrimant);
+                
+                
+            }
             
         }
         
