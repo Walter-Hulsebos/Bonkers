@@ -25,7 +25,7 @@ namespace Bonkers
         private void LaunchPlayer(PlayerStateMachine stateMachine)
         {
             stateMachine.Motor.ForceUnground(time: 0.1f);
-            stateMachine.AddVelocity(Vector3.up * launchForce);
+            stateMachine.AddVelocity(Vector3.up + Vector3.back * launchForce);
         }
     }
 }
