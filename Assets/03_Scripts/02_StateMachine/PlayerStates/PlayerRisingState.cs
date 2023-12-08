@@ -26,6 +26,7 @@ public sealed class PlayerRisingState : PlayerBaseState
     {
         //Debug.Log("Entering Rising State");
         _currentYVelocity = Ctx.Motor.BaseVelocity.y; //Should be 0 when entering falling state but just in case
+        Debug.Log("I am rising papi");
     }
     public override void ExitState()
     {
@@ -41,9 +42,11 @@ public sealed class PlayerRisingState : PlayerBaseState
     {   
         //use verlet intergration 
         //TODO: Evaluate if using _currentYVelocity is correct here, since it isn't shared with the Falling state.
-        float __previousYVelocity = _currentYVelocity;
-        _currentYVelocity += (Ctx.Gravity * Time.deltaTime);
-        currentVelocity.y = max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
+        // float __previousYVelocity = _currentYVelocity;
+        // _currentYVelocity += (Ctx.Gravity * Time.deltaTime);
+        // currentVelocity.y = max((__previousYVelocity + _currentYVelocity) * 0.5f, -MAX_FALL_SPEED);
+        
+        currentVelocity.y -= 30 * deltaTime;
     }
     
     protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime) { }

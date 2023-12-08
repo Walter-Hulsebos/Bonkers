@@ -9,9 +9,9 @@
 
     public sealed class IsOwnerActions : NetworkBehaviour
     {
-        [SerializeField] private UltEvent[] isOwnerSpawnActions = Array.Empty<UltEvent>();
+        [SerializeField] private UltEvent isOwnerSpawnActions   = new ();
         
-        [SerializeField] private UltEvent[] isOwnerDespawnActions = Array.Empty<UltEvent>();
+        [SerializeField] private UltEvent isOwnerDespawnActions = new ();
         
         public override void OnNetworkSpawn()
         {
@@ -19,10 +19,7 @@
             
             if (!IsOwner) return;
             
-            foreach (UltEvent __action in isOwnerSpawnActions)
-            {
-                __action?.Invoke();
-            }
+            isOwnerSpawnActions?.Invoke();
         }
         
         public override void OnNetworkDespawn()
@@ -31,10 +28,7 @@
             
             if (!IsOwner) return;
             
-            foreach (UltEvent __action in isOwnerDespawnActions)
-            {
-                __action?.Invoke();
-            }
+            isOwnerDespawnActions?.Invoke();
         }
     }
 }

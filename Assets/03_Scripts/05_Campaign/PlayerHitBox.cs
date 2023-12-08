@@ -58,6 +58,7 @@ namespace Bonkers
                         default:
                             break;
                     }
+                    gameObject.GetComponentInParent<Animator>().Play("BasicAttack 1");
                 }
 
             }
