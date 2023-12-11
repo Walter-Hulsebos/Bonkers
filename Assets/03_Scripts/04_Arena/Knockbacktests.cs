@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Bonkers
 {
-    public class JumpBoost : MonoBehaviour
+    public class Knockbacktests : MonoBehaviour
     {
  [SerializeField] private float launchForce = 50;
         
@@ -24,8 +24,13 @@ namespace Bonkers
 
         private void LaunchPlayer(PlayerStateMachine stateMachine)
         {
-            stateMachine.Motor.ForceUnground(time: 0.1f);
-            stateMachine.AddVelocity(Vector3.up * launchForce);
+        stateMachine.Motor.ForceUnground(time: 0.1f);
+        Vector3 backwardForce = -stateMachine.transform.forward * launchForce;
+        Vector3 launchForceVector = Vector3.up * launchForce + backwardForce;
+
+       // Vector3 launchDirection = (stateMachine.transform.position - launchOrigin).normalized;
+       // Vector3 launchForceVector = launchDirection * launchForce;
+        stateMachine.AddVelocity(launchForceVector);
         }
     }
 }
