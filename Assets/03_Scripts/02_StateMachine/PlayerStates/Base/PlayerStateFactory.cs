@@ -1,5 +1,3 @@
-using Bonkers._02_StateMachine.States;
-
 public class PlayerStateFactory
 {
     private PlayerStateMachine context;
@@ -27,11 +25,11 @@ public class PlayerStateFactory
         return new PlayerJumpState(currentContext: context, playerStateFactory: this);
     }
 
-    public PlayerBaseState ExtraJump()
+    public PlayerBaseState KnockBack() 
     {
-        return new PlayerExtraJumpState(currentContext: context, playerStateFactory: this);
+        return new PlayerKnockbackState(currentContext: context, playerStateFactory: this);
     }
-
+    
     public PlayerBaseState Air() 
     {
         return new PlayerAirState(currentContext: context, playerStateFactory: this);
