@@ -22,9 +22,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Crane
   m_Shader: {fileID: -6465566751694194690, guid: f1122347c983a5d48902bfc0cca18949, type: 3}
-  m_Parent: {fileID: 2100000, guid: 2ce5bfa414a75cb4f85266dec92105b1, type: 2}
+  m_Parent: {fileID: 2100000, guid: 1b67c608ae44fa644a2462679a46bfbe, type: 2}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _FRESNEL
+  - _SPECULAR
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -41,6 +43,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _QueueControl: 0
     m_Colors: []
   m_BuildTextureStacks: []
