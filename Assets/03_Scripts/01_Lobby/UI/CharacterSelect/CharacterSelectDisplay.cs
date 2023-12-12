@@ -13,8 +13,8 @@ public class CharacterSelectDisplay : NetworkBehaviour
     [Header("References")]
     [SerializeField] private CharacterDatabase characterDatabase;
 
-    [SerializeField] private Transform             charactersHolder;
-    [SerializeField] private CharacterSelectButton selectButtonPrefab;
+    //[SerializeField] private Transform             charactersHolder;
+    //[SerializeField] private CharacterSelectButton selectButtonPrefab;
     [SerializeField] private PlayerCard[]          playerCards;
     [SerializeField] private GameObject            characterInfoPanel;
     [SerializeField] private TMP_Text              characterNameText;
@@ -36,12 +36,12 @@ public class CharacterSelectDisplay : NetworkBehaviour
         {
             Character[] allCharacters = characterDatabase.GetAllCharacters();
 
-            foreach (Character character in allCharacters)
-            {
-                CharacterSelectButton selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
-                selectbuttonInstance.SetCharacter(this, character);
-                characterButtons.Add(selectbuttonInstance);
-            }
+            //foreach (Character character in allCharacters)
+            //{
+            //    CharacterSelectButton selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
+            //    selectbuttonInstance.SetCharacter(this, character);
+            //    characterButtons.Add(selectbuttonInstance);
+            //}
 
             players.OnListChanged += HandlePlayersStateChanged;
         }
