@@ -15,6 +15,7 @@ using static ProjectDawn.Mathematics.math2;
 
 using F32   = System.Single;
 using F32x3 = Unity.Mathematics.float3;
+using KinematicCharacterController;
 
 public sealed class PlayerAirState : PlayerBaseState
 {
@@ -25,6 +26,7 @@ public sealed class PlayerAirState : PlayerBaseState
     [SerializeField] private F32 accSpeed          = 15f;
     [SerializeField] private F32 drag              = 0.1f;
     [SerializeField] private F32 orientSharpness   = 20f;
+    [SerializeField] private bool canWallJump = false;
     
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
@@ -121,11 +123,21 @@ public sealed class PlayerAirState : PlayerBaseState
         // Set the current rotation (which will be used by the KinematicCharacterMotor)
         currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: Ctx.Motor.CharacterUp);
     }
-    
+    protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+    {
+        base.OnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
+
+        /*if(put your parameters here so it knows when you can wall jump)
+        {
+            canWallJump = true;
+        }*/
+    }
+
+
     #endregion
 
     #region Switch States
-    
+
     public override void CheckSwitchStates() 
     {
         if(Ctx.Motor.GroundingStatus.IsStableOnGround)
@@ -142,14 +154,12 @@ public sealed class PlayerAirState : PlayerBaseState
             {
                 SwitchSubState(_subStateRising);
             }
-            
-            
-            if (Ctx.JumpRequested)
+            else if (canWallJump)
             {
-                //Double Jump
+                SwitchState(Factory.WallJump());
             }
         }
     }
-    
+
     #endregion
 }
