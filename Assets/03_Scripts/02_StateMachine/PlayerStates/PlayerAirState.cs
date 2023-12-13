@@ -27,9 +27,12 @@ public sealed class PlayerAirState : PlayerBaseState
     [SerializeField] private F32 drag              = 0.1f;
     [SerializeField] private F32 orientSharpness   = 20f;
     [SerializeField] private bool canWallJump = false;
+
+
     
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
+    private PlayerBaseState _subStateWallJump;
 
     #endregion
 
@@ -42,6 +45,7 @@ public sealed class PlayerAirState : PlayerBaseState
         
         _subStateFalling = Factory.Falling();
         _subStateRising  = Factory.Rising();
+        _subStateWallJump = Factory.WallJump();
     }
 
     #endregion
@@ -127,10 +131,11 @@ public sealed class PlayerAirState : PlayerBaseState
     {
         base.OnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
 
-        /*if(put your parameters here so it knows when you can wall jump)
+        if (hitCollider.CompareTag("WallTest"))
         {
             canWallJump = true;
-        }*/
+            SwitchState(Factory.WallJump());
+        }
     }
 
 
@@ -154,9 +159,9 @@ public sealed class PlayerAirState : PlayerBaseState
             {
                 SwitchSubState(_subStateRising);
             }
-            else if (canWallJump)
+             else if (canWallJump)
             {
-                SwitchState(Factory.WallJump());
+                SwitchSubState(_subStateWallJump);
             }
         }
     }
