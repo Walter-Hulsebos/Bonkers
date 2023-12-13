@@ -112,7 +112,5 @@ namespace Bonkers
             audioMixer.SetFloat("volume", Mathf.Log10(newVolume) * 10);
         }
 
-
-        public void ShowOffScene() { SceneManager.LoadSceneAsync("ShowOffScene"); }
     }
 }
