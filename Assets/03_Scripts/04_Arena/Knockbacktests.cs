@@ -24,13 +24,14 @@ namespace Bonkers
 
         private void LaunchPlayer(PlayerStateMachine stateMachine)
         {
-        stateMachine.Motor.ForceUnground(time: 0.1f);
-        Vector3 backwardForce = -stateMachine.transform.forward * launchForce;
-        Vector3 launchForceVector = Vector3.up * launchForce + backwardForce;
+    stateMachine.Motor.ForceUnground(time: 0.1f);
 
-       // Vector3 launchDirection = (stateMachine.transform.position - launchOrigin).normalized;
-       // Vector3 launchForceVector = launchDirection * launchForce;
-        stateMachine.AddVelocity(launchForceVector);
+    // Use the collider's rotation instead of the player's rotation
+    Vector3 launchDirection = transform.rotation * Vector3.forward;
+
+    Vector3 launchForceVector = Vector3.up * launchForce + launchDirection * launchForce;
+
+    stateMachine.AddVelocity(launchForceVector);
         }
     }
 }

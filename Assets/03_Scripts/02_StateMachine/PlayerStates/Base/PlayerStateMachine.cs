@@ -131,7 +131,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     [field: SerializeField] public PlayerData Data { get; [UsedImplicitly] private set; }
 
-   // public GameObject KnockBackPlane;
+    public GameObject KnockBackPlane;
 
 #if UNITY_EDITOR
     protected virtual void Reset()
