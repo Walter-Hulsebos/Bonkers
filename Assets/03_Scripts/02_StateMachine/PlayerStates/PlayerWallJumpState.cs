@@ -16,6 +16,14 @@ public sealed class PlayerWallJumpState : PlayerBaseState
 
     private Bool _hasWallJumped = false;
 
+    private bool canSwitchAir = false;
+
+    private float upwardsSpeed = 10;
+    private float forwardSpeed = 10;
+
+    private float timer = 10;
+    private float timePassed;
+
     #endregion
 
     #region Constructor
@@ -45,8 +53,18 @@ public sealed class PlayerWallJumpState : PlayerBaseState
     #region Update
 
     protected override void UpdateVelocity(ref Vector3 currentVelocity, F32 deltaTime)
-    {
-       
+    { 
+        Vector3 velocityDirection = Ctx.Motor.CharacterForward;
+        currentVelocity = new Vector3(0, 1 * upwardsSpeed, 0) + velocityDirection * upwardsSpeed;
+
+       //WallJumpTimer
+        timePassed++;
+        Debug.Log(timePassed);
+        if (timePassed >= timer)
+        {
+            Debug.Log(canSwitchAir);
+            canSwitchAir = true;
+        }
     }
 
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
@@ -61,7 +79,7 @@ public sealed class PlayerWallJumpState : PlayerBaseState
     public override void CheckSwitchStates()
     {
         // When the character touches the wall, he is automatically jumping from its surface.
-        if (_hasWallJumped)
+        if (canSwitchAir == true)
         {
             SwitchState(Factory.Air());
         }
@@ -69,10 +87,9 @@ public sealed class PlayerWallJumpState : PlayerBaseState
         {
             SwitchState(Factory.Grounded());
         }
-        else if (!Ctx.WallJumpRequested && !Ctx.Motor.GroundingStatus.IsStableOnGround){
-            SwitchState(Factory.Jump());
-        }
     }
+
+
 
     #endregion
 

@@ -30,7 +30,7 @@ public sealed class PlayerAirState : PlayerBaseState
     [SerializeField] private F32 accSpeed          = 15f;
     [SerializeField] private F32 drag              = 0.1f;
     [SerializeField] private F32 orientSharpness   = 20f;
-    [SerializeField] private bool canWallJump = false;
+    
 
 
     
@@ -133,17 +133,7 @@ public sealed class PlayerAirState : PlayerBaseState
         currentVelocity += (Vector3)__addedVelocity;
     }
 
-    protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
-    {
-        if (hitCollider.CompareTag("WallTest"))
-        {
-            Debug.Log("Player on wall");
-
-            // Transition to the wall slide state
-            EnableWallSliding = true;
-        }
-    }
-
+    
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
     {
         if(lengthsq(Ctx.LookInputVector).Approx(0f)) return;
@@ -164,11 +154,11 @@ public sealed class PlayerAirState : PlayerBaseState
 
         if (hitCollider.CompareTag("WallTest"))
         {
-            canWallJump = true;
-            SwitchState(Factory.WallJump());
+             // Transition to the wall slide state
+            EnableWallSliding = true;
+            Debug.Log("Player on wall");            
         }
     }
-
 
     #endregion
 
@@ -189,10 +179,6 @@ public sealed class PlayerAirState : PlayerBaseState
             else if (Ctx.IsRising)
             {
                 SwitchSubState(_subStateRising);
-            }
-             else if (canWallJump)
-            {
-                SwitchSubState(_subStateWallJump);
             }
 
             //Initiating double jump
