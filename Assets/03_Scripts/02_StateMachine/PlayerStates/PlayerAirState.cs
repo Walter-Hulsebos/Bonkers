@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 //For Double Jump Controlls
 using UnityEngine.InputSystem;
@@ -19,6 +19,7 @@ using static ProjectDawn.Mathematics.math2;
 using F32   = System.Single;
 using F32x3 = Unity.Mathematics.float3;
 using Bonkers.Controls;
+using KinematicCharacterController;
 
 public sealed class PlayerAirState : PlayerBaseState
 {
@@ -30,14 +31,22 @@ public sealed class PlayerAirState : PlayerBaseState
     [SerializeField] private F32 drag              = 0.1f;
     [SerializeField] private F32 orientSharpness   = 20f;
     
+
+
+    
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
+    private PlayerBaseState _subStateWallJump;
 
     //Double Jump Requirements
     public Controls playerControls;
     public InputAction doubleJumpAction;
 
     private bool DoubleJumpAvailable;
+
+    //Wall Sliding Requirements
+    private bool EnableWallSliding;
+
     #endregion
 
     #region Constructor
@@ -49,6 +58,7 @@ public sealed class PlayerAirState : PlayerBaseState
         
         _subStateFalling = Factory.Falling();
         _subStateRising  = Factory.Rising();
+        _subStateWallJump = Factory.WallJump();
     }
 
     #endregion
@@ -123,6 +133,7 @@ public sealed class PlayerAirState : PlayerBaseState
         currentVelocity += (Vector3)__addedVelocity;
     }
 
+    
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
     {
         if(lengthsq(Ctx.LookInputVector).Approx(0f)) return;
@@ -137,11 +148,22 @@ public sealed class PlayerAirState : PlayerBaseState
         // Set the current rotation (which will be used by the KinematicCharacterMotor)
         currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: Ctx.Motor.CharacterUp);
     }
-    
+    protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+    {
+        base.OnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
+
+        if (hitCollider.CompareTag("WallTest"))
+        {
+             // Transition to the wall slide state
+            EnableWallSliding = true;
+            Debug.Log("Player on wall");            
+        }
+    }
+
     #endregion
 
     #region Switch States
-    
+
     public override void CheckSwitchStates() 
     {
         if(Ctx.Motor.GroundingStatus.IsStableOnGround)
@@ -159,7 +181,6 @@ public sealed class PlayerAirState : PlayerBaseState
                 SwitchSubState(_subStateRising);
             }
 
-
             //Initiating double jump
             doubleJumpAction.started += Button =>
             {
@@ -173,8 +194,14 @@ public sealed class PlayerAirState : PlayerBaseState
                     SwitchState(Factory.ExtraJump());
                 }
             };
+
+            //Initiating wall sliding
+            if(EnableWallSliding == true)
+            {
+                SwitchState(Factory.WallSliding());
+            }
         }
     }
-    
+
     #endregion
 }
