@@ -10,6 +10,11 @@ public class PlayerRespawn : MonoBehaviour
     public int maxRespawns;
     private int remainingRespawns;
 
+    private void Start()
+    {
+        remainingRespawns = maxRespawns;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
