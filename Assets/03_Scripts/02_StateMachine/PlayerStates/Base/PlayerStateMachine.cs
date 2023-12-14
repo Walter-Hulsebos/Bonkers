@@ -31,6 +31,7 @@ using I32x3 = Unity.Mathematics.int3;
 using Bool  = System.Boolean;
 using Rotor = Unity.Mathematics.quaternion;
 using JetBrains.Annotations;
+using Bonkers.Controls;
 
 public class PlayerStateMachine : MonoBehaviour, ICharacterController
 {
@@ -122,11 +123,15 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32  TimeSinceJumpRequested  { get; internal set; } = Infinity;
     public F32  TimeSinceLastAbleToJump { get; internal set; } = 0f;
 
+    public bool DoubleJumpAvailable;
+
     public Bool CanJumpAgain => (TimeSinceLastAbleToJump <= JumpPostGroundingGraceTime);
 
     public F32 Gravity { get ; set; }
 
     [field: SerializeField] public PlayerData Data { get; [UsedImplicitly] private set; }
+
+   // public GameObject KnockBackPlane;
 
 #if UNITY_EDITOR
     protected virtual void Reset()
