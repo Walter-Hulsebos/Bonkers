@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SelectButtonFirst : MonoBehaviour
 {
-    [SerializeField] 
+    [SerializeField]
     private GameObject firstSelectedButton;
     [SerializeField]
     private GameObject backButton;
@@ -14,6 +14,16 @@ public class SelectButtonFirst : MonoBehaviour
     [SerializeField]
     private GameObject StartingScreen;
 
+    [SerializeField]
+    private bool instantFirstButton;
+
+    private void Awake()
+    {
+        if (instantFirstButton)
+        {
+            SetSelectedFirst();
+        }
+    }
     //void Start()
     //{
     //    // Check if a button is specified as the first selected button
@@ -32,6 +42,7 @@ public class SelectButtonFirst : MonoBehaviour
     //        }
     //    }
     //}
+
 
     //GameObject FindDefaultButton()
     //{

@@ -13,16 +13,18 @@ public class CharacterSelectDisplay : NetworkBehaviour
     [Header("References")]
     [SerializeField] private CharacterDatabase characterDatabase;
 
-    [SerializeField] private Transform             charactersHolder;
-    [SerializeField] private CharacterSelectButton selectButtonPrefab;
+    //[SerializeField] private Transform             charactersHolder;
+    //[SerializeField] private CharacterSelectButton selectButtonPrefab;
     [SerializeField] private PlayerCard[]          playerCards;
     [SerializeField] private GameObject            characterInfoPanel;
     [SerializeField] private TMP_Text              characterNameText;
-    [SerializeField] private Transform             introSpawnPoint;
     [SerializeField] private TMP_Text              joinCodeText;
     [SerializeField] private Button                lockInButton;
 
-    private GameObject                        introInstance;
+    // THIS code is obsolete but im keeping it just in case (BOBI)
+    // [SerializeField] private Transform             introSpawnPoint;
+    // private GameObject                        introInstance;
+
     private List<CharacterSelectButton>       characterButtons = new ();
     private NetworkList<CharacterSelectState> players;
 
@@ -34,12 +36,12 @@ public class CharacterSelectDisplay : NetworkBehaviour
         {
             Character[] allCharacters = characterDatabase.GetAllCharacters();
 
-            foreach (Character character in allCharacters)
-            {
-                CharacterSelectButton selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
-                selectbuttonInstance.SetCharacter(this, character);
-                characterButtons.Add(selectbuttonInstance);
-            }
+            //foreach (Character character in allCharacters)
+            //{
+            //    CharacterSelectButton selectbuttonInstance = Instantiate(selectButtonPrefab, charactersHolder);
+            //    selectbuttonInstance.SetCharacter(this, character);
+            //    characterButtons.Add(selectbuttonInstance);
+            //}
 
             players.OnListChanged += HandlePlayersStateChanged;
         }
@@ -96,9 +98,11 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
         characterInfoPanel.SetActive(true);
 
-        if (introInstance != null) { Destroy(introInstance); }
+        // THIS code is obsolete but im keeping it just in case (BOBI)
 
-        introInstance = Instantiate(character.IntroPrefab, introSpawnPoint);
+        //if (introInstance != null) { Destroy(introInstance); }
+
+        //introInstance = Instantiate(character.IntroPrefab, introSpawnPoint);
 
         SelectServerRpc(character.Id);
     }

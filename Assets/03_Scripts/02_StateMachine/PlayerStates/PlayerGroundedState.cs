@@ -93,6 +93,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
         Debug.Log($"Entering Grounded State - frame ({Time.frameCount})", context: Ctx);
         
         _isKnockedBack = false;
+        Ctx.DoubleJumpAvailable = true;
     }
 
     public override void ExitState()
