@@ -1,4 +1,7 @@
-﻿using System;
+using System;
+
+//For Double Jump Controlls
+using UnityEngine.InputSystem;
 
 //using Bonkers.Characters;
 
@@ -15,6 +18,7 @@ using static ProjectDawn.Mathematics.math2;
 
 using F32   = System.Single;
 using F32x3 = Unity.Mathematics.float3;
+using Bonkers.Controls;
 using KinematicCharacterController;
 
 public sealed class PlayerAirState : PlayerBaseState
@@ -33,6 +37,15 @@ public sealed class PlayerAirState : PlayerBaseState
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
     private PlayerBaseState _subStateWallJump;
+
+    //Double Jump Requirements
+    public Controls playerControls;
+    public InputAction doubleJumpAction;
+
+    private bool DoubleJumpAvailable;
+
+    //Wall Sliding Requirements
+    private bool EnableWallSliding;
 
     #endregion
 
@@ -54,6 +67,12 @@ public sealed class PlayerAirState : PlayerBaseState
     
     public override void EnterState() 
     {
+        //set input actions
+        playerControls = new Controls();
+
+        doubleJumpAction = playerControls.Gameplay.Jump;
+        doubleJumpAction.Enable();
+
         //Debug.Log("Entering Air State");
         Debug.Log("Has entered into Air state");
     }
@@ -62,6 +81,7 @@ public sealed class PlayerAirState : PlayerBaseState
     {
         //Debug.Log("Exiting Air State");
         Debug.Log("Exiting Air State");
+        doubleJumpAction.Disable();
     }
 
     #endregion
@@ -113,6 +133,17 @@ public sealed class PlayerAirState : PlayerBaseState
         currentVelocity += (Vector3)__addedVelocity;
     }
 
+    protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+    {
+        if (hitCollider.CompareTag("WallTest"))
+        {
+            Debug.Log("Player on wall");
+
+            // Transition to the wall slide state
+            EnableWallSliding = true;
+        }
+    }
+
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
     {
         if(lengthsq(Ctx.LookInputVector).Approx(0f)) return;
@@ -162,6 +193,26 @@ public sealed class PlayerAirState : PlayerBaseState
              else if (canWallJump)
             {
                 SwitchSubState(_subStateWallJump);
+            }
+
+            //Initiating double jump
+            doubleJumpAction.started += Button =>
+            {
+                Debug.Log("Jumped");
+                Debug.Log(Ctx.DoubleJumpAvailable + " doubleJump");
+                if (Ctx.DoubleJumpAvailable == true)
+                {
+                    Debug.Log("JumpedAgain");
+
+                    Ctx.DoubleJumpAvailable = false;
+                    SwitchState(Factory.ExtraJump());
+                }
+            };
+
+            //Initiating wall sliding
+            if(EnableWallSliding == true)
+            {
+                SwitchState(Factory.WallSliding());
             }
         }
     }
