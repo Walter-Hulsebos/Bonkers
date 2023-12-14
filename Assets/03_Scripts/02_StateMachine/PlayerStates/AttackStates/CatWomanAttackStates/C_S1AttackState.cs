@@ -16,6 +16,7 @@ using static ProjectDawn.Mathematics.math2;
 using F32 = System.Single;
 using F32x3 = Unity.Mathematics.float3;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 
 [Serializable]
 public sealed class C_S1AttackState : PlayerBaseState
@@ -24,8 +25,24 @@ public sealed class C_S1AttackState : PlayerBaseState
     private InSpecial1 inSpecial1;
     #endregion
 
+    #region
+    private bool _isPlayerEnemyInTrigger = false;
+    private GameObject _enemyCharacter;
+    #endregion
+
     #region Constructor
-    public C_S1AttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
+    public C_S1AttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
+    {
+        currentContext.OnTriggerEnterEvent += OnTriggerEnter;
+        currentContext.OnTriggerStayEvent += OnTriggerStay;
+        currentContext.OnTriggerExitEvent += OnTriggerExit;
+    }
+    ~C_S1AttackState()
+    {
+        Ctx.OnTriggerEnterEvent -= OnTriggerEnter;
+        Ctx.OnTriggerStayEvent -= OnTriggerStay;
+        Ctx.OnTriggerExitEvent -= OnTriggerExit;
+    }
 
     #endregion
     private enum InSpecial1
@@ -45,6 +62,21 @@ public sealed class C_S1AttackState : PlayerBaseState
     {
         inSpecial1 = InSpecial1.Special1;
         // do your special here 
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+
+    }
+
+    void OnTriggerStay(Collider collider)
+    {
+
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+
     }
 
     #region Updates

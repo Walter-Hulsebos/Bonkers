@@ -22,10 +22,26 @@ public sealed class C_S2AttackState : PlayerBaseState
 {
     #region Enums
     private InSpecial2 inSpecial2;
-#endregion
+    #endregion
+
+    #region
+    private bool _isPlayerEnemyInTrigger = false;
+    private GameObject _enemyCharacter;
+    #endregion
 
     #region Constructor
-    public C_S2AttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
+    public C_S2AttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
+    {
+        currentContext.OnTriggerEnterEvent += OnTriggerEnter;
+        currentContext.OnTriggerStayEvent += OnTriggerStay;
+        currentContext.OnTriggerExitEvent += OnTriggerExit;
+    }
+    ~C_S2AttackState()
+    {
+        Ctx.OnTriggerEnterEvent -= OnTriggerEnter;
+        Ctx.OnTriggerStayEvent -= OnTriggerStay;
+        Ctx.OnTriggerExitEvent -= OnTriggerExit;
+    }
 
     #endregion
     private enum InSpecial2
@@ -45,6 +61,21 @@ public sealed class C_S2AttackState : PlayerBaseState
     {
         inSpecial2 = InSpecial2.Special2;
         // do your special here 
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+
+    }
+
+    void OnTriggerStay(Collider collider)
+    {
+
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+
     }
 
     #region Updates
