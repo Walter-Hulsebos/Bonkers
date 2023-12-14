@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Bonkers
@@ -9,11 +7,16 @@ namespace Bonkers
     {
         private Timer matchCountdownTimer;
 
+        /// <summary>
+        /// Called when scene started
+        /// </summary>
         public void Start()
         {
             matchCountdownTimer = new Timer();
         }
-
+        /// <summary>
+        /// Called every frame
+        /// </summary>
         public void Update()
         {
             if (matchCountdownTimer.isActive && matchCountdownTimer.TimerDone())
@@ -25,6 +28,7 @@ namespace Bonkers
 
         /// <summary>
         /// Get the remaining time of the match countdown timer.
+        /// Please dont call this in Update (Rather every second or half a second)
         /// </summary>
         public float GetRemainingTime()
         {
@@ -35,7 +39,7 @@ namespace Bonkers
         /// Start the countdown Timer
         /// </summary>
         /// <param name="_amountInSeconds"></param>
-        public void StartMatchCountdown(int _amountInSeconds)
+        public void StartMatchCountdown(int _amountInSeconds = 600)
         {
             matchCountdownTimer.SetTimer(_amountInSeconds);
         }
@@ -43,6 +47,7 @@ namespace Bonkers
 
         /// <summary>
         /// Get the remaining time of the match countdown timer in format to use in UI. Format: 00:00
+        /// Please dont call this in Update (Rather every second or half a second)
         /// </summary>
         /// <returns></returns>
         public string GetRemainingTimeFormatted()
@@ -53,7 +58,7 @@ namespace Bonkers
         }
 
         /// <summary>
-        /// Get Timer Progress
+        /// Get Timer Progress.
         /// </summary>
         /// <returns></returns>
         public float TimerProgress()
@@ -72,8 +77,8 @@ namespace Bonkers
         }
 
         /// <summary>
-        /// Method call for pausing the match count down timer
-        /// </summary>
+        /// Method call for pausing the match count down timer.
+        /// </summary>01
         /// <param name="_value"></param>
         public void PauseTimer(bool _value)
         {
