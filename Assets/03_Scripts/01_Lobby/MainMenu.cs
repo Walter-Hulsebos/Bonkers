@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.Events;
+using TMPro;
 
 namespace Bonkers
 {
@@ -16,6 +17,7 @@ namespace Bonkers
         [SerializeField] private SelectButtonFirst selectButtonFirstScript;
         [SerializeField] private AudioMixer audioMixer;
 
+        [SerializeField] private TMP_InputField MasterVolumeInputField;
         [SerializeField] private GameObject Optionstab;
         [SerializeField] private GameObject MainMenutab;
 
@@ -112,7 +114,10 @@ namespace Bonkers
             audioMixer.SetFloat("volume", Mathf.Log10(newVolume) * 10);
         }
 
-
-        public void ShowOffScene() { SceneManager.LoadSceneAsync("ShowOffScene"); }
+        public void UpdateMasterVolumeFieldUI()
+        {
+            audioMixer.GetFloat("volume", out float currentVolume);
+            MasterVolumeInputField.text = "" + currentVolume;
+        }
     }
 }
