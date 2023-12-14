@@ -14,33 +14,19 @@ using static ProjectDawn.Mathematics.math2;
 using F32 = System.Single;
 using F32x3 = Unity.Mathematics.float3;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 
 [Serializable]
 public sealed class C_BasicAttackState : PlayerBaseState
     {
     #region Enums
     private InBasicAttack inBasic;
-    #endregion
-
-    #region
-    private bool _isPlayerEnemyInTrigger = false;
-    private GameObject _enemyCharacter;
+   
     #endregion
 
     #region Constructor
-    public C_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) 
-    {
-        currentContext.OnTriggerEnterEvent += OnTriggerEnter;
-        currentContext.OnTriggerStayEvent += OnTriggerStay;
-        currentContext.OnTriggerExitEvent += OnTriggerExit;
-    }
-    ~C_BasicAttackState()
-    {
-        Ctx.OnTriggerEnterEvent -= OnTriggerEnter;
-        Ctx.OnTriggerStayEvent -= OnTriggerStay;
-        Ctx.OnTriggerExitEvent -= OnTriggerExit;
-    }
-    #endregion 
+    public C_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory){}
+    #endregion
 
     private enum InBasicAttack
     {
@@ -58,34 +44,9 @@ public sealed class C_BasicAttackState : PlayerBaseState
     void HandleCatWomanBasicAttack()
     {
         inBasic = InBasicAttack.Basic;
-        if(_isPlayerEnemyInTrigger)
-        {
-            //enemy knockback is done
-        }
     }
 
-    void OnTriggerEnter(Collider collider)
-    {
 
-    }
-
-    void OnTriggerStay(Collider collider)
-    {
-        if (collider.gameObject.tag == "Player")
-        {
-            _isPlayerEnemyInTrigger = true;
-            _enemyCharacter = collider.gameObject;
-        }
-    }
-
-    void OnTriggerExit(Collider collider)
-    {
-        if (collider.gameObject.tag == "Player")
-        {
-            _isPlayerEnemyInTrigger = false;
-            _enemyCharacter = null;
-        }
-    }
     #region Updates
 
     protected override void UpdateRotation(ref Quaternion currentRotation, float deltaTime){}

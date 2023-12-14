@@ -1,5 +1,8 @@
 ﻿using System;
 
+//For Double Jump Controlls
+using UnityEngine.InputSystem;
+
 //using Bonkers.Characters;
 
 using CGTK.Utils.Extensions.Math.Math;
@@ -15,19 +18,30 @@ using static ProjectDawn.Mathematics.math2;
 
 using F32   = System.Single;
 using F32x3 = Unity.Mathematics.float3;
+using Bonkers.Controls;
+using KinematicCharacterController;
 
 public sealed class PlayerAirState : PlayerBaseState
 {
 
     #region Variables
     
-    [SerializeField] private F32 maxSpeed        = 10f;
-    [SerializeField] private F32 accSpeed        = 15f;
-    [SerializeField] private F32 drag            = 0.1f;
-    [SerializeField] private F32 orientSharpness = 20f;
+    [SerializeField] private F32 maxSpeedForInputs = 10f;
+    [SerializeField] private F32 accSpeed          = 15f;
+    [SerializeField] private F32 drag              = 0.1f;
+    [SerializeField] private F32 orientSharpness   = 20f;
     
     private PlayerBaseState _subStateFalling;
     private PlayerBaseState _subStateRising;
+
+    //Double Jump Requirements
+    public Controls playerControls;
+    public InputAction doubleJumpAction;
+
+    private bool DoubleJumpAvailable;
+
+    //Wall Sliding Requirements
+    private bool EnableWallSliding;
 
     #endregion
 
@@ -48,12 +62,21 @@ public sealed class PlayerAirState : PlayerBaseState
     
     public override void EnterState() 
     {
+        //set input actions
+        playerControls = new Controls();
+
+        doubleJumpAction = playerControls.Gameplay.Jump;
+        doubleJumpAction.Enable();
+
         //Debug.Log("Entering Air State");
+        Debug.Log("Has entered into Air state");
     }
 
     public override void ExitState()
     {
         //Debug.Log("Exiting Air State");
+        Debug.Log("Exiting Air State");
+        doubleJumpAction.Disable();
     }
 
     #endregion
@@ -70,13 +93,13 @@ public sealed class PlayerAirState : PlayerBaseState
 
         F32x3 __currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(vector: currentVelocity, planeNormal: Ctx.Motor.CharacterUp);
 
-        // Limit air velocity from inputs
-        if (length(__currentVelocityOnInputsPlane) < maxSpeed)
-        {
-            // clamp addedVel to make total vel not exceed max vel on inputs plane
-            F32x3 __newTotal = Vector3.ClampMagnitude(vector: __currentVelocityOnInputsPlane + __addedVelocity, maxLength: maxSpeed);
-            __addedVelocity = __newTotal - __currentVelocityOnInputsPlane;
-        }
+         // Limit air velocity from inputs
+         if (length(__currentVelocityOnInputsPlane) < maxSpeedForInputs)
+         {
+             // clamp addedVel to make total vel not exceed max vel on inputs plane
+             F32x3 __newTotal = Vector3.ClampMagnitude(vector: __currentVelocityOnInputsPlane + __addedVelocity, maxLength: maxSpeedForInputs);
+             __addedVelocity = __newTotal - __currentVelocityOnInputsPlane;
+         }
         else
         {
             // Make sure added vel doesn't go in the direction of the already-exceeding velocity
@@ -97,9 +120,23 @@ public sealed class PlayerAirState : PlayerBaseState
                 __addedVelocity = Vector3.ProjectOnPlane(vector: __addedVelocity, planeNormal: __perpenticularObstructionNormal);
             }
         }
+        
+        // Apply drag
+        __addedVelocity *= 1f / (1f + (drag * deltaTime));
 
         // Apply added velocity
         currentVelocity += (Vector3)__addedVelocity;
+    }
+
+    protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+    {
+        if (hitCollider.CompareTag("WallTest"))
+        {
+            Debug.Log("Player on wall");
+
+            // Transition to the wall slide state
+            EnableWallSliding = true;
+        }
     }
 
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
@@ -137,10 +174,26 @@ public sealed class PlayerAirState : PlayerBaseState
             {
                 SwitchSubState(_subStateRising);
             }
-            
-            if (Ctx.JumpRequested)
+
+
+            //Initiating double jump
+            doubleJumpAction.started += Button =>
             {
-                //Double Jump
+                Debug.Log("Jumped");
+                Debug.Log(Ctx.DoubleJumpAvailable + " doubleJump");
+                if (Ctx.DoubleJumpAvailable == true)
+                {
+                    Debug.Log("JumpedAgain");
+
+                    Ctx.DoubleJumpAvailable = false;
+                    SwitchState(Factory.ExtraJump());
+                }
+            };
+
+            //Initiating wall sliding
+            if(EnableWallSliding == true)
+            {
+                SwitchState(Factory.WallSliding());
             }
         }
     }

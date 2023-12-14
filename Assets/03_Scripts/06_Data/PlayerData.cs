@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="newPlayerData", menuName ="Data/Player Data")]
 public class PlayerData : ScriptableObject
 {
-    [Header("Knockback system")]
-    public float VelocityPerPunch;
-    public float MaxVelocity;
+    [Header("Character counts")]
+    public float Health;
+    public float BasicAttackDamage;
 
     [Header("Move State")]
     public float PlayerMaxSpeed = 10f;

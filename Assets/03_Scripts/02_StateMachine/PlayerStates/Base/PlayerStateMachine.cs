@@ -31,6 +31,7 @@ using I32x3 = Unity.Mathematics.int3;
 using Bool  = System.Boolean;
 using Rotor = Unity.Mathematics.quaternion;
 using JetBrains.Annotations;
+using Bonkers.Controls;
 
 public class PlayerStateMachine : MonoBehaviour, ICharacterController
 {
@@ -122,11 +123,15 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32  TimeSinceJumpRequested  { get; internal set; } = Infinity;
     public F32  TimeSinceLastAbleToJump { get; internal set; } = 0f;
 
+    public bool DoubleJumpAvailable;
+
     public Bool CanJumpAgain => (TimeSinceLastAbleToJump <= JumpPostGroundingGraceTime);
 
     public F32 Gravity { get ; set; }
 
     [field: SerializeField] public PlayerData Data { get; [UsedImplicitly] private set; }
+
+   // public GameObject KnockBackPlane;
 
 #if UNITY_EDITOR
     protected virtual void Reset()
@@ -319,6 +324,14 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
         CurrentState.UpdateOnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
+
+        //  if (hitCollider.CompareTag("Player"))
+        // {
+        //     Debug.Log("Player hit!");
+        //
+        //     // Transition to the knockback state
+        //     TransitionToKnockbackState();
+        // }
     }
 
     public void ProcessHitStabilityReport
@@ -335,21 +348,14 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         // This is called by the motor when it is detecting a collision that did not result from a "movement hit".
     }
 
-    public event Action<Collider> OnTriggerEnterEvent;
-    public event Action<Collider> OnTriggerStayEvent;
-    public event Action<Collider> OnTriggerExitEvent;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        OnTriggerEnterEvent?.Invoke(other);
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        OnTriggerStayEvent?.Invoke(other);
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        OnTriggerExitEvent?.Invoke(other);
-    }
+    // private void TransitionToKnockbackState()
+    // {
+    //     if (!(CurrentState is PlayerKnockbackState))
+    //     {
+    //         CurrentState.ExitState();
+    //         CurrentState = _states.KnockBack();
+    //         CurrentState.EnterState(); 
+    //     }
+    // }
 
 }

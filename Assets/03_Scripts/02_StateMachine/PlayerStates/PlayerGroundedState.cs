@@ -4,6 +4,8 @@ using System;
 
 using CGTK.Utils.Extensions.Math.Math;
 
+using KinematicCharacterController;
+
 using Sirenix.OdinInspector;
 
 using UnityEngine;
@@ -48,6 +50,8 @@ public sealed class PlayerGroundedState : PlayerBaseState
     #endregion
 
     private Bool _isAttacking = false;
+
+    private Bool _isKnockedBack = false;
     
     #endregion
 
@@ -86,12 +90,15 @@ public sealed class PlayerGroundedState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Debug.Log("Entering Grounded State");
+        Debug.Log($"Entering Grounded State - frame ({Time.frameCount})", context: Ctx);
+        
+        _isKnockedBack = false;
+        Ctx.DoubleJumpAvailable = true;
     }
 
     public override void ExitState()
     {
-        //Debug.Log("Exiting Grounded State");
+        Debug.Log($"Exiting Grounded State - frame ({Time.frameCount})", context: Ctx);
     }
 
     #endregion
@@ -101,6 +108,19 @@ public sealed class PlayerGroundedState : PlayerBaseState
     
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime) { }
 
+    protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+    {
+        //base.OnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
+        
+        if (hitCollider.CompareTag("Player"))
+        {
+            Debug.Log("Player hit!");
+
+            // Transition to the knockback state
+            _isKnockedBack = true;
+        }
+    }
+
     #endregion
     
     #region Switch States
@@ -109,7 +129,8 @@ public sealed class PlayerGroundedState : PlayerBaseState
     {
         if (Ctx.Motor.GroundingStatus.IsStableOnGround)
         {
-
+            
+            
             if (Ctx.BasicAttackRequested)
             {
                 switch (Ctx.character)
@@ -162,7 +183,7 @@ public sealed class PlayerGroundedState : PlayerBaseState
                 _isAttacking = true;
             }
 
-            if (_isAttacking )
+            if (_isAttacking)
             {
                 AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
                 F32 animPercentage = __animStateInfo.normalizedTime;
@@ -173,20 +194,23 @@ public sealed class PlayerGroundedState : PlayerBaseState
                 }
             }
             
-            if (!_isAttacking )
+            if (!_isAttacking)
             {
                 if (Ctx.IsMovementPressed )
                 {
                     SwitchSubState(_subStateWalk);
                 }
-                else if (!Ctx.IsMovementPressed)
+                else //if (!Ctx.IsMovementPressed)
                 {
                     SwitchSubState(_subStateIdle);
                 }
             }
+
+            if (_isKnockedBack)
+            {
+                SwitchState(Factory.KnockBack());
+            }
             
-
-
             // if player is grounded and jump is pressed , switch to jump state
             if (Ctx.JumpRequested) //&& !Ctx.RequireNewJumpPress)
             {

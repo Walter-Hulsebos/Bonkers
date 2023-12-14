@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 
 using CGTK.Utils.Extensions.Math.Math;
 
@@ -12,8 +12,11 @@ using static ProjectDawn.Mathematics.math2;
 
 using F32 = System.Single;
 using F32x3 = Unity.Mathematics.float3;
+
+using Bool  = System.Boolean;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
+
+
 
 [Serializable]
 public sealed class D_BasicAttackState : PlayerBaseState
@@ -22,25 +25,16 @@ public sealed class D_BasicAttackState : PlayerBaseState
     private InBasicAttack inBasic;
     #endregion
 
-    #region
-    private bool _isPlayerEnemyInTrigger = false;
-    private GameObject _enemyCharacter;
+    #region Constructor
+    public D_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory) { }
     #endregion
 
-    #region Constructor
-    public D_BasicAttackState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
-    {
-        currentContext.OnTriggerEnterEvent += OnTriggerEnter;
-        currentContext.OnTriggerStayEvent += OnTriggerStay;
-        currentContext.OnTriggerExitEvent += OnTriggerExit;
-    }
-    ~D_BasicAttackState()
-    {
-        Ctx.OnTriggerEnterEvent -= OnTriggerEnter;
-        Ctx.OnTriggerStayEvent -= OnTriggerStay;
-        Ctx.OnTriggerExitEvent -= OnTriggerExit;
-    }
-    #endregion 
+    #region Variables
+
+    [SerializeField] private Vector3 offset = new(x: 0, y: 0, z: 1.5f);
+    [SerializeField] private F32     radius = 1.5f;
+
+    #endregion
 
     private enum InBasicAttack
     {
@@ -48,41 +42,48 @@ public sealed class D_BasicAttackState : PlayerBaseState
         Basic
     }
 
+    
+
+
     public override void EnterState()
     {
+        //Ctx.KnockBackPlane.SetActive(true);
         Ctx.Anims.SetTrigger(Ctx.BasicAttackHash);
         HandleDruidBasicAttack();
+        
+        Collider[] __colliders = Physics.OverlapSphere(position: Ctx.transform.position + offset, radius: radius, layerMask: LayerMask.NameToLayer("Player"));
+
+        Bool           __hitOtherPlayers      = false;
+        HashSet<Collider> __otherPlayerColliders = new();
+        foreach (Collider __collider in __colliders)
+        {
+            if (__collider.gameObject != Ctx.gameObject)
+            {
+                __hitOtherPlayers = true;
+                __otherPlayerColliders.Add(__collider);
+            }
+        }
+
+        if (__hitOtherPlayers)
+        {
+            foreach (Collider __collider in __otherPlayerColliders)
+            {
+                PlayerStateMachine __playerStateMachine = __collider.gameObject.GetComponent<PlayerStateMachine>();
+                
+                //TODO: Send packet of knockbackinfo to other players
+            }
+        }
     }
 
-    public override void ExitState(){}
+    public override void ExitState(){
+
+      //Ctx.KnockBackPlane.SetActive(false);
+    }
 
     void HandleDruidBasicAttack()
     {
         inBasic = InBasicAttack.Basic;
         //put in your basic attack here
-    }
-
-    void OnTriggerEnter(Collider collider)
-    {
-
-    }
-
-    void OnTriggerStay(Collider collider)
-    {
-        if (collider.gameObject.tag == "Player")
-        {
-            _isPlayerEnemyInTrigger = true;
-            _enemyCharacter = collider.gameObject;
-        }
-    }
-
-    void OnTriggerExit(Collider collider)
-    {
-        if (collider.gameObject.tag == "Player")
-        {
-            _isPlayerEnemyInTrigger = false;
-            _enemyCharacter = null;
-        }
     }
 
     #region Updates

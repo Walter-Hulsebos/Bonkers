@@ -9,17 +9,21 @@ public class CharacterSelectButton : MonoBehaviour
     [SerializeField] private GameObject disabledOverlay;
     [SerializeField] private Button     button;
 
-    private CharacterSelectDisplay characterSelect;
-
+    [SerializeField] private Character character;
+    [SerializeField] private CharacterSelectDisplay characterSelect;
+    
     public Character Character  { get; private set; }
     public Boolean   IsDisabled { get; private set; }
 
-    public void SetCharacter(CharacterSelectDisplay characterSelect, Character character)
+    private void Awake()
+    {
+        //characterSelect = GetComponent<CharacterSelectDisplay>();
+        SetCharacter();
+    }
+    public void SetCharacter()
     {
         iconImage.sprite = character.Icon;
-
-        this.characterSelect = characterSelect;
-
+        //changes here//
         Character = character;
     }
 
