@@ -1691,6 +1691,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 284587483}
+  - component: {fileID: 284587484}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -1713,6 +1714,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &284587484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284587482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54c8d19447596494cbe15c686b6c6408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRespawns: 3
 --- !u!1 &294116296 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8498130517475870111, guid: 80c67a357bcd74a4fa6e547fbf0df6c2, type: 3}
@@ -7439,14 +7453,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: e4c50ac7662878f47b3ab8cb7f50d196, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: ee9a09acdb5bff24290251dfc5370ca5, type: 2}
     - target: {fileID: 919132149155446097, guid: d863cee41831f254ba40a3c517a44f13, type: 3}
       propertyPath: m_Name
       value: Barrel_Singular
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e4c50ac7662878f47b3ab8cb7f50d196, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ee9a09acdb5bff24290251dfc5370ca5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7948,14 +7962,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7969282445041097735, guid: 05d7e294b9748364497fb05b0f80854e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 764ca27055a8db248a5acc2bd12124d9, type: 2}
     - target: {fileID: 919132149155446097, guid: 11adbf08cb4e625419ac870eb49b8c84, type: 3}
       propertyPath: m_Name
       value: Billboard_var
       objectReference: {fileID: 0}
+    - target: {fileID: -7969282445041097735, guid: 05d7e294b9748364497fb05b0f80854e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 764ca27055a8db248a5acc2bd12124d9, type: 2}
     - target: {fileID: 8510714625824522408, guid: 05d7e294b9748364497fb05b0f80854e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -11245,6 +11259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1856175921}
   playerSpawnPoint: {fileID: 128526953}
+  maxRespawns: 3
 --- !u!65 &2045967284
 BoxCollider:
   m_ObjectHideFlags: 0
