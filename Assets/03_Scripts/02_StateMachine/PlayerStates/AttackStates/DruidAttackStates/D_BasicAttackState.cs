@@ -42,8 +42,12 @@ public sealed class D_BasicAttackState : PlayerBaseState
         Basic
     }
 
+    
+
+
     public override void EnterState()
     {
+        //Ctx.KnockBackPlane.SetActive(true);
         Ctx.Anims.SetTrigger(Ctx.BasicAttackHash);
         HandleDruidBasicAttack();
         
@@ -71,7 +75,10 @@ public sealed class D_BasicAttackState : PlayerBaseState
         }
     }
 
-    public override void ExitState(){}
+    public override void ExitState(){
+
+      //Ctx.KnockBackPlane.SetActive(false);
+    }
 
     void HandleDruidBasicAttack()
     {
