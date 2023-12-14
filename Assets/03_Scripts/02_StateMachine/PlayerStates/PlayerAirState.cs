@@ -19,6 +19,7 @@ using static ProjectDawn.Mathematics.math2;
 using F32   = System.Single;
 using F32x3 = Unity.Mathematics.float3;
 using Bonkers.Controls;
+using KinematicCharacterController;
 
 public sealed class PlayerAirState : PlayerBaseState
 {
@@ -38,6 +39,10 @@ public sealed class PlayerAirState : PlayerBaseState
     public InputAction doubleJumpAction;
 
     private bool DoubleJumpAvailable;
+
+    //Wall Sliding Requirements
+    private bool EnableWallSliding;
+
     #endregion
 
     #region Constructor
@@ -123,6 +128,17 @@ public sealed class PlayerAirState : PlayerBaseState
         currentVelocity += (Vector3)__addedVelocity;
     }
 
+    protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
+    {
+        if (hitCollider.CompareTag("WallTest"))
+        {
+            Debug.Log("Player on wall");
+
+            // Transition to the wall slide state
+            EnableWallSliding = true;
+        }
+    }
+
     protected override void UpdateRotation(ref Quaternion currentRotation, F32 deltaTime)
     {
         if(lengthsq(Ctx.LookInputVector).Approx(0f)) return;
@@ -173,6 +189,12 @@ public sealed class PlayerAirState : PlayerBaseState
                     SwitchState(Factory.ExtraJump());
                 }
             };
+
+            //Initiating wall sliding
+            if(EnableWallSliding == true)
+            {
+                SwitchState(Factory.WallSliding());
+            }
         }
     }
     

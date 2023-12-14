@@ -37,6 +37,11 @@ public class PlayerStateFactory
         return new PlayerExtraJumpState(currentContext: context, playerStateFactory: this);
     }
 
+    public PlayerBaseState WallSliding()
+    {
+        return new PlayerWallSlideState(currentContext: context, playerStateFactory: this);
+    }
+
     public PlayerBaseState Air() 
     {
         return new PlayerAirState(currentContext: context, playerStateFactory: this);
