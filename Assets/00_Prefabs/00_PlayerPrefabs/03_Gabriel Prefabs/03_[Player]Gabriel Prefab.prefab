@@ -97,6 +97,54 @@ MonoBehaviour:
   showPlayerInput: 0
   <Value>k__BackingField: 0
   showValue: 1
+--- !u!1 &2282963238790615744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2093949102787611275}
+  - component: {fileID: 798308291207499609}
+  m_Layer: 7
+  m_Name: Control_Button-Ultimate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &2093949102787611275
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2282963238790615744}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3107697137611179788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &798308291207499609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2282963238790615744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Action>k__BackingField: {fileID: -974924980311112535, guid: d6923793dd168064091880429d629e00, type: 3}
+  playerInput: {fileID: 9164312635935735111}
+  showPlayerInput: 0
+  <Value>k__BackingField: 0
 --- !u!1 &2435666430019279503
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +227,7 @@ Transform:
   m_GameObject: {fileID: 3035714450035493016}
   serializedVersion: 2
   m_LocalRotation: {x: -0.18607268, y: -0.00000001639079, z: -0.000000003104088, w: 0.982536}
-  m_LocalPosition: {x: -0.3119712, y: 1.4555825, z: 1.6419482}
+  m_LocalPosition: {x: -0.93702745, y: 1.4555818, z: 0.0818907}
   m_LocalScale: {x: 1.7499995, y: 1.75, z: 1.7499998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -409,7 +457,7 @@ GameObject:
   - component: {fileID: 5880662537959384492}
   - component: {fileID: 7562699787712391203}
   m_Layer: 7
-  m_Name: Control_Button-S1Attack
+  m_Name: Control_Button-HeavyAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -443,6 +491,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Action>k__BackingField: {fileID: 1232009400636722037, guid: d6923793dd168064091880429d629e00, type: 3}
+  playerInput: {fileID: 9164312635935735111}
+  showPlayerInput: 0
+  <Value>k__BackingField: 0
+--- !u!1 &4523135360678402114
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2999070530723636197}
+  - component: {fileID: 2157880684539421304}
+  m_Layer: 7
+  m_Name: Control_Button-S2Attack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &2999070530723636197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4523135360678402114}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3107697137611179788}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2157880684539421304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4523135360678402114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Action>k__BackingField: {fileID: -7603457548736219863, guid: d6923793dd168064091880429d629e00, type: 3}
   playerInput: {fileID: 9164312635935735111}
   showPlayerInput: 0
   <Value>k__BackingField: 0
@@ -489,6 +585,8 @@ Transform:
   - {fileID: 3767906458579542529}
   - {fileID: 5880662537959384492}
   - {fileID: 6695810573795025523}
+  - {fileID: 2999070530723636197}
+  - {fileID: 2093949102787611275}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8371051695499867625
@@ -697,7 +795,7 @@ GameObject:
   - component: {fileID: 3767906458579542529}
   - component: {fileID: 1457439158334790174}
   m_Layer: 7
-  m_Name: Control_Button-BaseAttack
+  m_Name: Control_Button-LightAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -976,7 +1074,9 @@ MonoBehaviour:
   <Motor>k__BackingField: {fileID: 4955946100730849031}
   <Cam>k__BackingField: {fileID: 6770637021105854289}
   <Anims>k__BackingField: {fileID: 3300443088128105}
-  character: 0
+  <Data>k__BackingField: {fileID: 11400000, guid: 3922bc96333fc924ebeb4a872de4545a, type: 2}
+  DoubleJumpAvailable: 0
+  character: 3
   getMoveInput:
     _target: {fileID: 7455707189769101484}
     _methodName: get_Value
@@ -995,7 +1095,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
-  getBasicAttackInput:
+  getLightAttackInput:
     _target: {fileID: 1457439158334790174}
     _methodName: get_Value
     _args: []
@@ -1004,7 +1104,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
-  getSpecial1Input:
+  getHeavyAttackInput:
     _target: {fileID: 7562699787712391203}
     _methodName: get_Value
     _args: []
@@ -1013,7 +1113,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
-  getSpecial2Input:
+  getSpecial1Input:
     _target: {fileID: 5222726675693362412}
     _methodName: get_Value
     _args: []
@@ -1022,17 +1122,24 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
-  getInteraction:
-    _target: {fileID: 0}
-    _methodName: 
+  getSpecial2Input:
+    _target: {fileID: 2157880684539421304}
+    _methodName: get_Value
     _args: []
     _dynamic: 0
     _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,
       Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
-  DoubleJumpAvailable: 0
-  <Data>k__BackingField: {fileID: 11400000, guid: aaea91641959a9a4cace434e3b72648c, type: 2}
+  getUltimateInput:
+    _target: {fileID: 798308291207499609}
+    _methodName: get_Value
+    _args: []
+    _dynamic: 0
+    _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
 --- !u!114 &8210392348485836337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1123,7 +1230,7 @@ GameObject:
   - component: {fileID: 6695810573795025523}
   - component: {fileID: 5222726675693362412}
   m_Layer: 7
-  m_Name: Control_Button-S2Attack
+  m_Name: Control_Button-S1Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

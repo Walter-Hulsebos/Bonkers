@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Action>k__BackingField: {fileID: 1232009400636722037, guid: d6923793dd168064091880429d629e00, type: 3}
+  <Action>k__BackingField: {fileID: 1571162061203660157, guid: d6923793dd168064091880429d629e00, type: 3}
   playerInput: {fileID: 1609574961811962854}
   showPlayerInput: 0
   <Value>k__BackingField: 0
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Action>k__BackingField: {fileID: 1571162061203660157, guid: d6923793dd168064091880429d629e00, type: 3}
+  <Action>k__BackingField: {fileID: -7603457548736219863, guid: d6923793dd168064091880429d629e00, type: 3}
   playerInput: {fileID: 1609574961811962854}
   showPlayerInput: 0
   <Value>k__BackingField: 0
@@ -521,8 +521,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1995602406158088890}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.18607196, y: -1.5240545e-11, z: -2.8862433e-12, w: 0.98253614}
-  m_LocalPosition: {x: -0.0289433, y: 1.4555825, z: 1.6034222}
+  m_LocalRotation: {x: -0.18607268, y: -0.00000001639079, z: -0.000000003104088, w: 0.982536}
+  m_LocalPosition: {x: 0, y: 1.4555823, z: -2.4803839}
   m_LocalScale: {x: 1.7499995, y: 1.75, z: 1.7499998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -903,6 +903,7 @@ MonoBehaviour:
   <Motor>k__BackingField: {fileID: 3228510569062686795}
   <Cam>k__BackingField: {fileID: 6381468298250536026}
   <Anims>k__BackingField: {fileID: 3363332278736624219}
+  <Data>k__BackingField: {fileID: 11400000, guid: 69c7bc92211c0284eb2b96a980f0ade8, type: 2}
   character: 1
   getMoveInput:
     _target: {fileID: 8954746861117548116}
@@ -922,7 +923,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
-  getBasicAttackInput:
+  getLightAttackInput:
     _target: {fileID: 1897515430832885143}
     _methodName: get_Value
     _args: []
@@ -931,9 +932,18 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
+  getHeavyAttackInput:
+    _target: {fileID: 6722068847468312083}
+    _methodName: get_Value
+    _args: []
+    _dynamic: 0
+    _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
   getSpecial1Input:
-    _target: {fileID: 0}
-    _methodName: 
+    _target: {fileID: 4866541415681823093}
+    _methodName: get_Value
     _args: []
     _dynamic: 0
     _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,
@@ -941,8 +951,17 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
   getSpecial2Input:
-    _target: {fileID: 0}
-    _methodName: 
+    _target: {fileID: 8721327945519638137}
+    _methodName: get_Value
+    _args: []
+    _dynamic: 0
+    _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089]], CGTK.Utils.UnityDelegates,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    dirty: 0
+  getUltimateInput:
+    _target: {fileID: 5559200996309117519}
+    _methodName: get_Value
     _args: []
     _dynamic: 0
     _typeName: CGTK.Utils.UnityFunc.UnityFunc`1[[System.Boolean, mscorlib, Version=4.0.0.0,
@@ -959,7 +978,6 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     dirty: 0
   DoubleJumpAvailable: 0
-  <Data>k__BackingField: {fileID: 11400000, guid: 69c7bc92211c0284eb2b96a980f0ade8, type: 2}
 --- !u!114 &7185513504263419762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1111,8 +1129,10 @@ Transform:
   - {fileID: 3478210688008394307}
   - {fileID: 1743541096864583452}
   - {fileID: 8715033581843457090}
+  - {fileID: 1817036298274119303}
   - {fileID: 1763263336159439712}
   - {fileID: 4076146346075599329}
+  - {fileID: 6687827077427991531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6441592715675799008
@@ -1245,6 +1265,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5703672237400113161}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4695107700286662581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1817036298274119303}
+  - component: {fileID: 6722068847468312083}
+  m_Layer: 7
+  m_Name: Control_Button-HeavyAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &1817036298274119303
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4695107700286662581}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5822158280604296716}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6722068847468312083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4695107700286662581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Action>k__BackingField: {fileID: 1232009400636722037, guid: d6923793dd168064091880429d629e00, type: 3}
+  playerInput: {fileID: 1609574961811962854}
+  showPlayerInput: 0
+  <Value>k__BackingField: 0
 --- !u!1 &7200100157373953059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,7 +1377,7 @@ GameObject:
   - component: {fileID: 8715033581843457090}
   - component: {fileID: 1897515430832885143}
   m_Layer: 7
-  m_Name: Control_Button-BaseAttack
+  m_Name: Control_Button-LightAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1343,6 +1411,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Action>k__BackingField: {fileID: 2476070726970113001, guid: d6923793dd168064091880429d629e00, type: 3}
+  playerInput: {fileID: 1609574961811962854}
+  showPlayerInput: 0
+  <Value>k__BackingField: 0
+--- !u!1 &7424172569782950778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6687827077427991531}
+  - component: {fileID: 5559200996309117519}
+  m_Layer: 7
+  m_Name: Control_Button-Ultimate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &6687827077427991531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7424172569782950778}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5822158280604296716}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5559200996309117519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7424172569782950778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c53e9f10853e54f802ed3535ee47d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Action>k__BackingField: {fileID: -7603457548736219863, guid: d6923793dd168064091880429d629e00, type: 3}
   playerInput: {fileID: 1609574961811962854}
   showPlayerInput: 0
   <Value>k__BackingField: 0
