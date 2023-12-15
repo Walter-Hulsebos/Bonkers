@@ -1,6 +1,8 @@
 ﻿namespace Bonkers._01_Lobby
 {
     using System;
+    using System.Collections.Generic;
+    using System.Text;
 
     using UnityEngine;
     
@@ -26,16 +28,16 @@
             
             //button = transform.parent.GetComponentInChildren<Button>();
             
-            p1   = transform.Find("Images/P1").GetComponent<Image>();
-            p2   = transform.Find("Images/P2").GetComponent<Image>();
-            p3   = transform.Find("Images/P3").GetComponent<Image>();
+            p1 = transform.Find(n: "Images/P1").GetComponent<Image>();
+            p2 = transform.Find(n: "Images/P2").GetComponent<Image>();
+            p3 = transform.Find(n: "Images/P3").GetComponent<Image>();
             
-            size1 = transform.Find("Size1").GetComponent<Image>();
-            size2 = transform.Find("Size2").GetComponent<Image>();
-            size3 = transform.Find("Size3").GetComponent<Image>();
+            size1 = transform.Find(n: "Size1").GetComponent<Image>();
+            size2 = transform.Find(n: "Size2").GetComponent<Image>();
+            size3 = transform.Find(n: "Size3").GetComponent<Image>();
         }
 
-        [ContextMenu("Set Parent Stuff")]        
+        [ContextMenu(itemName: "Set Parent Stuff")]        
         private void SetParentStuff()
         {
             characterSelectDisplay = transform.GetComponentInParent<CharacterSelectDisplay>();
@@ -44,78 +46,71 @@
 
         private void Start()
         {
-            size1.color = size2.color = size3.color = team.Color;
+            //size1.color = size2.color = size3.color = team.Color;
+            p1.color    = p2.color    = p3.color    = team.Color;
         }
 
         private void Update()
         {
-            Int32[] __playersInBubble = PlayersInBubble;
-            
-            if (__playersInBubble != null)
+            List<I32> __playersInBubble = PlayersInBubble;
+
+            if (__playersInBubble == null || characterSelectDisplay == null)
             {
-                I32 __playersInBubbleCount = 0;
-                foreach (I32 __playerInBubble in __playersInBubble)
-                {
-                    if(__playerInBubble == -1) continue;
-                    __playersInBubbleCount += 1;
-                    switch (__playerInBubble)
-                    {
-                        case 1: p1.enabled = true;
-                            break;
-                        case 2: p2.enabled = true;
-                            break;
-                        case 3: p3.enabled = true;
-                            break;
-                    }
-                }
-                
-                //Enable/disable size 1, 2, 3 based on how many players are in the bubble
-                switch (__playersInBubbleCount)
-                {
-                    case 0:
-                        size1.enabled = size2.enabled = size3.enabled = false;
-                        break;
-                    case 1:
-                        size1.enabled = true;
-                        size2.enabled = size3.enabled = false;
-                        break;
-                    case 2:
-                        size1.enabled = size2.enabled = true;
-                        size3.enabled = false;
-                        break;
-                    case 3:
-                        size1.enabled = size2.enabled = size3.enabled = true;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                Debug.LogError(message: "Required components are not set or available", context: this);
+                return;
             }
-            
-            
+
+            // Enable/disable size images based on player count
+            size1.gameObject.SetActive(__playersInBubble.Count >= 1);
+            size2.gameObject.SetActive(__playersInBubble.Count >= 2);
+            size3.gameObject.SetActive(__playersInBubble.Count >= 3);
+
+            // Enable/disable player images
+            p1.gameObject.SetActive(__playersInBubble.Contains(item: 0));
+            p2.gameObject.SetActive(__playersInBubble.Contains(item: 1));
+            p3.gameObject.SetActive(__playersInBubble.Contains(item: 2));
+
+            if (__playersInBubble.Count == 0)
+            {
+                Debug.Log(message: $"{__playersInBubble.Count} player(s) in bubble", context: this);
+                return;
+            }
+
+            StringBuilder __playersInBubbleString = new ();
+            foreach (I32 __playerInBubble in __playersInBubble)
+            {
+                __playersInBubbleString.Append(value: __playerInBubble).Append(value: ", ");
+            }
+            Debug.Log(message: $"{__playersInBubble.Count} player(s) in bubble: ({__playersInBubbleString})", context: this);
+
         }
 
-        private I32[] PlayersInBubble
+        private List<I32> PlayersInBubble
         {
             get
             {
-                I32[] __playersIndices = { -1, -1, -1, };
-
+                //I32[] __playersIndices = { -1, -1, -1, };
+                List<I32> __playersIndicesInBubble = new ();
+                
                 //I32 __playersInBubble = 0;
                 for (I32 __index = 0; __index < characterSelectDisplay.Players.Count; __index += 1)
                 {
-                    CharacterSelectState __player = characterSelectDisplay.Players[__index];
+                    CharacterSelectState __player = characterSelectDisplay.Players[index: __index];
                     
                     //Skip if player is locked in, not the character we're looking for, or not on the team we're looking for
                     if (__player.IsLockedIn)                                        continue;
                     if (__player.CharacterId != characterSelectButton.Character.Id) continue;
                     if (__player.Team        != team)                               continue;
 
-                    I32 __playerIndex = __index / 2;
-                    __playersIndices[__playerIndex] = __index;
+                    I32 __playerIndexInTeam = __index / 2;
+                    __playersIndicesInBubble.Add(item: __playerIndexInTeam);
+                    
+                    //__playersIndices[__index] = __playerIndexInTeam;
                     //__playersInBubble += 1;
                 }
 
-                return __playersIndices;
+                //return __playersIndices;
+                return __playersIndicesInBubble;
             }
         }
         
