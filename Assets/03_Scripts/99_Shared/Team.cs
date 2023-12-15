@@ -40,7 +40,10 @@ namespace Bonkers.Shared
 
         private void OnEnable()
         {
-            AllTeams.Add(key: GetInstanceID(), value: this);
+            if (!AllTeams.TryAdd(key: GetInstanceID(), value: this))
+            {
+                AllTeams[key: GetInstanceID()] = this;
+            }
         }
         
         private void OnDisable()

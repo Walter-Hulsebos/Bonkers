@@ -6,10 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Unity.Netcode;
+
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterSelectButton : MonoBehaviour
+using Bonkers;
+
+using U64 = System.UInt64;
+
+public class CharacterSelectButton : NetworkBehaviour
 {
     [SerializeField] private Sprite borderA;
     [SerializeField] private Sprite borderB;
@@ -44,14 +50,20 @@ public class CharacterSelectButton : MonoBehaviour
         iconImage.sprite = character.Icon;
         Character        = character;
     }
-
+    
     [Button]
-    public void SelectCharacter(Team team)
+    public void SelectCharacter()
     {
-        if (selectorTeams.Contains(team)) { return; }
+        U64 __localClientId = NetworkManager.Singleton.LocalClientId;
 
-        selectorTeams.Add(team);
-        characterSelect.Select(Character);
+        if (!characterSelect.Players.TryGetLocal(out CharacterSelectState __local)) return;
+        
+        Team __team = __local.Team;
+        
+        if (selectorTeams.Contains(__team)) { return; }
+
+        selectorTeams.Add(__team);
+        characterSelect.LockIn();
         ChangeBorder();
     }
 

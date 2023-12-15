@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 public class CharacterSelectDisplay : NetworkBehaviour
 {
-    [Header("References")]
+    [Header(header: "References")]
     [SerializeField] private CharacterDatabase characterDatabase;
 
     //[SerializeField] private Transform             charactersHolder;
@@ -56,7 +56,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
             NetworkManager.Singleton.OnClientConnectedCallback  += HandleClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback += HandleClientDisconnected;
 
-            foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList) { HandleClientConnected(client.ClientId); }
+            foreach (NetworkClient client in NetworkManager.Singleton.ConnectedClientsList) { HandleClientConnected(clientId: client.ClientId); }
         }
 
         if (IsHost) { joinCodeText.text = HostSingleton.Instance.HostRelayData.JoinCode; }
@@ -78,52 +78,52 @@ public class CharacterSelectDisplay : NetworkBehaviour
         Int32 __teamIndex = (Players.Count + 1) / 2;
         Int32 __teamId    = allTeams[__teamIndex].GetInstanceID();
 
-        Players.Add(new CharacterSelectState(clientId, __teamId));
+        Players.Add(item: new CharacterSelectState(clientId: clientId, teamId: __teamId));
     }
 
     private void HandleClientDisconnected(UInt64 clientId)
     {
         for (Int32 i = 0; i < Players.Count; i++)
         {
-            if (Players[i].ClientId != clientId) { continue; }
+            if (Players[index: i].ClientId != clientId) { continue; }
 
-            Players.RemoveAt(i);
+            Players.RemoveAt(index: i);
             break;
         }
     }
 
-    public void Select(Character character)
+    public void Hover(Character character)
     {
         for (Int32 i = 0; i < Players.Count; i++)
         {
-            if (Players[i].ClientId != NetworkManager.Singleton.LocalClientId) { continue; }
+            if (Players[index: i].ClientId != NetworkManager.Singleton.LocalClientId) { continue; }
 
-            if (Players[i].IsLockedIn) { return; }
+            if (Players[index: i].IsLockedIn) { return; }
 
-            if (Players[i].CharacterId == character.Id) { return; }
+            if (Players[index: i].CharacterId == character.Id) { return; }
 
-            if (IsCharacterTaken(character.Id, false)) { return; }
+            if (IsCharacterTaken(characterId: character.Id, checkAll: false)) { return; }
         }
 
         characterNameText.text = character.DisplayName;
 
-        characterInfoPanel.SetActive(true);
+        characterInfoPanel.SetActive(value: true);
 
-        SelectServerRpc(character.Id);
+        HoverServerRpc(characterId: character.Id);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SelectServerRpc(Int32 characterId, ServerRpcParams serverRpcParams = default)
+    private void HoverServerRpc(Int32 characterId, ServerRpcParams serverRpcParams = default)
     {
         for (Int32 i = 0; i < Players.Count; i++)
         {
-            if (Players[i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
+            if (Players[index: i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
 
-            if (!characterDatabase.IsValidCharacterId(characterId)) { return; }
+            if (!characterDatabase.IsValidCharacterId(id: characterId)) { return; }
 
-            if (IsCharacterTaken(characterId, true)) { return; }
+            if (IsCharacterTaken(characterId: characterId, checkAll: true)) { return; }
 
-            Players[i] = new CharacterSelectState(Players[i].ClientId, Players[i].TeamId, characterId, Players[i].IsLockedIn);
+            Players[index: i] = new CharacterSelectState(clientId: Players[index: i].ClientId, teamId: Players[index: i].TeamId, characterId: characterId, isLockedIn: Players[index: i].IsLockedIn);
         }
     }
 
@@ -134,13 +134,13 @@ public class CharacterSelectDisplay : NetworkBehaviour
     {
         for (Int32 i = 0; i < Players.Count; i++)
         {
-            if (Players[i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
+            if (Players[index: i].ClientId != serverRpcParams.Receive.SenderClientId) { continue; }
 
-            if (!characterDatabase.IsValidCharacterId(Players[i].CharacterId)) { return; }
+            if (!characterDatabase.IsValidCharacterId(id: Players[index: i].CharacterId)) { return; }
 
-            if (IsCharacterTaken(Players[i].CharacterId, true)) { return; }
+            if (IsCharacterTaken(characterId: Players[index: i].CharacterId, checkAll: true)) { return; }
 
-            Players[i] = new CharacterSelectState(Players[i].ClientId, Players[i].TeamId, Players[i].CharacterId, true);
+            Players[index: i] = new CharacterSelectState(clientId: Players[index: i].ClientId, teamId: Players[index: i].TeamId, characterId: Players[index: i].CharacterId, isLockedIn: true);
         }
 
         foreach (CharacterSelectState player in Players)
@@ -148,7 +148,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
             if (!player.IsLockedIn) { return; }
         }
 
-        foreach (CharacterSelectState player in Players) { MatchplayNetworkServer.Instance.SetCharacter(player.ClientId, player.CharacterId); }
+        foreach (CharacterSelectState player in Players) { MatchplayNetworkServer.Instance.SetCharacter(clientId: player.ClientId, characterId: player.CharacterId); }
 
         MatchplayNetworkServer.Instance.StartGame();
     }
@@ -157,7 +157,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
     {
         for (Int32 i = 0; i < playerCards.Length; i++)
         {
-            if (Players.Count > i) { playerCards[i].UpdateDisplay(Players[i]); }
+            if (Players.Count > i) { playerCards[i].UpdateDisplay(state: Players[index: i]); }
             else { playerCards[i].DisableDisplay(); }
         }
 
@@ -165,7 +165,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
         {
             if (button.IsDisabled) { continue; }
 
-            if (IsCharacterTaken(button.Character.Id, false)) { button.SetDisabled(); }
+            if (IsCharacterTaken(characterId: button.Character.Id, checkAll: false)) { button.SetDisabled(); }
         }
 
         foreach (CharacterSelectState player in Players)
@@ -178,7 +178,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
                 break;
             }
 
-            if (IsCharacterTaken(player.CharacterId, false))
+            if (IsCharacterTaken(characterId: player.CharacterId, checkAll: false))
             {
                 lockInButton.interactable = false;
                 break;
@@ -197,10 +197,10 @@ public class CharacterSelectDisplay : NetworkBehaviour
         {
             if (!checkAll)
             {
-                if (Players[i].ClientId == NetworkManager.Singleton.LocalClientId) { continue; }
+                if (Players[index: i].ClientId == NetworkManager.Singleton.LocalClientId) { continue; }
             }
 
-            if (Players[i].IsLockedIn && Players[i].CharacterId == characterId) { return true; }
+            if (Players[index: i].IsLockedIn && Players[index: i].CharacterId == characterId) { return true; }
         }
 
         return false;
