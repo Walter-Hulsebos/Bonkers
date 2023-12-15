@@ -26,6 +26,10 @@ public class PlayerStateFactory
     {
         return new PlayerJumpState(currentContext: context, playerStateFactory: this);
     }
+    public PlayerBaseState WallJump()
+    {
+        return new PlayerWallJumpState(currentContext: context, playerStateFactory: this);
+    }
 
     public PlayerBaseState KnockBack() 
     {

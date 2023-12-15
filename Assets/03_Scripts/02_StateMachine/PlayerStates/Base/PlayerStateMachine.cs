@@ -130,6 +130,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32 Gravity { get ; set; }
 
     [field: SerializeField] public PlayerData Data { get; [UsedImplicitly] private set; }
+    public bool WallJumpRequested { get; internal set; }
 
    // public GameObject KnockBackPlane;
 
