@@ -15,17 +15,16 @@
         [SerializeField, HideInInspector] private CharacterSelectDisplay characterSelectDisplay;
         
         [SerializeField] private CharacterSelectButton characterSelectButton;
-        [SerializeField] private Button button;
-        //[SerializeField] private I32    characterId;
+        //[SerializeField] private Button button;
         [SerializeField] private Team   team;
-        //[SerializeField] private Sprite p1,    p2,    p3;
         [SerializeField] private Image  p1,    p2,    p3;
         [SerializeField] private Image  size1, size2, size3;
 
         private void Reset()
         {
-            characterSelectDisplay = transform.GetComponentInParent<CharacterSelectDisplay>();
-            characterSelectButton  = transform.GetComponentInParent<CharacterSelectButton>();
+            SetParentStuff();
+            
+            //button = transform.parent.GetComponentInChildren<Button>();
             
             p1   = transform.Find("Images/P1").GetComponent<Image>();
             p2   = transform.Find("Images/P2").GetComponent<Image>();
@@ -34,6 +33,13 @@
             size1 = transform.Find("Size1").GetComponent<Image>();
             size2 = transform.Find("Size2").GetComponent<Image>();
             size3 = transform.Find("Size3").GetComponent<Image>();
+        }
+
+        [ContextMenu("Set Parent Stuff")]        
+        private void SetParentStuff()
+        {
+            characterSelectDisplay = transform.GetComponentInParent<CharacterSelectDisplay>();
+            characterSelectButton  = transform.GetComponentInParent<CharacterSelectButton>();
         }
 
         private void Start()
@@ -98,8 +104,11 @@
                 for (I32 __index = 0; __index < characterSelectDisplay.Players.Count; __index += 1)
                 {
                     CharacterSelectState __player = characterSelectDisplay.Players[__index];
+                    
+                    //Skip if player is locked in, not the character we're looking for, or not on the team we're looking for
+                    if (__player.IsLockedIn)                                        continue;
                     if (__player.CharacterId != characterSelectButton.Character.Id) continue;
-                    if (__player.Team        != team)        continue;
+                    if (__player.Team        != team)                               continue;
 
                     I32 __playerIndex = __index / 2;
                     __playersIndices[__playerIndex] = __index;

@@ -92,7 +92,8 @@ public class CharacterSelectDisplay : NetworkBehaviour
         }
     }
 
-    public void Hover(Character character)
+    [PublicAPI]
+    public void HoverOn(Character character)
     {
         for (Int32 i = 0; i < Players.Count; i++)
         {
@@ -109,11 +110,17 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
         characterInfoPanel.SetActive(value: true);
 
-        HoverServerRpc(characterId: character.Id);
+        HoverOnServerRpc(characterId: character.Id);
     }
+    
+    // [PublicAPI]
+    // public void HoverOff()
+    // {
+    //     characterInfoPanel.SetActive(value: false);
+    // }
 
     [ServerRpc(RequireOwnership = false)]
-    private void HoverServerRpc(Int32 characterId, ServerRpcParams serverRpcParams = default)
+    private void HoverOnServerRpc(Int32 characterId, ServerRpcParams serverRpcParams = default)
     {
         for (Int32 i = 0; i < Players.Count; i++)
         {
