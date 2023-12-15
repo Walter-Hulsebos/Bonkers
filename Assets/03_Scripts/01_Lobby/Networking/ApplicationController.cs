@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ApplicationController : MonoBehaviour
 {
-    [Header(header: "References")]
+    [Header("References")]
     [SerializeField] private ServerSingleton serverPrefab;
 
     [SerializeField] private ClientSingleton clientPrefab;
@@ -17,9 +17,9 @@ public class ApplicationController : MonoBehaviour
     private async void Start()
     {
         Application.targetFrameRate = 60;
-        DontDestroyOnLoad(target: gameObject);
+        DontDestroyOnLoad(gameObject);
 
-        await LaunchInMode(isServer: SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null);
+        await LaunchInMode(SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null);
     }
 
     private async Task LaunchInMode(Boolean isServer)
@@ -29,17 +29,17 @@ public class ApplicationController : MonoBehaviour
 
         if (isServer)
         {
-            ServerSingleton serverSingleton = Instantiate(original: serverPrefab);
+            ServerSingleton serverSingleton = Instantiate(serverPrefab);
             await serverSingleton.CreateServer();
 
             GameInfo defaultGameInfo = new()  { gameMode = GameMode.Default, map = Map.Default, gameQueue = GameQueue.Casual, };
 
-            await serverSingleton.Manager.StartGameServerAsync(startingGameInfo: defaultGameInfo);
+            await serverSingleton.Manager.StartGameServerAsync(defaultGameInfo);
         }
         else
         {
-            ClientSingleton clientSingleton = Instantiate(original: clientPrefab);
-            Instantiate(original: hostSingleton);
+            ClientSingleton clientSingleton = Instantiate(clientPrefab);
+            Instantiate(hostSingleton);
 
             await clientSingleton.CreateClient();
 

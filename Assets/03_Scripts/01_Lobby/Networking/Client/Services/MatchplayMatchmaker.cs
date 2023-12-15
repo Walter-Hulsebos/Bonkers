@@ -39,15 +39,15 @@ public class MatchplayMatchmaker : IDisposable
         cancelToken = new CancellationTokenSource();
 
         String              queueName           = data.userGamePreferences.ToMultiplayQueue();
-        CreateTicketOptions createTicketOptions = new (queueName: queueName);
-        Debug.Log(message: createTicketOptions.QueueName);
+        CreateTicketOptions createTicketOptions = new (queueName);
+        Debug.Log(createTicketOptions.QueueName);
 
-        List<Player> players = new()  { new (id: data.userAuthId, customData: data.userGamePreferences), };
+        List<Player> players = new()  { new Player (data.userAuthId, data.userGamePreferences), };
 
         try
         {
             IsMatchmaking = true;
-            CreateTicketResponse createResult = await MatchmakerService.Instance.CreateTicketAsync(players: players, options: createTicketOptions);
+            CreateTicketResponse createResult = await MatchmakerService.Instance.CreateTicketAsync(players, createTicketOptions);
 
             lastUsedTicket = createResult.Id;
 
@@ -55,7 +55,7 @@ public class MatchplayMatchmaker : IDisposable
             {
                 while (!cancelToken.IsCancellationRequested)
                 {
-                    TicketStatusResponse checkTicket = await MatchmakerService.Instance.GetTicketAsync(ticketId: lastUsedTicket);
+                    TicketStatusResponse checkTicket = await MatchmakerService.Instance.GetTicketAsync(lastUsedTicket);
 
                     if (checkTicket.Type == typeof(MultiplayAssignment))
                     {
@@ -63,7 +63,7 @@ public class MatchplayMatchmaker : IDisposable
 
                         if (matchAssignment.Status == MultiplayAssignment.StatusOptions.Found)
                         {
-                            return ReturnMatchResult(resultErrorType: MatchmakerPollingResult.Success, message: "", assignment: matchAssignment);
+                            return ReturnMatchResult(MatchmakerPollingResult.Success, "", matchAssignment);
                         }
 
                         if (matchAssignment.Status == MultiplayAssignment.StatusOptions.Timeout ||
@@ -71,23 +71,23 @@ public class MatchplayMatchmaker : IDisposable
                         {
                             return ReturnMatchResult
                             (
-                                resultErrorType: MatchmakerPollingResult.MatchAssignmentError,
-                                message: $"Ticket: {lastUsedTicket} - {matchAssignment.Status} - {matchAssignment.Message}",
-                                assignment: null
+                                MatchmakerPollingResult.MatchAssignmentError,
+                                $"Ticket: {lastUsedTicket} - {matchAssignment.Status} - {matchAssignment.Message}",
+                                null
                             );
                         }
 
-                        Debug.Log(message: $"Polled Ticket: {lastUsedTicket} Status: {matchAssignment.Status} ");
+                        Debug.Log($"Polled Ticket: {lastUsedTicket} Status: {matchAssignment.Status} ");
                     }
 
-                    await Task.Delay(millisecondsDelay: TicketCooldown);
+                    await Task.Delay(TicketCooldown);
                 }
             }
-            catch (MatchmakerServiceException e) { return ReturnMatchResult(resultErrorType: MatchmakerPollingResult.TicketRetrievalError, message: e.ToString(), assignment: null); }
+            catch (MatchmakerServiceException e) { return ReturnMatchResult(MatchmakerPollingResult.TicketRetrievalError, e.ToString(), null); }
         }
-        catch (MatchmakerServiceException e) { return ReturnMatchResult(resultErrorType: MatchmakerPollingResult.TicketCreationError, message: e.ToString(), assignment: null); }
+        catch (MatchmakerServiceException e) { return ReturnMatchResult(MatchmakerPollingResult.TicketCreationError, e.ToString(), null); }
 
-        return ReturnMatchResult(resultErrorType: MatchmakerPollingResult.TicketRetrievalError, message: "Cancelled Matchmaking", assignment: null);
+        return ReturnMatchResult(MatchmakerPollingResult.TicketRetrievalError, "Cancelled Matchmaking", null);
     }
 
     public async Task CancelMatchmaking()
@@ -98,11 +98,11 @@ public class MatchplayMatchmaker : IDisposable
 
         if (cancelToken.Token.CanBeCanceled) { cancelToken.Cancel(); }
 
-        if (String.IsNullOrEmpty(value: lastUsedTicket)) { return; }
+        if (String.IsNullOrEmpty(lastUsedTicket)) { return; }
 
-        Debug.Log(message: $"Cancelling {lastUsedTicket}");
+        Debug.Log($"Cancelling {lastUsedTicket}");
 
-        await MatchmakerService.Instance.DeleteTicketAsync(ticketId: lastUsedTicket);
+        await MatchmakerService.Instance.DeleteTicketAsync(lastUsedTicket);
     }
 
     private MatchmakingResult ReturnMatchResult(MatchmakerPollingResult resultErrorType, String message, MultiplayAssignment assignment)

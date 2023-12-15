@@ -1,7 +1,8 @@
 namespace Bonkers.Shared
 {
     using System;
-    
+    using System.Collections.Generic;
+
     using UnityEngine;
     
     #if UNITY_EDITOR
@@ -10,12 +11,20 @@ namespace Bonkers.Shared
     
     using JetBrains.Annotations;
 
+    using I32  = System.Int32;
     using Bool = System.Boolean;
     
     [PublicAPI]
     [CreateAssetMenu(menuName = "Bonkers/Team")]
     public sealed class Team : ScriptableObject
     {
+        //private static HashSet<Team> _allTeams = new();
+        /// <summary>
+        ///    All teams in the game.
+        ///    <para> Key: <see cref="Team"/>'s <see cref="Int32"/> Instance ID. </para>
+        /// </summary>
+        public static Dictionary<I32, Team> AllTeams { get; private set; } = new();
+        
         [field:SerializeField] 
         public Color  Color   { get; [UsedImplicitly] private set; } = Color.white;
         [field:SerializeField]
@@ -28,6 +37,25 @@ namespace Bonkers.Shared
             //Ignore self.
             Enemies = Array.FindAll(array: __allTeams, match: team => team != this);
         }
+
+        private void OnEnable()
+        {
+            AllTeams.Add(key: GetInstanceID(), value: this);
+        }
+        
+        private void OnDisable()
+        {
+            AllTeams.Remove(key: GetInstanceID());
+        }
+
+        #region Custom Operators
+
+        /// <summary> Explicitly cast a <see cref="Int32"/> to a <see cref="Team"/>. </summary>
+        /// <param name="teamId"> The <see cref="Int32"/> to cast. </param>
+        /// <returns> The <see cref="Team"/> result. </returns>
+        public static explicit operator Team(Int32 teamId) => AllTeams[key: teamId];
+
+        #endregion
         
         #region Custom Editor
 
