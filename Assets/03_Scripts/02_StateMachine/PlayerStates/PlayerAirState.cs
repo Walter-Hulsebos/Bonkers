@@ -148,6 +148,7 @@ public sealed class PlayerAirState : PlayerBaseState
         // Set the current rotation (which will be used by the KinematicCharacterMotor)
         currentRotation = Quaternion.LookRotation(forward: __smoothedLookInputDirection, upwards: Ctx.Motor.CharacterUp);
     }
+
     protected override void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport)
     {
         base.OnMovementHit(hitCollider, hitNormal, hitPoint, ref hitStabilityReport);
