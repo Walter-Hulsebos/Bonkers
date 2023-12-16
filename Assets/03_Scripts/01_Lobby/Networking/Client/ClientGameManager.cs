@@ -73,7 +73,7 @@ public class ClientGameManager : IDisposable
 
     public async Task CancelMatchmaking() { await Matchmaker.CancelMatchmaking(); }
 
-    public void ToMainMenu() { SceneManager.LoadScene("MainMenu", LoadSceneMode.Single); }
+    //public void ToMainMenu() { SceneManager.LoadScene("MainMenu", LoadSceneMode.Single); }
 
     public void AddMatchPlayer(Matchplayer player) { MatchPlayerSpawned?.Invoke(player); }
 

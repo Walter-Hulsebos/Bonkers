@@ -43,7 +43,7 @@ public class ApplicationController : MonoBehaviour
 
             await clientSingleton.CreateClient();
 
-            clientSingleton.Manager.ToMainMenu();
+           // clientSingleton.Manager.ToMainMenu();
         }
     }
 }
