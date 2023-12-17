@@ -50,8 +50,9 @@ MonoBehaviour:
     NetworkTransport: {fileID: 6485963998722371857}
     PlayerPrefab: {fileID: 8854747452121219810, guid: 773b39ed367c011418f28a8bc3b8ca31, type: 3}
     Prefabs:
-      NetworkPrefabsLists: []
-    TickRate: 30
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: 021adcb8c6479484a856e43500281d8c, type: 2}
+    TickRate: 50
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 1
     ConnectionData: 
@@ -66,32 +67,7 @@ MonoBehaviour:
     LoadSceneTimeOut: 120
     SpawnTimeout: 1
     EnableNetworkLogs: 1
-    OldPrefabList:
-    - Override: 0
-      Prefab: {fileID: 2247144937675617167, guid: 8935789bd413573419fa49f6379675d7, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 4663426026667250098, guid: 301cebf8eacff4b4a83bf8f95afafb31, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 5840646621225449203, guid: a0e8f6b1cff6ef747b984e52df011aa4, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 2829942877377803283, guid: ca8dae37cae2db2448c0243e11a5afc3, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
-      Prefab: {fileID: 6821460796240439114, guid: dcfc69b7a3ef9f249b414fbf17ebfdf3, type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
+    OldPrefabList: []
   RunInBackground: 1
   LogLevel: 1
 --- !u!114 &6485963998722371857
@@ -118,7 +94,7 @@ MonoBehaviour:
   ConnectionData:
     Address: 127.0.0.1
     Port: 7777
-    ServerListenAddress: 127.0.0.1
+    ServerListenAddress: 0.0.0.0
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0

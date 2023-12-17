@@ -97,6 +97,7 @@ public class CharacterSelectDisplay : NetworkBehaviour
     {
         for (Int32 i = 0; i < Players.Count; i++)
         {
+            //Only the case for the local player
             if (Players[index: i].ClientId != NetworkManager.Singleton.LocalClientId) { continue; }
 
             if (Players[index: i].IsLockedIn) { return; }

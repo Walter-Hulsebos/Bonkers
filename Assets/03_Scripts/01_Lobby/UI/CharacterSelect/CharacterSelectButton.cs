@@ -1,6 +1,8 @@
 using Bonkers.Shared;
 
+#if ODIN_INSPECTOR
 using Sirenix.OdinInspector;
+#endif
 
 using System;
 using System.Collections.Generic;
@@ -13,9 +15,11 @@ using UnityEngine.UI;
 
 using Bonkers;
 
+using UnityEngine.EventSystems;
+
 using U64 = System.UInt64;
 
-public class CharacterSelectButton : NetworkBehaviour
+public class CharacterSelectButton : NetworkBehaviour, ISelectHandler
 {
     [SerializeField] private Sprite borderA;
     [SerializeField] private Sprite borderB;
@@ -26,7 +30,7 @@ public class CharacterSelectButton : NetworkBehaviour
     [SerializeField] private Image iconImage;
 
     //[SerializeField] private GameObject disabledOverlay;
-    [SerializeField] private Button        button;
+    [SerializeField] private ButtonPlus        button;
     [SerializeField] private Team          teamA;
     [SerializeField] private Team          teamB;
     [SerializeField] private HashSet<Team> selectorTeams = new();
@@ -39,7 +43,7 @@ public class CharacterSelectButton : NetworkBehaviour
 
     public void Reset()
     {
-        button    = transform.GetComponentInChildren<Button>();
+        button    = transform.GetComponentInChildren<ButtonPlus>();
         iconImage = button.GetComponent<Image>();
     }
 
@@ -52,11 +56,15 @@ public class CharacterSelectButton : NetworkBehaviour
     }
     
     [Button]
-    public void SelectCharacter()
+    public void OnCharacterSelect()
     {
-        U64 __localClientId = NetworkManager.Singleton.LocalClientId;
+        //U64 __localClientId = NetworkManager.Singleton.LocalClientId;
 
-        if (!characterSelect.Players.TryGetLocal(out CharacterSelectState __local)) return;
+        if (!characterSelect.Players.TryGetLocal(out CharacterSelectState __local))
+        {
+            Debug.LogWarning("Could not find local player in players list", context: this);
+            return;
+        }
         
         Team __team = __local.Team;
         
@@ -67,13 +75,13 @@ public class CharacterSelectButton : NetworkBehaviour
         ChangeBorder();
     }
 
-    public void DeselectCharacter(Team team)
+    public void OnCharacterDeselect(Team team)
     {
         selectorTeams.Remove(team);
         //TODO: add character deselect
         ChangeBorder();
     }
-
+    
     private void ChangeBorder()
     {
         Boolean __hasTeamA = selectorTeams.Contains(teamA);
@@ -91,4 +99,36 @@ public class CharacterSelectButton : NetworkBehaviour
         //disabledOverlay.SetActive(true);
         button.interactable = false;
     }
+
+    #region ISelectHandler implementation
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        Debug.Log("OnSelect called.", context: this);
+        
+        OnCharacterHover();
+    }
+    
+    // public void OnDeselect(BaseEventData eventData)
+    // {
+    //     //HoverOffCharacter();
+    // }
+
+    #endregion
+    
+    #if ODIN_INSPECTOR
+    [Button]
+    #endif
+    public void OnCharacterHover()
+    {
+        Debug.Log("HoverOnCharacter called.", context: this);
+        characterSelect.HoverOn(character: character);
+    }
+    
+    public void OnCharacterHoverOff()
+    {
+        Debug.Log("HoverOffCharacter called.", context: this);
+        
+    }
+
 }
