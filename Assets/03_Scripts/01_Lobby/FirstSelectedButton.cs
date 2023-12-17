@@ -10,10 +10,8 @@ public class SelectButtonFirst : MonoBehaviour
     private GameObject backButton;
     [SerializeField]
     private GameObject optionsButton;
-
     [SerializeField]
     private GameObject StartingScreen;
-
     [SerializeField]
     private bool instantFirstButton;
 

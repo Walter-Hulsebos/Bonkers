@@ -109,7 +109,7 @@ public class MatchplayNetworkServer : IDisposable
     {
         gameHasStarted = true;
 
-        NetworkManager.Singleton.SceneManager.LoadScene("Arena 1", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Arena 1", LoadSceneMode.Single); //TODO: add map select
     }
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
