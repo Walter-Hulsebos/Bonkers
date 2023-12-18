@@ -16,6 +16,8 @@ using F32x3 = Unity.Mathematics.float3;
 using Bool = System.Boolean;
 using Cysharp.Threading.Tasks;
 
+using UnityEngine.VFX;
+
 public sealed class D_LightAttackState : PlayerBaseState
 {
     #region Enums
@@ -30,6 +32,7 @@ public sealed class D_LightAttackState : PlayerBaseState
 
     [SerializeField] private Vector3 offset = new(x: 0, y: 0, z: 1.5f);
     [SerializeField] private F32 radius = 1.5f;
+    [SerializeField] VisualEffect lightAttack;
 
     #endregion
 
@@ -79,6 +82,7 @@ public sealed class D_LightAttackState : PlayerBaseState
     {
         inLight = InLightAttack.Light;
         //put in your basic attack here
+        lightAttack.Play();
     }
 
     #region Updates
