@@ -62,12 +62,12 @@ namespace Bonkers
             MenusCloseTime();
         }
 
-        public void NewCampaign()
-        {
-            SceneManager.LoadSceneAsync("T7_Campaign");
-        }
+        //public void NewCampaign()
+        //{
+        //    SceneManager.LoadSceneAsync("T7_Campaign");
+        //}
 
-        public void OnlinePlay() { SceneManager.LoadSceneAsync("Bootstrap"); }
+       // public void OnlinePlay() { SceneManager.LoadSceneAsync("Bootstrap"); }
 
         public void OnfflinePlay() { }
 
