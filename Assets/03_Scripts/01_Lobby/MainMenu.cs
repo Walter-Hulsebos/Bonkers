@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.Events;
 using TMPro;
+using UnityEngine.InputSystem;
 
 namespace Bonkers
 {
@@ -20,14 +21,18 @@ namespace Bonkers
         [SerializeField] private TMP_InputField MasterVolumeInputField;
         [SerializeField] private GameObject Optionstab;
         [SerializeField] private GameObject MainMenutab;
+        [SerializeField] private GameObject LobbiesTab;
 
 
         private bool inIntro = true;
         private bool inOptions = false;
+        private bool inLobbies = false;
+        private Controls.Controls input;
 
         public void Start() 
         { 
             selectButtonFirstScript = this.gameObject.GetComponent<SelectButtonFirst>();
+            //input = new Controls.Controls();
         }
 
         public void Update()
@@ -38,13 +43,27 @@ namespace Bonkers
                 Text.SetActive(false);
                 StartCoroutine(FadeofLogo());
             }
-
+           
             // use of escape direct get only for testing
-            if(Input.GetKeyDown(KeyCode.Escape) && inOptions)
+            //if ((input.UI.Back.enabled) && inOptions)
+            //{
+            //    SwitchOptionsOn();
+            //    selectButtonFirstScript.SetSelectedOptions();
+            //    SwithToMainMenu();
+            //}
+
+            if (Input.GetKeyDown(KeyCode.Escape) && inOptions)
             {
                 SwitchOptionsOn();
                 selectButtonFirstScript.SetSelectedOptions();
                 SwithToMainMenu();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape) && inLobbies)
+            {
+                SwitchLobbiesOn();
+                selectButtonFirstScript.SetSelectedLobbies();
+                LobbiesTab.SetActive(false);
             }
         }
 
@@ -81,6 +100,18 @@ namespace Bonkers
             else
             {
                 inOptions = true;
+            }
+        }
+
+        public void SwitchLobbiesOn()
+        {
+            if(inLobbies)
+            {
+                inLobbies = false;
+            }
+            else
+            { 
+                inLobbies = true; 
             }
         }
 

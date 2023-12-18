@@ -13,6 +13,10 @@ public class SelectButtonFirst : MonoBehaviour
     [SerializeField]
     private GameObject StartingScreen;
     [SerializeField]
+    private GameObject lobbiesButton;
+    [SerializeField]
+    private GameObject lobbiesContent;
+    [SerializeField]
     private bool instantFirstButton;
 
     private void Awake()
@@ -67,5 +71,22 @@ public class SelectButtonFirst : MonoBehaviour
     public void SetSelectedOptions() 
     {
         EventSystem.current.SetSelectedGameObject(optionsButton);
+    }
+
+    public void SetSelectedLobbies()
+    {
+        EventSystem.current.SetSelectedGameObject(lobbiesButton);
+    }
+
+    public void SetSelectedinLobby()
+    {
+        if(lobbiesContent.transform.childCount  > 0) 
+        {
+            EventSystem.current.SetSelectedGameObject(lobbiesContent.transform.GetChild(0).gameObject);
+        }
+        else
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
     }
 }
