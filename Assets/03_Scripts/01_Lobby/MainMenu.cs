@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 using UnityEngine.Events;
 using TMPro;
 using UnityEngine.InputSystem;
+using System;
 
 namespace Bonkers
 {
@@ -22,19 +23,34 @@ namespace Bonkers
         [SerializeField] private GameObject Optionstab;
         [SerializeField] private GameObject MainMenutab;
         [SerializeField] private GameObject LobbiesTab;
-
+        [SerializeField] private InputActionReference backorClose;
 
         private bool inIntro = true;
         private bool inOptions = false;
         private bool inLobbies = false;
-        private Controls.Controls input;
 
+        private float holdBackButtonTimer = 0;
+        private float requiredHoldTime = 0.5f;
+        private bool backisHeld;
+
+        private void OnEnable()
+        {
+            backorClose.action.started += CloseHoldStart;
+            backorClose.action.canceled += CloseHoldEnd;
+            backorClose.action.Enable();
+        }
+        private void OnDisable()
+        {
+            backorClose.action.started -= CloseHoldStart;
+            backorClose.action.canceled -= CloseHoldEnd;
+            backorClose.action.Disable();
+        }
         public void Start() 
         { 
             selectButtonFirstScript = this.gameObject.GetComponent<SelectButtonFirst>();
-            //input = new Controls.Controls();
         }
 
+        
         public void Update()
         {
             if (Input.anyKey && inIntro)
@@ -43,28 +59,7 @@ namespace Bonkers
                 Text.SetActive(false);
                 StartCoroutine(FadeofLogo());
             }
-           
-            // use of escape direct get only for testing
-            //if ((input.UI.Back.enabled) && inOptions)
-            //{
-            //    SwitchOptionsOn();
-            //    selectButtonFirstScript.SetSelectedOptions();
-            //    SwithToMainMenu();
-            //}
-
-            if (Input.GetKeyDown(KeyCode.Escape) && inOptions)
-            {
-                SwitchOptionsOn();
-                selectButtonFirstScript.SetSelectedOptions();
-                SwithToMainMenu();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Escape) && inLobbies)
-            {
-                SwitchLobbiesOn();
-                selectButtonFirstScript.SetSelectedLobbies();
-                LobbiesTab.SetActive(false);
-            }
+            MenusCloseTime();
         }
 
         public void NewCampaign()
@@ -79,6 +74,37 @@ namespace Bonkers
         public void Options() { }
 
         public void Quit() { Application.Quit(); }
+
+        private void MenusCloseTime()
+        {
+                holdBackButtonTimer += Time.deltaTime;
+                if (holdBackButtonTimer > requiredHoldTime && inOptions && backisHeld)
+                {
+                    SwitchOptionsOn();
+                    selectButtonFirstScript.SetSelectedOptions();
+                    SwithToMainMenu();
+                backisHeld = false;
+            }          
+
+                if (holdBackButtonTimer > requiredHoldTime && inLobbies && backisHeld)
+                {
+                    SwitchLobbiesOn();
+                    selectButtonFirstScript.SetSelectedLobbies();
+                    LobbiesTab.SetActive(false);
+                backisHeld = false;
+            }            
+        }
+
+        private void CloseHoldStart(InputAction.CallbackContext context)
+        {
+            backisHeld = true;
+            holdBackButtonTimer = 0;
+        }
+
+        private void CloseHoldEnd(InputAction.CallbackContext context)
+        {
+            backisHeld = false;
+        }
 
         IEnumerator FadeofLogo()
         {
