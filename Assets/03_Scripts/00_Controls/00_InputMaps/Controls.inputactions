@@ -69,7 +69,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "BasicAttack",
+                    "name": "LightAttack",
                     "type": "Button",
                     "id": "f67a7f60-7b2a-4d6f-96e9-1c55f75d8f58",
                     "expectedControlType": "Button",
@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Special1",
+                    "name": "HeavyAttack",
                     "type": "Button",
                     "id": "0b84f6df-55ae-4e0a-bd19-bcfbc6c6df53",
                     "expectedControlType": "Button",
@@ -87,9 +87,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Special2",
+                    "name": "Special1",
                     "type": "Button",
                     "id": "8bd40020-9352-4a88-87ab-33ede55f14d7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Special2",
+                    "type": "Button",
+                    "id": "edea9b4f-3d3c-4016-92fc-daa5f9abb3dd",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -620,7 +629,7 @@
                     "interactions": "Tap",
                     "processors": "",
                     "groups": "",
-                    "action": "BasicAttack",
+                    "action": "LightAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -631,7 +640,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "BasicAttack",
+                    "action": "LightAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -642,7 +651,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Special1",
+                    "action": "HeavyAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -653,7 +662,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Special1",
+                    "action": "HeavyAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -664,7 +673,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Special2",
+                    "action": "Special1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -675,7 +684,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Special2",
+                    "action": "Special1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -698,6 +707,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79855278-825a-4016-adf8-553a0d05984e",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1343,6 +1363,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "e83ad957-8705-46e4-ba6f-11fc9034685e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1488,6 +1517,28 @@
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "894b2adb-ce31-4572-a339-8c93820eba27",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96255c25-80be-4991-bbbe-0a46ca8ba43d",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -30,7 +30,7 @@ public class MatchplayUser
     {
         String tempId = Guid.NewGuid().ToString();
 
-        Data = new UserData(userName: "Player", userAuthId: tempId, clientId: 0, userGamePreferences: new GameInfo());
+        Data = new UserData("Player", tempId, 0, new GameInfo());
     }
 
     public String Name
@@ -39,7 +39,7 @@ public class MatchplayUser
         set
         {
             Data.userName = value;
-            OnNameChanged?.Invoke(obj: Data.userName);
+            OnNameChanged?.Invoke(Data.userName);
         }
     }
 
@@ -69,8 +69,8 @@ public class MatchplayUser
 
     public override String ToString()
     {
-        StringBuilder userData = new (value: "MatchplayUser: ");
-        userData.AppendLine(value: $"- {Data}");
+        StringBuilder userData = new ("MatchplayUser: ");
+        userData.AppendLine($"- {Data}");
         return userData.ToString();
     }
 }
@@ -102,7 +102,7 @@ public class GameInfo
     public GameQueue gameQueue;
 
     public Int32  MaxUsers = 20;
-    public String ToSceneName => ConvertToScene(map: map);
+    public String ToSceneName => ConvertToScene(map);
 
     private const String multiplayCasualQueue      = "casual-queue";
     private const String multiplayCompetitiveQueue = "competitive-queue";
@@ -115,10 +115,10 @@ public class GameInfo
     public override String ToString()
     {
         StringBuilder sb = new ();
-        sb.AppendLine(value: "GameInfo: ");
-        sb.AppendLine(value: $"- map:        {map}");
-        sb.AppendLine(value: $"- gameMode:   {gameMode}");
-        sb.AppendLine(value: $"- gameQueue:  {gameQueue}");
+        sb.AppendLine("GameInfo: ");
+        sb.AppendLine($"- map:        {map}");
+        sb.AppendLine($"- gameMode:   {gameMode}");
+        sb.AppendLine($"- gameQueue:  {gameQueue}");
         return sb.ToString();
     }
 
@@ -129,7 +129,7 @@ public class GameInfo
             case Map.Default: return "Gameplay";
 
             default:
-                Debug.LogWarning(message: $"{map} - is not supported.");
+                Debug.LogWarning($"{map} - is not supported.");
                 return "";
         }
     }
@@ -146,12 +146,12 @@ public class GameInfo
 
     public static GameQueue ToGameQueue(String multiplayQueue)
     {
-        if (!multiplayToLocalQueueNames.ContainsKey(key: multiplayQueue))
+        if (!multiplayToLocalQueueNames.ContainsKey(multiplayQueue))
         {
-            Debug.LogWarning(message: $"No QueuePreference that maps to {multiplayQueue}");
+            Debug.LogWarning($"No QueuePreference that maps to {multiplayQueue}");
             return GameQueue.Casual;
         }
 
-        return multiplayToLocalQueueNames[key: multiplayQueue];
+        return multiplayToLocalQueueNames[multiplayQueue];
     }
 }

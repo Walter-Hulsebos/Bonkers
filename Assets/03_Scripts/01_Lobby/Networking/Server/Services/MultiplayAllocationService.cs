@@ -25,7 +25,7 @@ public class MultiplayAllocationService : IDisposable
             multiplayService  = MultiplayService.Instance;
             serverCheckCancel = new CancellationTokenSource();
         }
-        catch (Exception ex) { Debug.LogWarning(message: $"Error creating Multiplay allocation service.\n{ex}"); }
+        catch (Exception ex) { Debug.LogWarning($"Error creating Multiplay allocation service.\n{ex}"); }
     }
 
     public async Task<MatchmakingResults> SubscribeAndAwaitMatchmakerAllocation()
@@ -35,7 +35,7 @@ public class MultiplayAllocationService : IDisposable
         allocationId             =  null;
         serverCallbacks          =  new MultiplayEventCallbacks();
         serverCallbacks.Allocate += OnMultiplayAllocation;
-        serverEvents             =  await multiplayService.SubscribeToServerEventsAsync(callbacks: serverCallbacks);
+        serverEvents             =  await multiplayService.SubscribeToServerEventsAsync(serverCallbacks);
 
         String             allocationID       = await AwaitAllocationID();
         MatchmakingResults matchmakingPayload = await GetMatchmakerAllocationPayloadAsync();
@@ -49,21 +49,21 @@ public class MultiplayAllocationService : IDisposable
 
         Debug.Log
         (
-            message: $"Awaiting Allocation. Server Config is:\n" + $"-ServerID: {config.ServerId}\n" + $"-AllocationID: {config.AllocationId}\n" +
-                     $"-Port: {config.Port}\n"                   + $"-QPort: {config.QueryPort}\n"   + $"-logs: {config.ServerLogDirectory}"
+            $"Awaiting Allocation. Server Config is:\n" + $"-ServerID: {config.ServerId}\n" + $"-AllocationID: {config.AllocationId}\n" +
+            $"-Port: {config.Port}\n"                   + $"-QPort: {config.QueryPort}\n"   + $"-logs: {config.ServerLogDirectory}"
         );
 
-        while (String.IsNullOrEmpty(value: allocationId))
+        while (String.IsNullOrEmpty(allocationId))
         {
             String configID = config.AllocationId;
 
-            if (!String.IsNullOrEmpty(value: configID) && String.IsNullOrEmpty(value: allocationId))
+            if (!String.IsNullOrEmpty(configID) && String.IsNullOrEmpty(allocationId))
             {
-                Debug.Log(message: $"Config had AllocationID: {configID}");
+                Debug.Log($"Config had AllocationID: {configID}");
                 allocationId = configID;
             }
 
-            await Task.Delay(millisecondsDelay: 100);
+            await Task.Delay(100);
         }
 
         return allocationId;
@@ -72,16 +72,16 @@ public class MultiplayAllocationService : IDisposable
     private async Task<MatchmakingResults> GetMatchmakerAllocationPayloadAsync()
     {
         MatchmakingResults payloadAllocation = await MultiplayService.Instance.GetPayloadAllocationFromJsonAs<MatchmakingResults>();
-        String             modelAsJson       = JsonConvert.SerializeObject(value: payloadAllocation, formatting: Formatting.Indented);
-        Debug.Log(message: nameof(GetMatchmakerAllocationPayloadAsync) + ":" + Environment.NewLine + modelAsJson);
+        String             modelAsJson       = JsonConvert.SerializeObject(payloadAllocation, Formatting.Indented);
+        Debug.Log(nameof(GetMatchmakerAllocationPayloadAsync) + ":" + Environment.NewLine + modelAsJson);
         return payloadAllocation;
     }
 
     private void OnMultiplayAllocation(MultiplayAllocation allocation)
     {
-        Debug.Log(message: $"OnAllocation: {allocation.AllocationId}");
+        Debug.Log($"OnAllocation: {allocation.AllocationId}");
 
-        if (String.IsNullOrEmpty(value: allocation.AllocationId)) { return; }
+        if (String.IsNullOrEmpty(allocation.AllocationId)) { return; }
 
         allocationId = allocation.AllocationId;
     }
@@ -90,10 +90,10 @@ public class MultiplayAllocationService : IDisposable
     {
         if (multiplayService == null) { return; }
 
-        serverCheckManager = await multiplayService.StartServerQueryHandlerAsync(maxPlayers: (UInt16)20, serverName: "", gameType: "", buildId: "0", map: "");
+        serverCheckManager = await multiplayService.StartServerQueryHandlerAsync((UInt16)20, "", "", "0", "");
 
         #pragma warning disable 4014
-        ServerCheckLoop(cancellationToken: serverCheckCancel.Token);
+        ServerCheckLoop(serverCheckCancel.Token);
         #pragma warning restore 4014
     }
 
@@ -115,16 +115,16 @@ public class MultiplayAllocationService : IDisposable
         while (!cancellationToken.IsCancellationRequested)
         {
             serverCheckManager.UpdateServerCheck();
-            await Task.Delay(millisecondsDelay: 100);
+            await Task.Delay(100);
         }
     }
 
     private void OnMultiplayDeAllocation(MultiplayDeallocation deallocation)
     {
-        Debug.Log(message: $"Multiplay Deallocated : ID: {deallocation.AllocationId}\nEvent: {deallocation.EventId}\nServer{deallocation.ServerId}");
+        Debug.Log($"Multiplay Deallocated : ID: {deallocation.AllocationId}\nEvent: {deallocation.EventId}\nServer{deallocation.ServerId}");
     }
 
-    private void OnMultiplayError(MultiplayError error) { Debug.Log(message: $"MultiplayError : {error.Reason}\n{error.Detail}"); }
+    private void OnMultiplayError(MultiplayError error) { Debug.Log($"MultiplayError : {error.Reason}\n{error.Detail}"); }
 
     public void Dispose()
     {

@@ -18,7 +18,7 @@ public class ClientSingleton : MonoBehaviour
 
             if (clientSingleton == null)
             {
-                Debug.LogError(message: "No ClientSingleton in scene, did you run this from the bootStrap scene?");
+                Debug.LogError("No ClientSingleton in scene, did you run this from the bootStrap scene?");
                 return null;
             }
 
@@ -32,7 +32,7 @@ public class ClientSingleton : MonoBehaviour
         {
             if (gameManager == null)
             {
-                Debug.LogError(message: $"ClientGameManager is missing, did you run StartClient()?", context: gameObject);
+                Debug.LogError($"ClientGameManager is missing, did you run StartClient()?", gameObject);
                 return null;
             }
 
@@ -47,7 +47,7 @@ public class ClientSingleton : MonoBehaviour
         await gameManager.InitAsync();
     }
 
-    private void Start() { DontDestroyOnLoad(target: gameObject); }
+    private void Start() { DontDestroyOnLoad(gameObject); }
 
     private void OnDestroy() { gameManager?.Dispose(); }
 }
