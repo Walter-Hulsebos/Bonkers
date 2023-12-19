@@ -29,12 +29,16 @@ namespace Bonkers
             backorClose.action.Disable();
         }
 
-        private void Update()
+        //private void Update()
+        //{
+        //    if(!popupActive && Input.GetKeyDown(KeyCode.Return))
+        //    {
+        //        SceneManager.LoadSceneAsync("StartMenu");
+        //    }
+        //}
+        public void ReturntoStartMenu()
         {
-            if(!popupActive && Input.GetKeyDown(KeyCode.Return))
-            {
-                SceneManager.LoadSceneAsync("StartMenu");
-            }
+            SceneManager.LoadSceneAsync("StartMenu");
         }
 
         //private void ReturnToStatingScene(InputAction.CallbackContext context)
@@ -49,9 +53,9 @@ namespace Bonkers
         {
             if (popupActive)
             {
-                EventSystem.current.SetSelectedGameObject(null);
                 popupActive = false;
                 quitPopup.SetActive(true);
+                selectButtonFirst.SetSelectedLeave();
             }
             else
             {
