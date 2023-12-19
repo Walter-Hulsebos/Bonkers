@@ -1,18 +1,28 @@
 using System;
 using UnityEngine;
+using TMPro;
 
 namespace Bonkers
 {
     public class MatchCountdown : MonoBehaviour
     {
         private Timer matchCountdownTimer;
+        private Timer refreshTimer;
 
+        [SerializeField] private float refreshRate;
+        [SerializeField] private TextMeshProUGUI matchText;
+
+        [Tooltip("Time in seconds")]
+        [SerializeField] private float amountOfTime;
         /// <summary>
         /// Called when scene started
         /// </summary>
         public void Start()
         {
+            refreshTimer = new Timer();
             matchCountdownTimer = new Timer();
+            StartMatchCountdown();
+            refreshTimer.SetTimer(refreshRate);
         }
         /// <summary>
         /// Called every frame
@@ -24,6 +34,20 @@ namespace Bonkers
                 StopMatchCountdown();
                 matchCountdownTimer.StopTimer();
             }
+
+            if (refreshTimer.isActive && refreshTimer.TimerDone())
+            {
+                RefreshUI();
+                refreshTimer.StopTimer();
+                refreshTimer.SetTimer(refreshRate);
+            }
+        }
+        /// <summary>
+        /// Refresh UI with a refresh rate instead of updating it every frame
+        /// </summary>
+        public void RefreshUI()
+        {
+            matchText.text = GetRemainingTimeFormatted();   
         }
 
         /// <summary>
@@ -39,9 +63,9 @@ namespace Bonkers
         /// Start the countdown Timer
         /// </summary>
         /// <param name="_amountInSeconds"></param>
-        public void StartMatchCountdown(int _amountInSeconds = 300)
+        public void StartMatchCountdown()
         {
-            matchCountdownTimer.SetTimer(_amountInSeconds);
+            matchCountdownTimer.SetTimer(amountOfTime);
         }
 
 
