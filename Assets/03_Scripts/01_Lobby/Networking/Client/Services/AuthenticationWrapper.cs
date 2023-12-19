@@ -26,13 +26,13 @@ public static class AuthenticationWrapper
 
         if (AuthorizationState == AuthState.Authenticating)
         {
-            Debug.LogWarning(message: "Cant Authenticate if we are authenticating or authenticated");
+            Debug.LogWarning("Cant Authenticate if we are authenticating or authenticated");
             await Authenticating();
             return AuthorizationState;
         }
 
-        await SignInAnonymouslyAsync(maxRetries: tries);
-        Debug.Log(message: $"Auth attempts Finished : {AuthorizationState.ToString()}");
+        await SignInAnonymouslyAsync(tries);
+        Debug.Log($"Auth attempts Finished : {AuthorizationState.ToString()}");
 
         return AuthorizationState;
     }
@@ -43,7 +43,7 @@ public static class AuthenticationWrapper
     //Awaitable task that will pass once authentication is done.
     public static async Task<AuthState> Authenticating()
     {
-        while (AuthorizationState == AuthState.Authenticating || AuthorizationState == AuthState.NotAuthenticated) { await Task.Delay(millisecondsDelay: 200); }
+        while (AuthorizationState == AuthState.Authenticating || AuthorizationState == AuthState.NotAuthenticated) { await Task.Delay(200); }
 
         return AuthorizationState;
     }
@@ -70,31 +70,31 @@ public static class AuthenticationWrapper
             {
                 // Compare error code to AuthenticationErrorCodes
                 // Notify the player with the proper error message
-                Debug.LogError(message: ex);
+                Debug.LogError(ex);
                 AuthorizationState = AuthState.Error;
             }
             catch (RequestFailedException exception)
             {
                 // Compare error code to CommonErrorCodes
                 // Notify the player with the proper error message
-                Debug.LogError(message: exception);
+                Debug.LogError(exception);
                 AuthorizationState = AuthState.Error;
             }
 
             tries++;
-            await Task.Delay(millisecondsDelay: 1000);
+            await Task.Delay(1000);
         }
 
         if (AuthorizationState != AuthState.Authenticated)
         {
-            Debug.LogWarning(message: $"Player was not signed in successfully after {tries} attempts");
+            Debug.LogWarning($"Player was not signed in successfully after {tries} attempts");
             AuthorizationState = AuthState.TimedOut;
         }
     }
 
     public static void SignOut()
     {
-        AuthenticationService.Instance.SignOut(clearCredentials: false);
+        AuthenticationService.Instance.SignOut(false);
         AuthorizationState = AuthState.NotAuthenticated;
     }
 }
