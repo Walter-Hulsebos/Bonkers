@@ -19,6 +19,9 @@ public class SelectButtonFirst : MonoBehaviour
     [SerializeField]
     private bool instantFirstButton;
 
+    #region for character select
+    [SerializeField] private GameObject characterSelectLeaveButton;
+    #endregion
     private void Awake()
     {
         if (instantFirstButton)
@@ -88,5 +91,9 @@ public class SelectButtonFirst : MonoBehaviour
         {
             EventSystem.current.SetSelectedGameObject(null);
         }
+    }
+    public void SetSelectedLeave()
+    {
+        EventSystem.current.SetSelectedGameObject(characterSelectLeaveButton);
     }
 }
