@@ -35,11 +35,14 @@ using Unity.VisualScripting;
     }
     public override void EnterState()
     {
+        Ctx.KnockBackPlane.SetActive(true);
         Ctx.Anims.SetTrigger(Ctx.LightAttackHash);
         HandleCatWomanLightAttack();
     }
 
-    public override void ExitState() { }
+    public override void ExitState() {
+        Ctx.KnockBackPlane.SetActive(false);
+     }
 
     void HandleCatWomanLightAttack()
     {

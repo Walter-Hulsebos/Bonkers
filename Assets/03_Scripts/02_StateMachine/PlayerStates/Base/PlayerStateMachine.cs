@@ -140,7 +140,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32 Gravity { get ; set; }
 
 
-   // public GameObject KnockBackPlane;
+    public GameObject KnockBackPlane;
 
 #if UNITY_EDITOR
     protected virtual void Reset()

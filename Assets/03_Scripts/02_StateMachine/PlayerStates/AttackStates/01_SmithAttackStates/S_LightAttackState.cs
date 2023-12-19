@@ -42,7 +42,7 @@ public sealed class S_LightAttackState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Ctx.KnockBackPlane.SetActive(true);
+        Ctx.KnockBackPlane.SetActive(true);
         Ctx.Anims.SetTrigger(Ctx.LightAttackHash);
         HandleSmithLightAttack();
 
@@ -73,7 +73,7 @@ public sealed class S_LightAttackState : PlayerBaseState
     public override void ExitState()
     {
 
-        //Ctx.KnockBackPlane.SetActive(false);
+        Ctx.KnockBackPlane.SetActive(false);
     }
 
     void HandleSmithLightAttack()
