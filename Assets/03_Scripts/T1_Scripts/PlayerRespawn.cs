@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerRespawn : MonoBehaviour
@@ -38,9 +39,17 @@ public class PlayerRespawn : MonoBehaviour
         }
         else
         {
+            LoadSpectateScene();
             Debug.Log("No more respawns available for the player.");
         }
     }
+
+    private void LoadSpectateScene()
+    {
+        // Load the spectate scene. Make sure to add the "SpectateScene" to the build settings.
+        SceneManager.LoadScene("SpectateScene");
+    }
+
 
     // public void Spawn(PlayerStateMachine stateMachine)
     // {
