@@ -35,11 +35,14 @@ public sealed class G_LightAttackState : PlayerBaseState
     }
     public override void EnterState()
     {
+        Ctx.KnockBackPlane.SetActive(true);
         Ctx.Anims.SetTrigger(Ctx.LightAttackHash);
         HandleGabrielLightAttack();
     }
 
-    public override void ExitState() { }
+    public override void ExitState() {
+        Ctx.KnockBackPlane.SetActive(false);
+     }
 
     void HandleGabrielLightAttack()
     {
