@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3223023, g: 0.4417832, b: 0.6404738, a: 1}
+  m_IndirectSpecularColor: {r: 0.32230222, g: 0.44178322, b: 0.64047205, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8298,6 +8298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1876698970}
+  - component: {fileID: 1876698971}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -8320,6 +8321,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1876698971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876698969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54c8d19447596494cbe15c686b6c6408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRespawns: 3
 --- !u!1 &1903378074 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4392780566115096469, guid: 2071ae4452d99204699dcf79928d89b2, type: 3}
@@ -8573,9 +8587,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 837033389}
     - target: {fileID: 3507858114212550469, guid: 24a1d70470f52b741915165a285ed28f, type: 3}
+      propertyPath: maxRespawns
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3507858114212550469, guid: 24a1d70470f52b741915165a285ed28f, type: 3}
       propertyPath: playerSpawnPoint
       value: 
       objectReference: {fileID: 1932582157}
+    - target: {fileID: 3507858114212550469, guid: 24a1d70470f52b741915165a285ed28f, type: 3}
+      propertyPath: spectatorSceneName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6210724199703894655, guid: 24a1d70470f52b741915165a285ed28f, type: 3}
       propertyPath: m_Name
       value: SpawnTrigger

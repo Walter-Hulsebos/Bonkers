@@ -46,7 +46,6 @@ public class PlayerRespawn : MonoBehaviour
 
     private void LoadSpectateScene()
     {
-        // Load the spectate scene. Make sure to add the "SpectateScene" to the build settings.
         SceneManager.LoadScene("SpectateScene");
     }
 
