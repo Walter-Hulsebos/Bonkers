@@ -8,16 +8,18 @@ namespace Bonkers
     public class Powerup : MonoBehaviour
     {
         public void OnTriggerEnter(Collider collider)
+
         {
             if (collider.gameObject.CompareTag("Player"))
             {
+                //Handle powerup
                 Debug.Log("Powerup picked up");
 
                 var stateMachineRef = collider.gameObject.GetComponentInChildren<PlayerStateMachine>();
                 int multiplier = 2;
                 float playerOriginalSpeed = stateMachineRef.Data.PlayerMaxSpeed;
                 var playerMultipliedSpeed = playerOriginalSpeed * multiplier;
-                
+
                 stateMachineRef.Data.PlayerMaxSpeed = playerMultipliedSpeed;
                 StartCoroutine(waiter());
                 gameObject.GetComponent<CapsuleCollider>().enabled = false;
@@ -32,8 +34,9 @@ namespace Bonkers
                     Debug.Log(stateMachineRef.Data.PlayerMaxSpeed);
                     Destroy(gameObject);
                 }
-
             }
         }
     }
 }
+
+
