@@ -53,9 +53,6 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     [field:SerializeField] public Animator                Anims { get; private set; }
 
     #endregion
-    [field: SerializeField] public PlayerData Data { get; [UsedImplicitly] private set; }
-    public bool DoubleJumpAvailable;
-
 
     #region Enums
     public Character character;
@@ -64,10 +61,7 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     {
         Druid,
         Smith,
-        CatWoman,
-        Gabriel,
-        Roberto,
-        WaterGirl
+        CatWoman
     }
     
     #endregion
@@ -76,22 +70,19 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
 
     [SerializeField] private UnityFunc<F32x2> getMoveInput;
     [SerializeField] private UnityFunc<Bool>  getJumpInput;
-    [SerializeField] private UnityFunc<Bool>  getLightAttackInput;
-    [SerializeField] private UnityFunc<Bool>  getHeavyAttackInput;
+    [SerializeField] private UnityFunc<Bool>  getBasicAttackInput;
     [SerializeField] private UnityFunc<Bool>  getSpecial1Input;
     [SerializeField] private UnityFunc<Bool>  getSpecial2Input;
-    [SerializeField] private UnityFunc<Bool>  getUltimateInput;
+    [SerializeField] private UnityFunc<Bool> getInteraction;
 
 
     public F32x3 MoveInputVector { get; private set; }
     public F32x3 LookInputVector { get; private set; }
-    public Bool JumpRequested   { get; internal set; }
-    public Bool LightAttackRequested => getLightAttackInput.Invoke();
-    public Bool HeavyAttackRequested => getHeavyAttackInput.Invoke();
-    public Bool Special1Requested => getSpecial1Input.Invoke();
+    public Bool  JumpRequested   { get; internal set; }
+    public Bool BasicAttackRequested => getBasicAttackInput.Invoke();
+    public Bool  Special1Requested => getSpecial1Input.Invoke();
     public Bool Special2Requested => getSpecial2Input.Invoke();
-    public Bool UltimateRequested => getUltimateInput.Invoke();
-
+    public Bool InteractionRequested { get; internal set; }
 
     #endregion
 
@@ -100,12 +91,9 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public I32 WalkHash { get; private set; }
     public I32 JumpHash { get; private set; }
     public I32 IdleHash { get; private set; }
-    public I32 LightAttackHash { get; private set; }
-    public I32 HeavyAttackHash { get; private set; }
+    public I32 BasicAttackHash { get; private set; }
     public I32 Special1Hash { get; private set; } 
     public I32 Special2Hash { get; private set; }
-    public I32 UltimateHash { get; private set; }
-
 
     #endregion
 
@@ -135,12 +123,15 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public F32  TimeSinceJumpRequested  { get; internal set; } = Infinity;
     public F32  TimeSinceLastAbleToJump { get; internal set; } = 0f;
 
+    public bool DoubleJumpAvailable;
+
     public Bool CanJumpAgain => (TimeSinceLastAbleToJump <= JumpPostGroundingGraceTime);
-    public bool WallJumpRequested { get; internal set; }
+
     public F32 Gravity { get ; set; }
 
+    [field: SerializeField] public PlayerData Data { get; [UsedImplicitly] private set; }
 
-    public GameObject KnockBackPlane;
+   // public GameObject KnockBackPlane;
 
 #if UNITY_EDITOR
     protected virtual void Reset()
@@ -162,11 +153,9 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         WalkHash        = Animator.StringToHash(name: "walk");
         JumpHash        = Animator.StringToHash(name: "jump");
         IdleHash        = Animator.StringToHash(name: "idle");
-        LightAttackHash = Animator.StringToHash(name: "lightAttack");
-        HeavyAttackHash = Animator.StringToHash(name: "heavyAttack");
+        BasicAttackHash = Animator.StringToHash(name: "basicAttack"); 
         Special1Hash    = Animator.StringToHash(name: "special1");
         Special2Hash    = Animator.StringToHash(name: "special2");
-        UltimateHash    = Animator.StringToHash(name: "ultimate");
 
         Motor.CharacterController = this;
     }

@@ -30,20 +30,20 @@ public class ClientGameManager : IDisposable
         if (authenticationResult == AuthState.Authenticated) { User.AuthId = AuthenticationWrapper.PlayerID(); }
         else { User.AuthId                                                 = Guid.NewGuid().ToString(); }
 
-        Debug.Log($"did Auth?{authenticationResult} {User.AuthId}");
+        Debug.Log(message: $"did Auth?{authenticationResult} {User.AuthId}");
         Initialized = true;
     }
 
     public void BeginConnection(String ip, Int32 port)
     {
-        Debug.Log($"Starting networkClient @ {ip}:{port}\nWith : {User}");
-        NetworkClient.StartClient(ip, port);
+        Debug.Log(message: $"Starting networkClient @ {ip}:{port}\nWith : {User}");
+        NetworkClient.StartClient(ip: ip, port: port);
     }
 
     public async Task<JoinAllocation> BeginConnection(String joinCode)
     {
-        Debug.Log($"Starting networkClient with join code {joinCode}\nWith : {User}");
-        return await NetworkClient.StartClient(joinCode);
+        Debug.Log(message: $"Starting networkClient with join code {joinCode}\nWith : {User}");
+        return await NetworkClient.StartClient(joinCode: joinCode);
     }
 
     public void Disconnect() { NetworkClient.DisconnectClient(); }
@@ -52,32 +52,32 @@ public class ClientGameManager : IDisposable
     {
         if (Matchmaker.IsMatchmaking)
         {
-            Debug.LogWarning("Already matchmaking, please wait or cancel.");
+            Debug.LogWarning(message: "Already matchmaking, please wait or cancel.");
             return;
         }
 
         MatchmakerPollingResult matchResult = await GetMatchAsync();
-        onMatchmakeResponse?.Invoke(matchResult);
+        onMatchmakeResponse?.Invoke(obj: matchResult);
     }
 
     private async Task<MatchmakerPollingResult> GetMatchAsync()
     {
-        Debug.Log($"Beginning Matchmaking with {User}");
-        MatchmakingResult matchmakingResult = await Matchmaker.Matchmake(User.Data);
+        Debug.Log(message: $"Beginning Matchmaking with {User}");
+        MatchmakingResult matchmakingResult = await Matchmaker.Matchmake(data: User.Data);
 
-        if (matchmakingResult.result == MatchmakerPollingResult.Success) { BeginConnection(matchmakingResult.ip, matchmakingResult.port); }
-        else { Debug.LogWarning($"{matchmakingResult.result} : {matchmakingResult.resultMessage}"); }
+        if (matchmakingResult.result == MatchmakerPollingResult.Success) { BeginConnection(ip: matchmakingResult.ip, port: matchmakingResult.port); }
+        else { Debug.LogWarning(message: $"{matchmakingResult.result} : {matchmakingResult.resultMessage}"); }
 
         return matchmakingResult.result;
     }
 
     public async Task CancelMatchmaking() { await Matchmaker.CancelMatchmaking(); }
 
-    //public void ToMainMenu() { SceneManager.LoadScene("MainMenu", LoadSceneMode.Single); }
+    public void ToMainMenu() { SceneManager.LoadScene(sceneName: "MainMenu", mode: LoadSceneMode.Single); }
 
-    public void AddMatchPlayer(Matchplayer player) { MatchPlayerSpawned?.Invoke(player); }
+    public void AddMatchPlayer(Matchplayer player) { MatchPlayerSpawned?.Invoke(obj: player); }
 
-    public void RemoveMatchPlayer(Matchplayer player) { MatchPlayerDespawned?.Invoke(player); }
+    public void RemoveMatchPlayer(Matchplayer player) { MatchPlayerDespawned?.Invoke(obj: player); }
 
     public void SetGameQueue(GameQueue queue) { User.QueuePreference = queue; }
 

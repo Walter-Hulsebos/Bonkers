@@ -32,7 +32,7 @@ public class MatchplayNetworkClient : IDisposable
     public void StartClient(String ip, Int32 port)
     {
         UnityTransport unityTransport = networkManager.gameObject.GetComponent<UnityTransport>();
-        unityTransport.SetConnectionData(ip, (UInt16)port);
+        unityTransport.SetConnectionData(ipv4Address: ip, port: (UInt16)port);
         ConnectClient();
     }
 
@@ -40,10 +40,10 @@ public class MatchplayNetworkClient : IDisposable
     {
         JoinAllocation allocation = null;
 
-        try { allocation = await RelayService.Instance.JoinAllocationAsync(joinCode); }
+        try { allocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode); }
         catch (Exception e)
         {
-            Debug.Log(e);
+            Debug.Log(message: e);
             return null;
         }
 
@@ -62,12 +62,12 @@ public class MatchplayNetworkClient : IDisposable
 
         unityTransport.SetRelayServerData
         (
-            relayJoinData.IPv4Address,
-            relayJoinData.Port,
-            relayJoinData.AllocationIDBytes,
-            relayJoinData.Key,
-            relayJoinData.ConnectionData,
-            relayJoinData.HostConnectionData
+            ipv4Address: relayJoinData.IPv4Address,
+            port: relayJoinData.Port,
+            allocationIdBytes: relayJoinData.AllocationIDBytes,
+            keyBytes: relayJoinData.Key,
+            connectionDataBytes: relayJoinData.ConnectionData,
+            hostConnectionDataBytes: relayJoinData.HostConnectionData
         );
 
         ConnectClient();
@@ -77,7 +77,7 @@ public class MatchplayNetworkClient : IDisposable
 
     public void DisconnectClient()
     {
-        DisconnectReason.SetDisconnectReason(ConnectStatus.UserRequestedDisconnect);
+        DisconnectReason.SetDisconnectReason(reason: ConnectStatus.UserRequestedDisconnect);
         NetworkShutdown();
     }
 
@@ -85,52 +85,52 @@ public class MatchplayNetworkClient : IDisposable
     {
         UserData userData = ClientSingleton.Instance.Manager.User.Data;
 
-        String payload      = JsonUtility.ToJson(userData);
-        Byte[] payloadBytes = Encoding.UTF8.GetBytes(payload);
+        String payload      = JsonUtility.ToJson(obj: userData);
+        Byte[] payloadBytes = Encoding.UTF8.GetBytes(s: payload);
 
         networkManager.NetworkConfig.ConnectionData                = payloadBytes;
         networkManager.NetworkConfig.ClientConnectionBufferTimeout = TimeoutDuration;
 
         if (networkManager.StartClient())
         {
-            Debug.Log("Starting Client!");
+            Debug.Log(message: "Starting Client!");
 
             RegisterListeners();
         }
         else
         {
-            Debug.LogWarning("Could not start Client!");
-            OnLocalDisconnection?.Invoke(ConnectStatus.Undefined);
+            Debug.LogWarning(message: "Could not start Client!");
+            OnLocalDisconnection?.Invoke(obj: ConnectStatus.Undefined);
         }
     }
 
     public void RegisterListeners()
     {
-        MatchplayNetworkMessenger.RegisterListener(NetworkMessage.LocalClientConnected,    ReceiveLocalClientConnectStatus);
-        MatchplayNetworkMessenger.RegisterListener(NetworkMessage.LocalClientDisconnected, ReceiveLocalClientDisconnectStatus);
+        MatchplayNetworkMessenger.RegisterListener(messageType: NetworkMessage.LocalClientConnected,    listenerMethod: ReceiveLocalClientConnectStatus);
+        MatchplayNetworkMessenger.RegisterListener(messageType: NetworkMessage.LocalClientDisconnected, listenerMethod: ReceiveLocalClientDisconnectStatus);
     }
 
     private void ReceiveLocalClientConnectStatus(UInt64 clientId, FastBufferReader reader)
     {
-        reader.ReadValueSafe(out ConnectStatus status);
+        reader.ReadValueSafe(value: out ConnectStatus status);
 
-        Debug.Log("ReceiveLocalClientConnectStatus: " + status);
+        Debug.Log(message: "ReceiveLocalClientConnectStatus: " + status);
 
-        if (status != ConnectStatus.Success) { DisconnectReason.SetDisconnectReason(status); }
+        if (status != ConnectStatus.Success) { DisconnectReason.SetDisconnectReason(reason: status); }
 
-        OnLocalConnection?.Invoke(status);
+        OnLocalConnection?.Invoke(obj: status);
     }
 
     private void ReceiveLocalClientDisconnectStatus(UInt64 clientId, FastBufferReader reader)
     {
-        reader.ReadValueSafe(out ConnectStatus status);
-        Debug.Log("ReceiveLocalClientDisconnectStatus: " + status);
-        DisconnectReason.SetDisconnectReason(status);
+        reader.ReadValueSafe(value: out ConnectStatus status);
+        Debug.Log(message: "ReceiveLocalClientDisconnectStatus: " + status);
+        DisconnectReason.SetDisconnectReason(reason: status);
     }
 
     private void RemoteDisconnect(UInt64 clientId)
     {
-        Debug.Log($"Got Client Disconnect callback for {clientId}");
+        Debug.Log(message: $"Got Client Disconnect callback for {clientId}");
 
         if (clientId != 0 && clientId != networkManager.LocalClientId) { return; }
 
@@ -140,14 +140,14 @@ public class MatchplayNetworkClient : IDisposable
     private void NetworkShutdown()
     {
         // Take client back to the main menu if they aren't already there
-        if (SceneManager.GetActiveScene().name != MenuSceneName) { SceneManager.LoadScene(MenuSceneName); }
+        if (SceneManager.GetActiveScene().name != MenuSceneName) { SceneManager.LoadScene(sceneName: MenuSceneName); }
 
         // If we are already on the main menu then it means we timed-out
         if (networkManager.IsConnectedClient) { networkManager.Shutdown(); }
 
-        OnLocalDisconnection?.Invoke(DisconnectReason.Reason);
-        MatchplayNetworkMessenger.UnRegisterListener(NetworkMessage.LocalClientConnected);
-        MatchplayNetworkMessenger.UnRegisterListener(NetworkMessage.LocalClientDisconnected);
+        OnLocalDisconnection?.Invoke(obj: DisconnectReason.Reason);
+        MatchplayNetworkMessenger.UnRegisterListener(messageType: NetworkMessage.LocalClientConnected);
+        MatchplayNetworkMessenger.UnRegisterListener(messageType: NetworkMessage.LocalClientDisconnected);
     }
 
     public void Dispose()

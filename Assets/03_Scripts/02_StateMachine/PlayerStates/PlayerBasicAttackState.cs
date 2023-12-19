@@ -34,13 +34,13 @@ public sealed class PlayerBasicAttackState : PlayerBaseState
 
     public override void EnterState()
     {
-        Ctx.Anims.SetTrigger(Ctx.LightAttackHash);
-        HandleLightAttack();
+        Ctx.Anims.SetTrigger(Ctx.BasicAttackHash);
+        HandleBasicAttack();
     }
 
     public override void ExitState(){}
 
-    void HandleLightAttack()
+    void HandleBasicAttack()
     {
         inBasicAttack = InBasicAttack.BasicAttack;
     }
@@ -60,7 +60,7 @@ public sealed class PlayerBasicAttackState : PlayerBaseState
         //if(Ctx.Anims.GetCurrentAnimatorClipInfo(layerIndex: 0))
         AnimatorStateInfo __animStateInfo = Ctx.Anims.GetCurrentAnimatorStateInfo(layerIndex: 0);
 
-        Debug.Log($"Expected Hash = {Ctx.LightAttackHash}, tag hash {__animStateInfo.tagHash}, short hash {__animStateInfo.shortNameHash}, long hash {__animStateInfo.fullPathHash}");
+        Debug.Log($"Expected Hash = {Ctx.BasicAttackHash}, tag hash {__animStateInfo.tagHash}, short hash {__animStateInfo.shortNameHash}, long hash {__animStateInfo.fullPathHash}");
         // if (__animStateInfo.tagHash == Ctx.Special1Hash)
         //{
         F32 animPercentage = __animStateInfo.normalizedTime;
