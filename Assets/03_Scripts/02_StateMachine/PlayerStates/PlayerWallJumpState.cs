@@ -40,7 +40,7 @@ public sealed class PlayerWallJumpState : PlayerBaseState
 
     public override void EnterState()
     {
-        Ctx.Anims.SetTrigger(Ctx.JumpHash);
+        Ctx.Anims.SetTrigger(Ctx.WallJumpHash);
         Debug.Log("Entering Wall Jump State");
     }
 

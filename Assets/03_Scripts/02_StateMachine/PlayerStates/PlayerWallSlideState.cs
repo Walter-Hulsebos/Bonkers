@@ -77,7 +77,7 @@ namespace Bonkers._02_StateMachine.States
             wallJumpAction.Enable();
             moveHorizontal.Enable();
             moveVertical.Enable();
-            Ctx.Anims.SetTrigger(Ctx.WalkHash);
+            Ctx.Anims.SetTrigger(Ctx.WallSlideHash);
 
 
             IsSliding = true;
