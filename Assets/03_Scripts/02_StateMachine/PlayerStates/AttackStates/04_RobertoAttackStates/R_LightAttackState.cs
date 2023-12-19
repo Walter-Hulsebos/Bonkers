@@ -34,11 +34,14 @@ public sealed class R_LightAttackState : PlayerBaseState
         }
         public override void EnterState()
         {
+            Ctx.KnockBackPlane.SetActive(true);
             Ctx.Anims.SetTrigger(Ctx.LightAttackHash);
             HandleRobertoLightAttack();
         }
 
-        public override void ExitState() { }
+        public override void ExitState() {
+            Ctx.KnockBackPlane.SetActive(false);
+         }
 
         void HandleRobertoLightAttack()
         {

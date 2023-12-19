@@ -41,7 +41,7 @@ public sealed class D_LightAttackState : PlayerBaseState
 
     public override void EnterState()
     {
-        //Ctx.KnockBackPlane.SetActive(true);
+        Ctx.KnockBackPlane.SetActive(true);
         Ctx.Anims.SetTrigger(Ctx.LightAttackHash);
         HandleDruidLightAttack();
 
@@ -72,7 +72,7 @@ public sealed class D_LightAttackState : PlayerBaseState
     public override void ExitState()
     {
 
-        //Ctx.KnockBackPlane.SetActive(false);
+        Ctx.KnockBackPlane.SetActive(false);
     }
 
     void HandleDruidLightAttack()
