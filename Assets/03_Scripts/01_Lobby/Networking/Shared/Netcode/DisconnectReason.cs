@@ -8,7 +8,7 @@ public class DisconnectReason
 
     public void SetDisconnectReason(ConnectStatus reason)
     {
-        Debug.Assert(reason != ConnectStatus.Success);
+        Debug.Assert(condition: reason != ConnectStatus.Success);
         Reason = reason;
     }
 

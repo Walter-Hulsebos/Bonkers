@@ -11,9 +11,6 @@ using Bool = System.Boolean;
 using KinematicCharacterController;
 using Unity.VisualScripting;
 
-using UnityEngine.InputSystem;
-using Bonkers.Controls;
-
 namespace Bonkers._02_StateMachine.States
 {
     public class PlayerWallSlideState : PlayerBaseState
@@ -23,7 +20,7 @@ namespace Bonkers._02_StateMachine.States
         #region Variables
 
         private bool IsSliding;
-        private float SlidingSpeed = -4f;
+        private float SlidingSpeed = -1.5f;
         private float RotationSpeed = 10;
 
         //RayCast Related
@@ -34,14 +31,6 @@ namespace Bonkers._02_StateMachine.States
         private float ShortestDistance = 100;
         private Vector3 LookDirection;
 
-
-
-        //Fabian
-        [SerializeField] private bool canWallJump = false;
-        //Wall Jump Requirements
-        public Controls.Controls playerControls;
-        public InputAction wallJumpAction;
-
         #endregion
 
         #region Constructor
@@ -49,11 +38,6 @@ namespace Bonkers._02_StateMachine.States
         public PlayerWallSlideState(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory) : base(currentContext, playerStateFactory)
         {
             IsRootState = true;
-
-            playerControls = new Controls.Controls();
-
-            wallJumpAction = playerControls.Gameplay.Jump;
-            wallJumpAction.Enable();
         }
 
         #endregion
@@ -63,7 +47,6 @@ namespace Bonkers._02_StateMachine.States
         public override void EnterState()
         {
             IsSliding = true;
-            canWallJump = true;
             Debug.Log("Starting Wall Slide");
 
             //Shooting Raycasts in all 9 directions
@@ -149,16 +132,6 @@ namespace Bonkers._02_StateMachine.States
             {
                 SwitchState(Factory.Grounded());
             }
-            
-            wallJumpAction.started += Button =>
-            {
-                if(canWallJump == true)
-                {
-                    canWallJump = false;
-                    SwitchState(Factory.WallJump());
-                }
-            };           
-
         }
 
         #endregion
