@@ -53,11 +53,11 @@ namespace Bonkers
 
             input.Gameplay.Special2.performed += ctx => inputSpecial2 = ctx.ReadValueAsButton();
 
-            input.Gameplay.Special3.performed += ctx => inputSpecial3 = ctx.ReadValueAsButton();
+            //input.Gameplay.Special3.performed += ctx => inputSpecial3 = ctx.ReadValueAsButton();
 
             input.Gameplay.SpecialsGamepad.performed += ctx => inputRightshoulder = ctx.ReadValueAsButton();
 
-            input.Gameplay.SpecialKeyboard.performed += ctx => inputSpecialKeyboard = ctx.ReadValueAsButton();
+            //input.Gameplay.SpecialKeyboard.performed += ctx => inputSpecialKeyboard = ctx.ReadValueAsButton();
 
             input.Gameplay.ToggleSpecialKB.performed += ctx =>
             {
@@ -71,11 +71,11 @@ namespace Bonkers
 
             input.Gameplay.Special2.canceled += ctx => inputSpecial2 = false;
 
-            input.Gameplay.Special3.canceled += ctx => inputSpecial3 = false;
+           // input.Gameplay.Special3.canceled += ctx => inputSpecial3 = false;
 
             input.Gameplay.SpecialsGamepad.canceled += ctx => inputRightshoulder = false;
 
-            input.Gameplay.SpecialKeyboard.canceled += ctx => inputSpecialKeyboard = false;
+            //input.Gameplay.SpecialKeyboard.canceled += ctx => inputSpecialKeyboard = false;
         }
 
         // Update is called once per frame
