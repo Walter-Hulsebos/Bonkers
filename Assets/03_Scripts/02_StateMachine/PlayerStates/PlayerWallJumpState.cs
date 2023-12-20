@@ -39,7 +39,8 @@ public sealed class PlayerWallJumpState : PlayerBaseState
     #region Enter/Exit
 
     public override void EnterState()
-    {       
+    {
+        Ctx.Anims.SetTrigger(Ctx.WallJumpHash);
         Debug.Log("Entering Wall Jump State");
     }
 

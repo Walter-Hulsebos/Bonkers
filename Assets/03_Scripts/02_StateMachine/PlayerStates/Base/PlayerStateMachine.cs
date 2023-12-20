@@ -105,6 +105,8 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
     public I32 Special1Hash { get; private set; } 
     public I32 Special2Hash { get; private set; }
     public I32 UltimateHash { get; private set; }
+    public I32 WallSlideHash { get; private set; }
+    public I32 WallJumpHash { get; private set; }
 
 
     #endregion
@@ -167,6 +169,8 @@ public class PlayerStateMachine : MonoBehaviour, ICharacterController
         Special1Hash    = Animator.StringToHash(name: "special1");
         Special2Hash    = Animator.StringToHash(name: "special2");
         UltimateHash    = Animator.StringToHash(name: "ultimate");
+        WallSlideHash   = Animator.StringToHash(name: "wallSlide");
+        WallJumpHash    = Animator.StringToHash(name: "wallJump");
 
         Motor.CharacterController = this;
     }
