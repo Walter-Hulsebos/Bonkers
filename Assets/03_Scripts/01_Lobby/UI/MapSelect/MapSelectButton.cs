@@ -34,6 +34,7 @@ namespace Bonkers
         /// </summary>
         [SerializeField] private Sprite borderA;
         [SerializeField] private Sprite borderB;
+        [SerializeField] private Sprite borderAB;
         [SerializeField] private Sprite borderEmpty;
         [SerializeField] private Image borderImage;
 
@@ -73,7 +74,7 @@ namespace Bonkers
         public void OnMapDeselect(Team team)
         {
             selectorTeams.Remove(team);
-           
+            //TODO: add character deselect
             ChangeBorder();
         }
 
@@ -81,8 +82,9 @@ namespace Bonkers
         {
             Boolean __hasTeamA = selectorTeams.Contains(teamA);
             Boolean __hasTeamB = selectorTeams.Contains(teamB);
-       
-            if (__hasTeamA) { borderImage.sprite = borderA; }
+
+            if (__hasTeamA && __hasTeamB) { borderImage.sprite = borderAB; }
+            else if (__hasTeamA) { borderImage.sprite = borderA; }
             else if (__hasTeamB) { borderImage.sprite = borderB; }
             else if (selectorTeams.Count == 0) { borderImage.sprite = borderEmpty; }
         }
@@ -103,13 +105,13 @@ namespace Bonkers
 
         public void OnMapHover()
         {
-            Debug.Log("HoverOnMap called.", context: this);
+            Debug.Log("HoverOnCharacter called.", context: this);
             //characterSelect.HoverOn(character: character);
         }
 
         public void OnMapHoverOff()
         {
-            Debug.Log("HoverOffMap called.", context: this);
+            Debug.Log("HoverOffCharacter called.", context: this);
 
         }
     }

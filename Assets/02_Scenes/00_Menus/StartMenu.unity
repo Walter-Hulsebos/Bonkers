@@ -2475,19 +2475,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1817479331}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1008267043}
-        m_TargetAssemblyTypeName: Bonkers.MainMenu, Assembly-CSharp
-        m_MethodName: OnfflinePlay
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &485387095
 GameObject:
   m_ObjectHideFlags: 0
@@ -4964,7 +4952,6 @@ MonoBehaviour:
   MainMenutab: {fileID: 1039586519}
   LobbiesTab: {fileID: 176251140209892333}
   backorClose: {fileID: 7851068417153012629, guid: d6923793dd168064091880429d629e00, type: 3}
-  inLobbies: 0
 --- !u!4 &1008267044
 Transform:
   m_ObjectHideFlags: 0
@@ -4999,7 +4986,6 @@ MonoBehaviour:
   lobbiesButton: {fileID: 1056865280}
   lobbiesContent: {fileID: 4068042401983657873}
   instantFirstButton: 0
-  characterSelectLeaveButton: {fileID: 0}
 --- !u!114 &1008267046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17979,7 +17965,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &150684402884357443
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18421,8 +18407,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobbyItemParent: {fileID: 1007636796409097953}
   lobbyItemPrefab: {fileID: 2621454767557284695, guid: ccf5405dff1a4c7448a6b5a2a7a0f969, type: 3}
-  refresh: {fileID: 4472889149601880594, guid: d6923793dd168064091880429d629e00, type: 3}
-  mainMenu: {fileID: 1008267043}
 --- !u!224 &6908595258627107955
 RectTransform:
   m_ObjectHideFlags: 0

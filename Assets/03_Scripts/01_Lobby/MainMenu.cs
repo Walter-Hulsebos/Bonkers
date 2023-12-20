@@ -27,7 +27,7 @@ namespace Bonkers
 
         private bool inIntro = true;
         private bool inOptions = false;
-        [HideInInspector] public bool inLobbies = false;
+        private bool inLobbies = false;
 
         private float holdBackButtonTimer = 0;
         private float requiredHoldTime = 0.5f;

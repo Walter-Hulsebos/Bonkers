@@ -1,4 +1,3 @@
-using Bonkers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,40 +6,16 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class LobbiesList : MonoBehaviour
 {
     [SerializeField] private Transform lobbyItemParent;
     [SerializeField] private LobbyItem lobbyItemPrefab;
 
-    [SerializeField] private InputActionReference refresh;
-    [SerializeField] private MainMenu mainMenu;
-
     private Boolean isRefreshing;
     private Boolean isJoining;
 
-    private void OnEnable() 
-    {
-        refresh.action.started += RefreshLobby;
-        refresh.action.Enable();
-
-        RefreshList(); 
-    }
-
-    private void OnDisable()
-    {
-        refresh.action.started -= RefreshLobby;
-        refresh.action.Disable();
-    }
-
-    private void RefreshLobby(InputAction.CallbackContext context)
-    {
-        if (mainMenu.inLobbies)
-        {
-            RefreshList();
-        }
-    }
+    private void OnEnable() { RefreshList(); }
 
     public async void RefreshList()
     {
