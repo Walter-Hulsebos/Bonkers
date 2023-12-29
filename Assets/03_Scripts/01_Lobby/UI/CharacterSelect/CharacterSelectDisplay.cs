@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using Bonkers;
 using Bonkers.Shared;
 
 using JetBrains.Annotations;
@@ -16,9 +16,6 @@ public class CharacterSelectDisplay : NetworkBehaviour
 {
     [Header(header: "References")]
     [SerializeField] private CharacterDatabase characterDatabase;
-
-    //[SerializeField] private Transform             charactersHolder;
-    //[SerializeField] private CharacterSelectButton selectButtonPrefab;
     [SerializeField] private Team[]       allTeams;
     [SerializeField] private PlayerCard[] playerCards;
     [SerializeField] private GameObject   characterInfoPanel;
@@ -26,9 +23,9 @@ public class CharacterSelectDisplay : NetworkBehaviour
     [SerializeField] private TMP_Text     joinCodeText;
     [SerializeField] private Button       lockInButton;
 
-    // THIS code is obsolete but im keeping it just in case (BOBI)
-    // [SerializeField] private Transform             introSpawnPoint;
-    // private GameObject                        introInstance;
+
+    [SerializeField] private MapSelectManager mapSelectManager;
+   
 
     private List<CharacterSelectButton>       characterButtons = new ();
     public  NetworkList<CharacterSelectState> Players { get; private set; }
@@ -158,7 +155,8 @@ public class CharacterSelectDisplay : NetworkBehaviour
 
         foreach (CharacterSelectState player in Players) { MatchplayNetworkServer.Instance.SetCharacter(clientId: player.ClientId, characterId: player.CharacterId); }
 
-        MatchplayNetworkServer.Instance.StartGame();
+        mapSelectManager.ActiveMapSelect();
+        //MatchplayNetworkServer.Instance.StartGame();
     }
 
     private void HandlePlayersStateChanged(NetworkListEvent<CharacterSelectState> changeEvent)

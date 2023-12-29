@@ -46,7 +46,9 @@ namespace Bonkers
         [SerializeField] private Team teamB;
         [SerializeField] private HashSet<Team> selectorTeams = new();
         [SerializeField] private CharacterSelectDisplay characterSelect;
-        //[SerializeField] private 
+        [SerializeField] private MapSelectManager mapSelectManager;
+        [SerializeField] private int mapNumber;
+        private bool hasMapVoted;
 
         public void Reset()
         {
@@ -56,27 +58,28 @@ namespace Bonkers
 
         public void OnMapSelect()
         {
-            U64 __localClientId = NetworkManager.Singleton.LocalClientId;
+            if(!hasMapVoted) 
+            { 
+                U64 __localClientId = NetworkManager.Singleton.LocalClientId;
 
-            if (!characterSelect.Players.TryGetLocal(out CharacterSelectState __local))
-            {
-                Debug.LogWarning("Could not find local player in players list", context: this);
-                return;
+                if (!characterSelect.Players.TryGetLocal(out CharacterSelectState __local))
+                {
+                    Debug.LogWarning("Could not find local player in players list", context: this);
+                    return;
+                }
+
+                Team __team = __local.Team;
+
+                mapSelectManager.IncreaseVotes(mapNumber);
+                ChangeBorder();
+                hasMapVoted = true;
             }
-
-            Team __team = __local.Team;
-
-            if (selectorTeams.Contains(__team)) { return; }
-
-            selectorTeams.Add(__team);
-            //characterSelect.LockIn();
-            ChangeBorder();
         }
 
         public void OnMapDeselect(Team team)
         {
             selectorTeams.Remove(team);
-            //TODO: add character deselect
+            //TODO: add map deselect
             ChangeBorder();
         }
 

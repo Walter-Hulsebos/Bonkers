@@ -105,11 +105,11 @@ public class MatchplayNetworkServer : IDisposable
         }
     }
 
-    public void StartGame()
+    public void StartGame(string scene = "Arena 1")
     {
         gameHasStarted = true;
 
-        NetworkManager.Singleton.SceneManager.LoadScene("Arena 1", LoadSceneMode.Single); //TODO: add map select
+        NetworkManager.Singleton.SceneManager.LoadScene(scene, LoadSceneMode.Single); //TODO: add map select
     }
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)

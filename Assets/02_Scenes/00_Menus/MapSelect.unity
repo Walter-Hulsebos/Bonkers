@@ -976,6 +976,7 @@ GameObject:
   - component: {fileID: 1868410190}
   - component: {fileID: 1868410191}
   - component: {fileID: 1868410193}
+  - component: {fileID: 1868410194}
   m_Layer: 0
   m_Name: MenuManager
   m_TagString: Untagged
@@ -1017,6 +1018,7 @@ MonoBehaviour:
   lobbiesButton: {fileID: 0}
   lobbiesContent: {fileID: 0}
   instantFirstButton: 1
+  characterSelectLeaveButton: {fileID: 0}
 --- !u!114 &1868410193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1031,6 +1033,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameObjects:
   - {fileID: 1340729589}
+--- !u!114 &1868410194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868410189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a4f9fdd8b1416478012c238728d3c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: 
+  mapSelectCanvas: {fileID: 0}
 --- !u!1 &2046438617
 GameObject:
   m_ObjectHideFlags: 0
@@ -4326,7 +4342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSelectDisplay: {fileID: 0}
-  characterSelectButton: {fileID: 6574130232069242378}
+  characterSelectButton: {fileID: 0}
   team: {fileID: 11400000, guid: 96d6826d756a9c34696baa818c9a7a30, type: 2}
   p1: {fileID: 1415002606443143750}
   p2: {fileID: 1473016504145598976}
@@ -5217,7 +5233,6 @@ GameObject:
   - component: {fileID: 5429206666191884234}
   - component: {fileID: 4923104036396795356}
   - component: {fileID: 7289312834996276153}
-  - component: {fileID: 6574130232069242378}
   - component: {fileID: 7289312834996276154}
   m_Layer: 0
   m_Name: MapSelectRandomButton
@@ -7745,7 +7760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.399683, y: 0}
+  m_AnchoredPosition: {x: -2.399681, y: 0}
   m_SizeDelta: {x: 0.19993782, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &5517441292797268574
@@ -9237,29 +9252,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 14}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6574130232069242378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3322294355726145492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fd84e14584c7074fa5d795992f7059c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  borderA: {fileID: 21300000, guid: 0bc156747a5a204449a3d4b67767544f, type: 3}
-  borderB: {fileID: 21300000, guid: 94ab995b480d0064d8f75d3ff2f80773, type: 3}
-  borderAB: {fileID: 21300000, guid: af863bedf5e3d954da21df8006604c8e, type: 3}
-  borderEmpty: {fileID: 21300000, guid: c5cc74224cd32d14d97e841a8c9ccb0c, type: 3}
-  borderImage: {fileID: 1890419830722800892}
-  iconImage: {fileID: 4923104036396795356}
-  button: {fileID: 7289312834996276153}
-  teamA: {fileID: 11400000, guid: b95bec2e172cd3a44981a4399e8adae0, type: 2}
-  teamB: {fileID: 11400000, guid: 96d6826d756a9c34696baa818c9a7a30, type: 2}
-  character: {fileID: 11400000, guid: d8b87b08045b5404988378ae9b460dfd, type: 2}
-  characterSelect: {fileID: 0}
 --- !u!224 &6599111615156199319
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9939,7 +9931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSelectDisplay: {fileID: 0}
-  characterSelectButton: {fileID: 6574130232069242378}
+  characterSelectButton: {fileID: 0}
   team: {fileID: 11400000, guid: b95bec2e172cd3a44981a4399e8adae0, type: 2}
   p1: {fileID: 5806148719690597857}
   p2: {fileID: 6287509504516308391}
@@ -10527,7 +10519,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6574130232069242378}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
         m_MethodName: OnCharacterSelect
         m_Mode: 1
@@ -10548,7 +10540,7 @@ MonoBehaviour:
   onSelectedStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6574130232069242378}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
         m_MethodName: OnCharacterHover
         m_Mode: 1
@@ -10563,7 +10555,7 @@ MonoBehaviour:
   onSelectedEnd:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6574130232069242378}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
         m_MethodName: OnCharacterHoverOff
         m_Mode: 1
@@ -10596,6 +10588,9 @@ MonoBehaviour:
   button: {fileID: 7289312834996276153}
   teamA: {fileID: 0}
   teamB: {fileID: 0}
+  characterSelect: {fileID: 0}
+  mapSelectManager: {fileID: 0}
+  mapNumber: 0
 --- !u!114 &7349114503771822999
 MonoBehaviour:
   m_ObjectHideFlags: 0
